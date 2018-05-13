@@ -92,7 +92,7 @@
 	
 	
 	<p>
-		<strong>Anita Cu:</strong> A sophomore at UC Berkeley in Bay Area, California. Anita's hobbies are playing violin, playing piano, and learning the guitar.
+		<strong>Anita Cu:</strong> A sophomore at UC Berkeley from the Bay Area in California. Anita's hobbies are playing violin, playing piano, and learning the guitar.
 	</p>
 	<p>
 		<i>Interesting Fact:<i/> "I enjoy teaching!"
