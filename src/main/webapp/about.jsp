@@ -66,5 +66,51 @@
       </p>
     </div>
   </div>
+
+  <div id="container">
+    <div
+      style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
+
+      <h1>Meet the Team</h1>
+      <p>
+        <strong>Lee-Roy Gaseller:</strong> A soon to be sophomore at Xavier University in New Orleans, Louisiana. Lee-Roy enjoys producing beats and creating music. 
+						
+      </p>
+
+	<p>
+		<i>Interesting Fact:<i/> "I was born in Zimbabwe!" 
+	</p>
+	
+
+	<p>
+		<strong>Aaron Garcia:</strong> A sophomore at Tec de Monterrey in Monterrey, Nuevo Le&oacute;n, Mexico. Aaron's hobbies include filming and editing videos.
+	</p>
+	
+	<p>
+		<i>Interesting Fact:<i/> "I have a mining rig!" 
+	</p>
+	
+	
+	<p>
+		<strong>Anita Cu:</strong> A sophomore at UC Berkeley in Bay Area, California. Anita's hobbies are playing violin, playing piano, and learning the guitar.
+	</p>
+	<p>
+		<i>Interesting Fact:<i/> "I enjoy teaching!"
+	</p>
+	
+	<p>
+		<strong>Padraic Bonds:</strong> A rising sophomore at Tennessee State University in Nashville, Tennessee. Padraic likes to read and write fantasy. 
+	</p>
+	<p>
+		<i>Interesting Fact:<i/> "I'm a red belt in Tae Kwon Doe!"
+	</p>
+	
+	<p>
+		<strong>Henry Deist:</strong>
+	</p>
+
+    </div>
+  </div>
+
 </body>
 </html>
