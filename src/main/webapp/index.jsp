@@ -37,7 +37,10 @@
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
       <h1>CodeU Chat App</h1>
-      <h2>Welcome!</h2>
+      
+      <h2>Welcome to Team LAAPH's Chat App!</h2>
+
+      <p> We are LAAPH: Lee-Roy, Aaron, Anita, Padraic, and Henry of Team 9! </p>
 
       <ul>
         <li><a href="/login">Login</a> to get started.</li>
