@@ -49,7 +49,6 @@ public class ProfileServletTest {
     public void testDoGet_ValidUser() throws IOException, ServletException {
         User userCandace = new User(
                         UUID.randomUUID(), "Candace", "candacepassword", Instant.now());
-
         UserStore mockUserStore = Mockito.mock(UserStore.class);
 
         Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/candace");
@@ -65,7 +64,6 @@ public class ProfileServletTest {
         UserStore mockUserStore = Mockito.mock(UserStore.class);
 
         Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/candace");
-
         Mockito.when(mockUserStore.getUser("candace")).thenReturn(null);
 
         profileServlet.setUserStore(mockUserStore);
