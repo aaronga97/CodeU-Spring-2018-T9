@@ -56,7 +56,33 @@ public class AdminServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
+
+    String username = (String) request.getSession().getAttribute("user");
+
+    if (username == null) {
+      // user is not logged in, don't give them access
+      response.sendRedirect("/login");
+      return;
+    }
+
+    User user = userStore.getUser(username);
+    if (user == null) {
+      // user was not found, don't let them access admin
+      System.out.println("User not found: " + username);
+      response.sendRedirect("/login");
+      return;
+    }
+
+    if(user.getName().matches("aaron") || user.getName().matches("pbonds") ||
+       user.getName().matches("anitacu")){
+      // user is in admin list, give access to admin site
+      request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
+      return;
+    }
+
+    // user isn't in admin list, redirect him to root
+    response.sendRedirect("/");
+
   }
 
   /**
