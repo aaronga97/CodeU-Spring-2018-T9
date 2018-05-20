@@ -23,7 +23,7 @@
 
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
-    
+
     <a href="/conversations">Conversations</a>
     <a href="/login">Login</a>
     <a href="/about.jsp">About</a>
@@ -31,10 +31,6 @@
 
   <div id="container">
     <h1>Admin Page</h1>
-
-    <% if(request.getAttribute("error") != null){ %>
-        <h2 style="color:red"><%= request.getAttribute("error") %></h2>
-    <% } %>
 
     <p>New features coming soon...</p>
   </div>
