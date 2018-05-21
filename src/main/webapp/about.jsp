@@ -73,40 +73,45 @@
 
       <h1>Meet the Team</h1>
       <p>
-        <strong>Lee-Roy Gaseller:</strong> A soon to be sophomore at Xavier University in New Orleans, Louisiana. Lee-Roy enjoys producing beats and creating music. 
-						
+        <strong>Lee-Roy Gaseller:</strong> A soon to be sophomore at Xavier University in New Orleans, Louisiana. Lee-Roy enjoys producing beats and creating music.
+
       </p>
 
 	<p>
-		<i>Interesting Fact:<i/> "I was born in Zimbabwe!" 
+		<i>Interesting Fact:<i/> "I was born in Zimbabwe!"
 	</p>
-	
+
 
 	<p>
 		<strong>Aaron Garcia:</strong> A sophomore at Tec de Monterrey in Monterrey, Nuevo Le&oacute;n, Mexico. Aaron's hobbies include filming and editing videos.
 	</p>
-	
+
 	<p>
-		<i>Interesting Fact:<i/> "I have a mining rig!" 
+		<i>Interesting Fact:<i/> "I have a mining rig!"
 	</p>
-	
-	
+
+
 	<p>
 		<strong>Anita Cu:</strong> A sophomore at UC Berkeley from the Bay Area in California. Anita's hobbies are playing violin, playing piano, and learning the guitar.
 	</p>
 	<p>
 		<i>Interesting Fact:<i/> "I enjoy teaching!"
 	</p>
-	
+
 	<p>
-		<strong>Padraic Bonds:</strong> A rising sophomore at Tennessee State University in Nashville, Tennessee. Padraic likes to read and write fantasy. 
+		<strong>Padraic Bonds:</strong> A rising sophomore at Tennessee State University in Nashville, Tennessee. Padraic likes to read and write fantasy.
 	</p>
 	<p>
 		<i>Interesting Fact:<i/> "I'm a red belt in Tae Kwon Doe!"
 	</p>
-	
+
 	<p>
-		<strong>Henry Deist:</strong>
+		<strong>Henry Deist, Google Project Advisor:</strong>
+	</p>
+  <p>
+		<i>Interesting Fact:<i/> "Trying to learn to play piano.."</i>
+    <br>
+    <img src="<%=request.getContextPath()%>/images/playing-piano-in-a-band.jpg" alt="The Pulpit Rock" width="300" height="200">
 	</p>
 
     </div>
