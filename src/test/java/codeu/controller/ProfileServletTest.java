@@ -70,4 +70,5 @@ public class ProfileServletTest {
         profileServlet.doGet(mockRequest, mockResponse);
         Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
     }
+
 }

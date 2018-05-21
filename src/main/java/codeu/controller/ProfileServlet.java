@@ -74,18 +74,15 @@ public class ProfileServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        String requestUrl = request.getRequestURI();
-        String username = requestUrl.substring("/users/".length());
+        String username = request.getParameter("username");
 
-        // check if user exists
+        // if user doesn't exist, set "username" attribute as empty string
+        // so that profile.jsp sends to a page that states that user doesn't exist
+        // otherwise set the username attribute
         User user = userStore.getUser(username);
-
-        // set username attribute to "" if user doesn't exist
-        // set username attribute to URL username profile requested if user exists
-        if (username.length() == 0 || user == null) {
+        if (user == null) {
             request.setAttribute("username", "");
         } else {
-            // add data of user profile page to request
             request.setAttribute("username", username);
         }
 
@@ -97,6 +94,7 @@ public class ProfileServlet extends HttpServlet {
      *
      */
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        doGet(request, response);
     }
 }
