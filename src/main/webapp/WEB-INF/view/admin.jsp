@@ -25,7 +25,6 @@
     <a id="navTitle" href="/">CodeU Chat App</a>
 
     <a href="/conversations">Conversations</a>
-    <a href="/login">Login</a>
     <a href="/about.jsp">About</a>
   </nav>
 
