@@ -55,6 +55,10 @@ public class AdminServletTest {
     adminServlet.setUserStore(mockUserStore);
   }
 
+  /**
+   * Tests that when you DON'T get a user from the session (user=null), 
+   * checks that user is redirected to /login.
+   */
   @Test
   public void testDoGet_NullUser() throws IOException, ServletException {
     Mockito.when(mockSession.getAttribute("user")).thenReturn(null);
@@ -64,6 +68,10 @@ public class AdminServletTest {
     Mockito.verify(mockResponse).sendRedirect("/login");
   }
 
+  /**
+   * Tests that when you get a user from the session and the user DOES NOT exist
+   * in our database, checks that user is redirected to /login.
+   */
   @Test
   public void testDoGet_FakeUser() throws IOException, ServletException {
     Mockito.when(mockSession.getAttribute("user")).thenReturn("fake_username");
@@ -93,6 +101,10 @@ public class AdminServletTest {
   }
   */
 
+  /**
+   * Tests that when you get a user from the session and the user DOES exist but
+   * is NOT in admin list checks that user is redirected to /.
+   */
   @Test
   public void testDoGet_NotAdminUser() throws IOException, ServletException {
     User not_admin_user =
