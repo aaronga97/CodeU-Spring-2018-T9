@@ -29,10 +29,7 @@ ConversationStore conversationStore = ConversationStore.getInstance();
 UserStore userStore = UserStore.getInstance();
 MessageStore messageStore = MessageStore.getInstance();
 
-List <User> users;
-List <Conversation> conversations = conversationStore.getAllConversations();
-
-Integer convSize = conversations.size();
+Integer convSize = conversationStore.countTotalConversations();
 Integer userSize = userStore.countTotalUsers();
 Integer messageSize = messageStore.countTotalMessages();
 
