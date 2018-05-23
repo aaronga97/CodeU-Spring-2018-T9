@@ -51,9 +51,14 @@ public class AdminServletTest {
     Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/admin.jsp"))
         .thenReturn(mockRequestDispatcher);
 
-    UserStore mockUserStore = Mockito.mock(UserStore.class);
+    mockUserStore = Mockito.mock(UserStore.class);
+    adminServlet.setUserStore(mockUserStore);
   }
 
+  /**
+   * Tests that when you DON'T get a user from the session (user=null), 
+   * checks that user is redirected to /login.
+   */
   @Test
   public void testDoGet_NullUser() throws IOException, ServletException {
     Mockito.when(mockSession.getAttribute("user")).thenReturn(null);
@@ -63,27 +68,59 @@ public class AdminServletTest {
     Mockito.verify(mockResponse).sendRedirect("/login");
   }
 
+  /**
+   * Tests that when you get a user from the session and the user DOES NOT exist
+   * in our database, checks that user is redirected to /login.
+   */
+  @Test
+  public void testDoGet_FakeUser() throws IOException, ServletException {
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("fake_username");
+    Mockito.when(mockUserStore.getUser("fake_username")).thenReturn(null);
+
+    adminServlet.doGet(mockRequest, mockResponse);
+
+    Mockito.verify(mockResponse).sendRedirect("/login");
+  }
+
 /*
   @Test
   public void testDoGet_ValidUser() throws IOException, ServletException {
+    User admin_user =
+        new User(
+            UUID.randomUUID(),
+            "admin_username",
+            "admin_password",
+            Instant.now());
+
     Mockito.when(mockSession.getAttribute("user")).thenReturn("admin_username");
+    Mockito.when(mockUserStore.getUser("admin_username")).thenReturn(admin_user);
 
     adminServlet.doGet(mockRequest, mockResponse);
 
-    Mockito.verify(mockSession).getAttribute("user").matches("admin_username");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
+  */
 
-
+  /**
+   * Tests that when you get a user from the session and the user DOES exist but
+   * is NOT in admin list checks that user is redirected to /.
+   */
   @Test
-  public void testDoGet_NotValidUser() throws IOException, ServletException {
-    Mockito.when(mockSession.getAttribute("user")).thenReturn("admin_username");
+  public void testDoGet_NotAdminUser() throws IOException, ServletException {
+    User not_admin_user =
+        new User(
+            UUID.randomUUID(),
+            "not_admin_username",
+            "not_admin_password",
+            Instant.now());
+
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("not_admin_username");
+    Mockito.when(mockUserStore.getUser("not_admin_username")).thenReturn(not_admin_user);
 
     adminServlet.doGet(mockRequest, mockResponse);
 
-    Mockito.verify((mockSession).getAttribute("user"), never()).matches("admin_username");
     Mockito.verify(mockResponse).sendRedirect("/");
   }
-  */
+
 
 }
