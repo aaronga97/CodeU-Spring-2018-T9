@@ -24,19 +24,20 @@
 <!DOCTYPE html>
 
 <%
+/** Retrieve an instance of each Store */
 ConversationStore conversationStore = ConversationStore.getInstance();
 UserStore userStore = UserStore.getInstance();
 MessageStore messageStore = MessageStore.getInstance();
 
 List <User> users;
-List <Message> messages;
 List <Conversation> conversations = conversationStore.getAllConversations();
 
 Integer convSize = conversations.size();
-Integer userSize;
-Integer messageSize;
+Integer userSize = 0;
+Integer messageSize = messageStore.countTotalMessages();
 
-System.out.println("Conversations Length: " + convSize + "\n"); %>
+System.out.println("Conversations Length: " + convSize);
+System.out.println("Messages Length: " + messageSize); %>
 
 <html>
 <head>
