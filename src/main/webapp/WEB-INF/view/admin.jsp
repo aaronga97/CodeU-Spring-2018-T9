@@ -13,7 +13,27 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+<%@ page import="codeu.model.data.Conversation" %>
+<%@ page import="codeu.model.data.Message" %>
+<%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.store.basic.ConversationStore" %>
+<%@ page import="codeu.model.store.basic.MessageStore" %>
+<%@ page import="codeu.model.store.basic.UserStore" %>
+
 <!DOCTYPE html>
+
+<%
+/** Retrieve an instance of each Datastore */
+ConversationStore conversationStore = ConversationStore.getInstance();
+UserStore userStore = UserStore.getInstance();
+MessageStore messageStore = MessageStore.getInstance();
+
+/** Retrieve sizes of each Datastore */
+Integer convSize = conversationStore.countTotalConversations();
+Integer userSize = userStore.countTotalUsers();
+Integer messageSize = messageStore.countTotalMessages();
+%>
+
 <html>
 <head>
   <title>Admin page</title>
@@ -31,7 +51,15 @@
   <div id="container">
     <h1>Admin Page</h1>
 
+    <p> <b>Total Users: </b> <%= userSize %></p>
+
+    <p> <b>Total Messages: </b> <%= messageSize %></p>
+
+    <p> <b>Total Conversations: </b> <%= convSize %></p>
+
     <p>New features coming soon...</p>
+
+
   </div>
 </body>
 </html>

@@ -60,6 +60,14 @@ public class ConversationStoreTest {
   }
 
   @Test
+  public void testGetTotalConversations() {
+    Integer resultSize = conversationStore.countTotalConversations();
+    Integer expectedResult = 1;
+
+    Assert.assertEquals(expectedResult, resultSize);
+  }
+
+  @Test
   public void testAddConversation() {
     Conversation inputConversation =
         new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());

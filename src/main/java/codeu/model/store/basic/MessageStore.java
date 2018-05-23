@@ -85,6 +85,13 @@ public class MessageStore {
     return messagesInConversation;
   }
 
+  /** Accesses the messages stored
+   *  @return the size of the messages
+   */
+  public Integer countTotalMessages() {
+    return messages.size();
+  }
+
   /** Sets the List of Messages stored by this MessageStore. */
   public void setMessages(List<Message> messages) {
     this.messages = messages;
