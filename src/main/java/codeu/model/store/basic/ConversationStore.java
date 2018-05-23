@@ -96,6 +96,13 @@ public class ConversationStore {
     return null;
   }
 
+  /** Accesses the conversations stored
+   *  @return the size of conversations list
+   */
+  public Integer countTotalConversations() {
+    return conversations.size();
+  }
+
   /** Sets the List of Conversations stored by this ConversationStore. */
   public void setConversations(List<Conversation> conversations) {
     this.conversations = conversations;
