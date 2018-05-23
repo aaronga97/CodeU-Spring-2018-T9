@@ -92,6 +92,14 @@ public class UserStoreTest {
   }
 
   @Test
+  public void testGetTotalUsers() {
+    Integer resultSize = userStore.countTotalUsers();
+    Integer expectedResult = 3;
+    
+    Assert.assertEquals(expectedResult, resultSize);
+  }
+
+  @Test
   public void testIsUserRegistered_true() {
     Assert.assertTrue(userStore.isUserRegistered(USER_ONE.getName()));
   }
