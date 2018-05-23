@@ -33,11 +33,12 @@ List <User> users;
 List <Conversation> conversations = conversationStore.getAllConversations();
 
 Integer convSize = conversations.size();
-Integer userSize = 0;
+Integer userSize = userStore.countTotalUsers();
 Integer messageSize = messageStore.countTotalMessages();
 
 System.out.println("Conversations Length: " + convSize);
-System.out.println("Messages Length: " + messageSize); %>
+System.out.println("Messages Length: " + messageSize);
+System.out.println("Users Length: " + userSize); %>
 
 <html>
 <head>
