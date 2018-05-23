@@ -19,23 +19,20 @@
 <%@ page import="codeu.model.store.basic.ConversationStore" %>
 <%@ page import="codeu.model.store.basic.MessageStore" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
-<%@ page import="java.util.List" %>
 
 <!DOCTYPE html>
 
 <%
-/** Retrieve an instance of each Store */
+/** Retrieve an instance of each Datastore */
 ConversationStore conversationStore = ConversationStore.getInstance();
 UserStore userStore = UserStore.getInstance();
 MessageStore messageStore = MessageStore.getInstance();
 
+/** Retrieve sizes of each Datastore */
 Integer convSize = conversationStore.countTotalConversations();
 Integer userSize = userStore.countTotalUsers();
 Integer messageSize = messageStore.countTotalMessages();
-
-System.out.println("Conversations Length: " + convSize);
-System.out.println("Messages Length: " + messageSize);
-System.out.println("Users Length: " + userSize); %>
+%>
 
 <html>
 <head>
@@ -53,6 +50,12 @@ System.out.println("Users Length: " + userSize); %>
 
   <div id="container">
     <h1>Admin Page</h1>
+
+    <p> <b>Total Users: </b> <%= userSize %></p>
+
+    <p> <b>Total Messages: </b> <%= messageSize %></p>
+
+    <p> <b>Total Conversations: </b> <%= convSize %></p>
 
     <p>New features coming soon...</p>
 
