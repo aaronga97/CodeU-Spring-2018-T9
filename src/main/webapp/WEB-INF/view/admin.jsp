@@ -13,7 +13,31 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+<%@ page import="codeu.model.data.Conversation" %>
+<%@ page import="codeu.model.data.Message" %>
+<%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.store.basic.ConversationStore" %>
+<%@ page import="codeu.model.store.basic.MessageStore" %>
+<%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="java.util.List" %>
+
 <!DOCTYPE html>
+
+<%
+ConversationStore conversationStore = ConversationStore.getInstance();
+UserStore userStore = UserStore.getInstance();
+MessageStore messageStore = MessageStore.getInstance();
+
+List <User> users;
+List <Message> messages;
+List <Conversation> conversations = conversationStore.getAllConversations();
+
+Integer convSize = conversations.size();
+Integer userSize;
+Integer messageSize;
+
+System.out.println("Conversations Length: " + convSize + "\n"); %>
+
 <html>
 <head>
   <title>Admin page</title>
@@ -32,6 +56,8 @@
     <h1>Admin Page</h1>
 
     <p>New features coming soon...</p>
+
+
   </div>
 </body>
 </html>
