@@ -1,4 +1,5 @@
-<%-- This navbar has the added functionality of linking a user to their profile page once they are logged in and adds a link to the site's activity feed --%>
+<%-- This navbar has the added functionality of linking a user to their profile page 
+once they are logged in and adds a link to the site's activity feed --%>
 
 <nav>
 	<a id="navTitle" href="/">CodeU Chat App</a>
