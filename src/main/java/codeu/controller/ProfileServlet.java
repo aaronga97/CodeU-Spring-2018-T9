@@ -31,9 +31,6 @@ public class ProfileServlet extends HttpServlet {
      */
     private UserStore userStore;
 
-    /**
-     * Set up state for handling chat requests.
-     */
     @Override
     public void init() throws ServletException {
         super.init();
@@ -81,12 +78,15 @@ public class ProfileServlet extends HttpServlet {
         User user = userStore.getUser(username);
 
         if (user == null) {
+            // if no user exists, set profilePage attribute to be empty string
+            request.setAttribute("profilePage", "");
             System.out.println("No user exists.");
         } else {
-            // forward request to profile.jsp
+            // set profilePage attribute to be username
             request.setAttribute("profilePage", username);
-            request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
         }
+        // forward request to profile.jsp
+        request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
     }
 
     /**
@@ -94,7 +94,6 @@ public class ProfileServlet extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
 
     }
 }

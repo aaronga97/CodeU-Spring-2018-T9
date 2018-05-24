@@ -68,5 +68,6 @@ public class ProfileServletTest {
 
         profileServlet.setUserStore(mockUserStore);
         profileServlet.doGet(mockRequest, mockResponse);
+        Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
     }
 }

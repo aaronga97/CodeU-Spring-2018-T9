@@ -22,7 +22,9 @@
       String currentUser = (String) request.getSession().getAttribute("user");
       String username = (String) request.getAttribute("profilePage");
 
-      if (currentUser != null && currentUser.equals(username)) { %>
+      if (username.equals("")) { %>
+        <a>User does not exist.</a>
+      <% } else if (currentUser != null && currentUser.equals(username)) { %>
         <a>Welcome to your page!</a>
       <% } else { %>
         <a>Welcome to <%= username %>'s Page!</a>
