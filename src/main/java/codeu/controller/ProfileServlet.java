@@ -74,20 +74,19 @@ public class ProfileServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        String username = request.getParameter("username");
+        String requestUrl = request.getRequestURI();
+        String username = requestUrl.substring("/users/".length());
 
-        // if user doesn't exist, set "username" attribute as empty string
-        // so that profile.jsp sends to a page that states that user doesn't exist
-        // otherwise set the username attribute
+        // see if user exists
         User user = userStore.getUser(username);
-        if (user == null) {
-            request.setAttribute("username", "");
-        } else {
-            request.setAttribute("username", username);
-        }
 
-        // forward request to profile.jsp
-        request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
+        if (user == null) {
+            System.out.println("No user exists.");
+        } else {
+            // forward request to profile.jsp
+            request.setAttribute("profilePage", username);
+            request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -95,6 +94,7 @@ public class ProfileServlet extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        doGet(request, response);
+
+
     }
 }
