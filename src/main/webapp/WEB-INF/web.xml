@@ -103,7 +103,7 @@
 
   <servlet-mapping>
     <servlet-name>UserVerificationServlet</servlet-name>
-    <url-pattern>/UserVerification</url-pattern>
+    <url-pattern>/userVerification</url-pattern>
   </servlet-mapping>
 
 </web-app>
