@@ -18,20 +18,18 @@
 
       <h1>User Profile Pages</h1>
 
-      <% String profilePageUserName = (String) request.getAttribute("username");
+      <%
       String currentUser = (String) request.getSession().getAttribute("user");
+      String username = (String) request.getAttribute("profilePage");
 
-      if (profilePageUserName == "") { %>
-          <p> Sorry, this username does not exist. Please pick a profile page to navigate to by typing users/username in the URL.
-          </p>
-      <% } else {
-        String capitalizeFirstLetterName = profilePageUserName.substring(0, 1).toUpperCase() + profilePageUserName.substring(1);
-        if (currentUser != null && ((String) currentUser).equals(profilePageUserName)) { %>
-                    <a>Welcome to your page!</a>
-        <% } else { %>
-        <a>Welcome to <%= capitalizeFirstLetterName %>'s Page!</a>
+      if (username.equals("")) { %>
+        <a>User does not exist.</a>
+      <% } else if (currentUser != null && currentUser.equals(username)) { %>
+        <a>Welcome to your page!</a>
+      <% } else { %>
+        <a>Welcome to <%= username %>'s Page!</a>
       <% }
-      } %>
+      %>
 
     </div>
   </div>

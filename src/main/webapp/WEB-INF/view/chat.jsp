@@ -57,16 +57,16 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
     <div id="chat">
       <ul>
+
     <%
       for (Message message : messages) {
         String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
 
-        String url = "/users/?username=";
+        String url = "/users/";
         url += author;
-
     %>
 
-         <li><strong> <a href=<%= url %> > <%= author%></a>: </strong> <%= message.getContent() %></li>
+        <li><strong> <a href=<%= url %> > <%= author%></a>: </strong> <%= message.getContent() %></li>
 
     <%
       }
