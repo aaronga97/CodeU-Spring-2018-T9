@@ -112,7 +112,8 @@ public class AdminServletTest {
             UUID.randomUUID(),
             "not_admin_username",
             "not_admin_password",
-            Instant.now());
+            Instant.now(),
+            "not_admin_bio");
 
     Mockito.when(mockSession.getAttribute("user")).thenReturn("not_admin_username");
     Mockito.when(mockUserStore.getUser("not_admin_username")).thenReturn(not_admin_user);

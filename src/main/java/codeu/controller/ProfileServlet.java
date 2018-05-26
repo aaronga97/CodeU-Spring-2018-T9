@@ -31,6 +31,9 @@ public class ProfileServlet extends HttpServlet {
      */
     private UserStore userStore;
 
+    /**
+     * Set up state for handling profile page requests.
+     */
     @Override
     public void init() throws ServletException {
         super.init();
@@ -94,6 +97,22 @@ public class ProfileServlet extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String requestUrl = request.getRequestURI();
+        String username = requestUrl.substring("/users/".length());
 
+        // gets user
+        User user = userStore.getUser(username);
+
+        // gets bio from request
+        String bio = request.getParameter("bio");
+
+        // sets bio as instance variable for user
+        user.setBio(bio);
+
+        // updates UserStore to store the bio for next time program opens
+        userStore.updateUser(user);
+
+        // redirects user back to their profile page as a GET request
+        response.sendRedirect("/users/" + username);
     }
 }
