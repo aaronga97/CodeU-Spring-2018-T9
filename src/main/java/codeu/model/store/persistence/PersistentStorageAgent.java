@@ -79,6 +79,17 @@ public class PersistentStorageAgent {
     return persistentDataStore.loadConversations();
   }
 
+	/**
+	 * Retrieve the Activity Feed's conversation object from the Datastore service.
+	 *
+	 *@throws PersistentDataStoreException if an error was detected during the load from the 
+	 *	Datastore service 
+   */
+
+	public Conversation loadActFeedConversation() throws PersistentDataStoreException {
+		return persistentDataStore.loadActFeedConversation();
+	}
+
   /**
    * Retrieve all Message objects from the Datastore service. The returned list may be empty.
    *
@@ -102,5 +113,10 @@ public class PersistentStorageAgent {
   /** Write a Conversation object to the Datastore service. */
   public void writeThrough(Message message) {
     persistentDataStore.writeThrough(message);
+  }
+
+	/** Write an activity feed Conversation object to the Datastore service. */
+	public void actFeedWriteThrough(Conversation conversation) {
+    persistentDataStore.actFeedWriteThrough(conversation);
   }
 }
