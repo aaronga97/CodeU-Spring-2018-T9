@@ -30,6 +30,7 @@ UserStore userStore = UserStore.getInstance();
       <% } else if (currentUser != null && currentUser.equals(username)) { %>
         <h1>Welcome to your page!</h1>
         <br/>
+        <% /** Gives current user a form that allows them to edit their own bio */ %>
         <a> Edit your bio here! (only you can see this) </a>
         <form action="/users/<%= currentUser %>" method="POST">
             <input type="text" name="bio" value="<%= thisUser.getBio() %>" >
@@ -41,6 +42,7 @@ UserStore userStore = UserStore.getInstance();
         <br/>
         <a> About Me </a>
         <br/>
+        <% /** Gets the bio of this user to display on their profile page */ %>
         <% String profilePageBio = thisUser.getBio(); %>
         <a> <%= profilePageBio %> </a>
       <% }
