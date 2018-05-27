@@ -111,6 +111,7 @@ public class ProfileServlet extends HttpServlet {
         // gets bio from request
         String bio = request.getParameter("bio");
 
+        // cleans bio String by removing any HTML tags
         String cleanedBio = Jsoup.clean(bio, Whitelist.none());
 
         // sets bio as instance variable for user
