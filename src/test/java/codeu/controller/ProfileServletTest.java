@@ -89,4 +89,22 @@ public class ProfileServletTest {
         Assert.assertEquals("This is Candace's bio.", userCandace.getBio());
         Mockito.verify(mockResponse).sendRedirect("/users/candace");
     }
+
+    @Test
+    public void testDoPostUncleanedBio() throws IOException, ServletException {
+        User userCandace = new User(
+                UUID.randomUUID(), "Candace", "candacepassword", Instant.now());
+        UserStore mockUserStore = Mockito.mock(UserStore.class);
+
+        Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/candace");
+        Mockito.when(mockUserStore.getUser("candace")).thenReturn(userCandace);
+
+        Mockito.when(mockRequest.getParameter("bio")).thenReturn("<h1> This is Candace's bio. <h1>");
+
+        profileServlet.setUserStore(mockUserStore);
+        profileServlet.doPost(mockRequest, mockResponse);
+
+        Assert.assertEquals("This is Candace's bio.", userCandace.getBio());
+        Mockito.verify(mockResponse).sendRedirect("/users/candace");
+    }
 }

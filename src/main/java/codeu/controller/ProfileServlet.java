@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 /**
  * Servlet class responsible for the profile page.
  */
@@ -108,8 +111,10 @@ public class ProfileServlet extends HttpServlet {
         // gets bio from request
         String bio = request.getParameter("bio");
 
+        String cleanedBio = Jsoup.clean(bio, Whitelist.none());
+
         // sets bio as instance variable for user
-        user.setBio(bio);
+        user.setBio(cleanedBio);
 
         // updates UserStore to store the bio for next time program opens
         userStore.updateUser(user);
