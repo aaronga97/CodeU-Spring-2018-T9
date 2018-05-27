@@ -43,14 +43,16 @@ public class PersistentDataStoreTest {
     String passwordHashOne = "$2a$10$BNte6sC.qoL4AVjO3Rk8ouY6uFaMnsW8B9NjtHWaDNe8GlQRPRT1S";
     Instant creationOne = Instant.ofEpochMilli(1000);
     String bio1 = "test_bio1";
-    User inputUserOne = new User(idOne, nameOne, passwordHashOne, creationOne, bio1);
+    User inputUserOne = new User(idOne, nameOne, passwordHashOne, creationOne);
+    inputUserOne.setBio(bio1);
 
     UUID idTwo = UUID.fromString("10000001-2222-3333-4444-555555555555");
     String nameTwo = "test_username_two";
     String passwordHashTwo = "$2a$10$ttaMOMMGLKxBBuTN06VPvu.jVKif.IczxZcXfLcqEcFi1lq.sLb6i";
     Instant creationTwo = Instant.ofEpochMilli(2000);
     String bio2 = "test_bio2";
-    User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo, creationTwo, bio2);
+    User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo, creationTwo);
+    inputUserTwo.setBio(bio2);
 
     // save
     persistentDataStore.writeThrough(inputUserOne);
@@ -65,12 +67,14 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(nameOne, resultUserOne.getName());
     Assert.assertEquals(passwordHashOne, resultUserOne.getPasswordHash());
     Assert.assertEquals(creationOne, resultUserOne.getCreationTime());
+    Assert.assertEquals(bio1, resultUserOne.getBio());
 
     User resultUserTwo = resultUsers.get(1);
     Assert.assertEquals(idTwo, resultUserTwo.getId());
     Assert.assertEquals(nameTwo, resultUserTwo.getName());
     Assert.assertEquals(passwordHashTwo, resultUserTwo.getPasswordHash());
     Assert.assertEquals(creationTwo, resultUserTwo.getCreationTime());
+    Assert.assertEquals(bio2, resultUserTwo.getBio());
   }
 
   @Test

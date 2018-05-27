@@ -32,14 +32,13 @@ public class User {
    * @param name the username of this User
    * @param passwordHash the password hash of this User
    * @param creation the creation time of this User
-   * @param bio the bio of this User
    */
-  public User(UUID id, String name, String passwordHash, Instant creation, String bio) {
+  public User(UUID id, String name, String passwordHash, Instant creation) {
     this.id = id;
     this.name = name;
     this.passwordHash = passwordHash;
     this.creation = creation;
-    this.bio = bio;
+    setBio(name + " hasn't written a bio yet.");
   }
 
   /** Returns the ID of this User. */

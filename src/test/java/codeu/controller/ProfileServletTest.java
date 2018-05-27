@@ -49,7 +49,7 @@ public class ProfileServletTest {
     @Test
     public void testDoGet_ValidUser() throws IOException, ServletException {
         User userCandace = new User(
-                        UUID.randomUUID(), "Candace", "candacepassword", Instant.now(), "test_bio");
+                        UUID.randomUUID(), "Candace", "candacepassword", Instant.now());
         UserStore mockUserStore = Mockito.mock(UserStore.class);
 
         Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/candace");
@@ -75,7 +75,7 @@ public class ProfileServletTest {
     @Test
     public void testDoPost() throws IOException, ServletException {
         User userCandace = new User(
-                UUID.randomUUID(), "Candace", "candacepassword", Instant.now(), "");
+                UUID.randomUUID(), "Candace", "candacepassword", Instant.now());
         UserStore mockUserStore = Mockito.mock(UserStore.class);
 
         Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/candace");
