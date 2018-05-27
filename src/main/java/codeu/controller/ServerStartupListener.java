@@ -12,6 +12,9 @@ import java.util.List;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import java.time.Instant;
+import java.util.UUID;
+
 /**
  * Listener class that fires when the server first starts up, before any servlet classes are
  * instantiated.
@@ -27,6 +30,21 @@ public class ServerStartupListener implements ServletContextListener {
 
       List<Conversation> conversations = PersistentStorageAgent.getInstance().loadConversations();
       ConversationStore.getInstance().setConversations(conversations);
+
+			Conversation actFeedConversation = PersistentStorageAgent.getInstance().loadActFeedConversation();
+			ConversationStore.getInstance().setActFeedConversation(actFeedConversation);
+			
+			/**
+			 * Checks to see if the actFeedConversation has been set in datastore yet.
+			 * If not, creates a new activityFeedConversation and writes it through to datastore.
+			 * Should only ever happen one time.
+			 */
+
+			if (ConversationStore.getInstance().getActFeedConversation().getId() == null ) {
+				Conversation convo = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "actFeedConversation", Instant.now());
+				ConversationStore.getInstance().setActFeedConversation(convo);
+				PersistentStorageAgent.getInstance().actFeedWriteThrough(convo);
+			}
 
       List<Message> messages = PersistentStorageAgent.getInstance().loadMessages();
       MessageStore.getInstance().setMessages(messages);
