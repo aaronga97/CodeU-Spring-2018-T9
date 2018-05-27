@@ -93,7 +93,9 @@ public class ProfileServlet extends HttpServlet {
     }
 
     /**
-     *
+     * This function fires when a user wants to edit his/her own profile page. It checks if the user exists from the username of the URL requested.
+     * It sets the bio parameter to be the user's bio attribute and then updates the user in order to write the data to DataStore.
+     * It then redirects the user back to their profile page.
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
