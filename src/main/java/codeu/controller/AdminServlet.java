@@ -23,6 +23,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 /** Servlet class responsible for the login page. */
 public class AdminServlet extends HttpServlet {
 
@@ -83,11 +86,37 @@ public class AdminServlet extends HttpServlet {
   }
 
   /**
-   *
+   *  Gets an entry made by an admin username, cleans it and if conditions are method
+   *  that entry (username) acquires admin privileges.
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    //Post would go here
+
+      //Get username submitted & clean user entry
+      String toBeAdmin = request.getParameter("toBeAdminUser");
+      toBeAdmin = Jsoup.clean(toBeAdmin, Whitelist.none());
+
+      User user = userStore.getUser(toBeAdmin);
+
+      if(user == null) {
+        //If user doesn't exist send error message
+        request.setAttribute("error", "User " + toBeAdmin + " doesn't exist.");
+        request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
+        return;
+      } else if(user.isAdmin()) {
+        //If user is already an admin, send error message
+        request.setAttribute("error", "User " + toBeAdmin + " is already an admin.");
+        request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
+        return;
+      } else {
+        //User exists and it's not an admin, set admin -> true, send sucess message
+        user.setAdmin(true);
+        userStore.updateUser(user);
+        request.setAttribute("success", toBeAdmin + " is now an admin!");
+        request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
+        return;
+      }
+
   }
 }
