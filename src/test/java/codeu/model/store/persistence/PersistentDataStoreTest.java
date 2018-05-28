@@ -42,8 +42,9 @@ public class PersistentDataStoreTest {
     String nameOne = "test_username_one";
     String passwordHashOne = "$2a$10$BNte6sC.qoL4AVjO3Rk8ouY6uFaMnsW8B9NjtHWaDNe8GlQRPRT1S";
     Instant creationOne = Instant.ofEpochMilli(1000);
+    Boolean admin = false;
     String bio1 = "test_bio1";
-    User inputUserOne = new User(idOne, nameOne, passwordHashOne, creationOne);
+    User inputUserOne = new User(idOne, nameOne, passwordHashOne, creationOne, admin);
     inputUserOne.setBio(bio1);
 
     UUID idTwo = UUID.fromString("10000001-2222-3333-4444-555555555555");
@@ -51,7 +52,7 @@ public class PersistentDataStoreTest {
     String passwordHashTwo = "$2a$10$ttaMOMMGLKxBBuTN06VPvu.jVKif.IczxZcXfLcqEcFi1lq.sLb6i";
     Instant creationTwo = Instant.ofEpochMilli(2000);
     String bio2 = "test_bio2";
-    User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo, creationTwo);
+    User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo, creationTwo, admin);
     inputUserTwo.setBio(bio2);
 
     // save
