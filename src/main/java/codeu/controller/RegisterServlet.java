@@ -24,12 +24,12 @@ public class RegisterServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
   private UserStore userStore;
-	
+
 	/** Store class that gives access to conversations. */
 	private ConversationStore conversationStore;
 
 	/** Store class that gives access to messages. */
-	private MessageStore messageStore;	
+	private MessageStore messageStore;
 
   /**
    * Set up state for handling registration-related requests. This method is only called when
@@ -94,11 +94,11 @@ public class RegisterServlet extends HttpServlet {
     String password = request.getParameter("password");
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-    User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now());
+    User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), false);
     userStore.addUser(user);
-		
-		String messageContent = "User " + user.getName() + " joined the site!"; 
-		
+
+		String messageContent = "User " + user.getName() + " joined the site!";
+
 		Conversation conversation = conversationStore.getActFeedConversation();
 
 		 Message message =
@@ -108,7 +108,7 @@ public class RegisterServlet extends HttpServlet {
             conversation.getOwnerId(),
             messageContent,
             Instant.now());
-		
+
 		messageStore.addMessage(message);
 
     response.sendRedirect("/login");

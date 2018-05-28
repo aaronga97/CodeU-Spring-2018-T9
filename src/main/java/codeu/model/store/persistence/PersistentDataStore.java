@@ -68,7 +68,8 @@ public class PersistentDataStore {
         String passwordHash = (String) entity.getProperty("password_hash");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String bio = (String) entity.getProperty("bio");
-        User user = new User(uuid, userName, passwordHash, creationTime);
+        Boolean admin = Boolean.parseBoolean((String) entity.getProperty("admin"));
+        User user = new User(uuid, userName, passwordHash, creationTime, admin);
         user.setBio(bio);
         users.add(user);
       } catch (Exception e) {
@@ -96,7 +97,7 @@ public class PersistentDataStore {
     // Retrieve all conversations from the datastore.
     Query query = new Query("chat-conversations").addSort("creation_time", SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
-		
+
     for (Entity entity : results.asIterable()) {
       try {
         UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
@@ -127,12 +128,12 @@ public class PersistentDataStore {
     // Retrieve all activity feed conversation from the datastore.
     Query query = new Query("act-conversation");
     PreparedQuery results = datastore.prepare(query);
-		
+
 		UUID uuid = null;
     UUID ownerUuid = null;
     String title = null;
     Instant creationTime = null;
-    Conversation actFeedConversation = null;		
+    Conversation actFeedConversation = null;
 
     for (Entity entity : results.asIterable()) {
       try {
@@ -140,8 +141,8 @@ public class PersistentDataStore {
         ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
         title = (String) entity.getProperty("title");
         creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        
-				
+
+
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
@@ -195,6 +196,7 @@ public class PersistentDataStore {
     userEntity.setProperty("password_hash", user.getPasswordHash());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     userEntity.setProperty("bio", user.getBio());
+    userEntity.setProperty("admin", Boolean.toString(user.isAdmin()));
     datastore.put(userEntity);
   }
 
@@ -219,7 +221,7 @@ public class PersistentDataStore {
     datastore.put(conversationEntity);
   }
 
-	/** 
+	/**
 		* Write the activity feed's conversation object to the Datastore service.
 		* This should only happen one time, the first time the server is opened up w/o
 		* this conversation stored in datastore. */
@@ -231,6 +233,5 @@ public class PersistentDataStore {
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
     datastore.put(conversationEntity);
   }
-	
-}
 
+}
