@@ -23,9 +23,10 @@ public class User {
   private final String name;
   private final String passwordHash;
   private final Instant creation;
+  private String bio;
 
   /**
-   * Constructs a new User.
+   * Constructs a new User & initially sets an empty bio for user.
    *
    * @param id the ID of this User
    * @param name the username of this User
@@ -37,6 +38,7 @@ public class User {
     this.name = name;
     this.passwordHash = passwordHash;
     this.creation = creation;
+    setBio(name + " hasn't written a bio yet.");
   }
 
   /** Returns the ID of this User. */
@@ -58,4 +60,15 @@ public class User {
   public Instant getCreationTime() {
     return creation;
   }
+
+  /** Sets the bio of this User. */
+  public void setBio (String aboutMe) {
+    bio = aboutMe;
+  }
+
+  /** Returns the bio of this User. */
+  public String getBio() {
+    return bio;
+  }
+
 }
