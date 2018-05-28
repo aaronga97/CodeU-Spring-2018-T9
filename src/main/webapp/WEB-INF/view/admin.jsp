@@ -54,6 +54,12 @@ Integer messageSize = messageStore.countTotalMessages();
 
     <p>New features coming soon...</p>
 
+    <form action="/admin" method="POST">
+        <p> <b>Make someone admin:<b> </p>
+        <input type="text" name="toBeAdminUser" value="" placeholder="username" >
+        <br/>
+        <button type="submit">Submit</button>
+    </form>
 
   </div>
 </body>
