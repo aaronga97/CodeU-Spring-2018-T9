@@ -14,10 +14,22 @@ import org.mindrot.jbcrypt.BCrypt;
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
 
+import codeu.model.data.Conversation;
+import codeu.model.store.basic.ConversationStore;
+
+import codeu.model.data.Message;
+import codeu.model.store.basic.MessageStore;
+
 public class RegisterServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
   private UserStore userStore;
+	
+	/** Store class that gives access to conversations. */
+	private ConversationStore conversationStore;
+
+	/** Store class that gives access to messages. */
+	private MessageStore messageStore;	
 
   /**
    * Set up state for handling registration-related requests. This method is only called when
@@ -27,6 +39,8 @@ public class RegisterServlet extends HttpServlet {
   public void init() throws ServletException {
     super.init();
     setUserStore(UserStore.getInstance());
+		setConversationStore(conversationStore.getInstance());
+		setMessageStore(messageStore.getInstance());
   }
 
   /**
@@ -35,6 +49,22 @@ public class RegisterServlet extends HttpServlet {
    */
   void setUserStore(UserStore userStore) {
     this.userStore = userStore;
+  }
+
+	  /**
+   * Sets the ConversationStore used by this servlet. This function provides a common setup method
+   * for use by the test framework or the servlet's init() function.
+   */
+  void setConversationStore(ConversationStore conversationStore) {
+    this.conversationStore = conversationStore;
+  }
+
+  /**
+   * Sets the MessageStore used by this servlet. This function provides a common setup method for
+   * use by the test framework or the servlet's init() function.
+   */
+  void setMessageStore(MessageStore messageStore) {
+    this.messageStore = messageStore;
   }
 
   @Override
@@ -66,6 +96,20 @@ public class RegisterServlet extends HttpServlet {
 
     User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now());
     userStore.addUser(user);
+		
+		String messageContent = "User " + user.getName() + " joined the site!"; 
+		
+		Conversation conversation = conversationStore.getActFeedConversation();
+
+		 Message message =
+        new Message(
+            UUID.randomUUID(),
+            conversation.getId(),
+            conversation.getOwnerId(),
+            messageContent,
+            Instant.now());
+		
+		messageStore.addMessage(message);
 
     response.sendRedirect("/login");
   }

@@ -2,6 +2,9 @@ package codeu.controller;
 
 import java.io.IOException;
 
+import java.time.Instant;
+import java.util.UUID;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +17,13 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+
+import codeu.model.data.Conversation;
+import codeu.model.data.Message;
 import codeu.model.data.User;
+
+import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 
 public class RegisterServletTest {
@@ -24,6 +33,9 @@ public class RegisterServletTest {
   private HttpServletResponse mockResponse;
   private RequestDispatcher mockRequestDispatcher;
 
+	private ConversationStore mockConversationStore;
+  private MessageStore mockMessageStore;
+
   @Before
   public void setup() {
     registerServlet = new RegisterServlet();
@@ -32,6 +44,12 @@ public class RegisterServletTest {
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
     Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/register.jsp"))
         .thenReturn(mockRequestDispatcher);
+
+		mockConversationStore = Mockito.mock(ConversationStore.class);
+    registerServlet.setConversationStore(mockConversationStore);
+
+    mockMessageStore = Mockito.mock(MessageStore.class);
+    registerServlet.setMessageStore(mockMessageStore);
   }
 
   @Test
@@ -60,6 +78,13 @@ public class RegisterServletTest {
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(false);
     registerServlet.setUserStore(mockUserStore);
+
+				UUID fakeConversationId = UUID.randomUUID();
+    Conversation fakeConversation =
+        new Conversation(fakeConversationId, UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getActFeedConversation())
+        .thenReturn(fakeConversation);
+
 
     registerServlet.doPost(mockRequest, mockResponse);
 
