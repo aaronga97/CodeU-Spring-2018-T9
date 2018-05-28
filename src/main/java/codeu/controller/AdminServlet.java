@@ -71,8 +71,7 @@ public class AdminServlet extends HttpServlet {
       return;
     }
 
-    if(user.getName().matches("aaron") || user.getName().matches("pbonds") ||
-       user.getName().matches("anitacu")){
+    if(user.isAdmin()){
       // user is in admin list, give access to admin site
       request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
       return;
