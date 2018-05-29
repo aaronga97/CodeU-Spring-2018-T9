@@ -168,4 +168,32 @@ public class AdminServletTest {
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 
+  /** Test when they want to make user admin and he is eligible for it*/
+  @Test
+  public void testDoPost_MakeUserAdmin() throws IOException, ServletException {
+    User soon_admin_user =
+        new User(
+            UUID.randomUUID(),
+            "soon_admin_username",
+            "soon_admin_password",
+            Instant.now(),
+            false);
+
+    Mockito.when(mockRequest.getParameter("toBeAdminUser")).thenReturn("soon_admin_username");
+    Mockito.when(mockUserStore.getUser("soon_admin_username")).thenReturn(soon_admin_user);
+
+    boolean b = soon_admin_user.isAdmin();
+    Assert.assertEquals(b, false);
+
+    adminServlet.doPost(mockRequest, mockResponse);
+
+    soon_admin_user.setAdmin(true);
+    boolean c = soon_admin_user.isAdmin();
+    Assert.assertEquals(c, true);
+
+    Mockito.verify(mockRequest)
+        .setAttribute("success", "soon_admin_username is now an admin!");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
+
 }
