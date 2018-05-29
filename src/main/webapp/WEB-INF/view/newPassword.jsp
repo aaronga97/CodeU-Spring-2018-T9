@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>UserVerification</title>
+  <title>NewPassword</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -24,24 +24,23 @@
   <%@include file= "navbar.jsp"%>
 
   <div id="container">
-    <h1>User Verification</h1>
+    <h1>New Password</h1>
 
     <% if(request.getAttribute("error") != null){ %>
         <h2 style="color:red"><%= request.getAttribute("error") %></h2>
     <% } %>
 
-    <form action="/userVerification" method="POST">
-      <label for="username">Username: </label>
+    <form action="/newPassword" method="POST">
+      <label for="password">New password: </label>
       <br/>
-      <input type="text" name="usernameVerification" id="username">
+      <input type="password" name="newPassword" id="newPassword">
+      <br/><br/>
+      <label for="password">Re-type new password: </label>
       <br/>
-      <br/>
-      <button type="confirm">Confirm</button>
+      <input type="password" name="reTypedNewPassword" id="reTypedNewPassword">
+      <br/><br/>
+      <button type="submit">Submit</button>
     </form>
-
-
-
-
   </div>
 </body>
 </html>

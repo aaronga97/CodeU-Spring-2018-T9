@@ -1,14 +1,14 @@
 package codeu.controller;
 
+import codeu.model.data.User;
+import codeu.model.store.basic.UserStore;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import codeu.model.store.basic.UserStore;
 
-public class UserVerificationServlet extends HttpServlet {
-
+public class NewPasswordServlet extends HttpServlet {
     /** Store class that gives access to Users. */
     private UserStore userStore;
 
@@ -26,24 +26,27 @@ public class UserVerificationServlet extends HttpServlet {
         this.userStore = userStore;
     }
 
-
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        request.getRequestDispatcher("/WEB-INF/view/userVerification.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/newPassword.jsp").forward(request, response);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String username = request.getParameter("usernameVerification");
-
-        if (!userStore.isUserRegistered(username)) {
-            request.setAttribute("error", "That username was not found.");
-            request.getRequestDispatcher("/WEB-INF/view/userVerification.jsp").forward(request, response);
+        String newPassword = request.getParameter("newPassword");
+        String reTypedNewPassword = request.getParameter("reTypedNewPassword");
+        //User user = userStore.getUser(request.getParameter("usernameVerification"));
+        //String username =user.getName();
+        //response.getOutputStream().println("username: "+ username);
+        if (!newPassword.equals(reTypedNewPassword)) {
+            request.setAttribute("error", "Passwords must match.");
+            request.getRequestDispatcher("/WEB-INF/view/newPassword.jsp").forward(request, response);
             return;
         }
 
-        response.sendRedirect("/newPassword");
+        response.getOutputStream().println("newPassword: "+ newPassword);
+        response.getOutputStream().println("reTypedNewPassword: "+ reTypedNewPassword);
+        //response.getOutputStream().println("username: "+ username );
     }
-
 
 }
