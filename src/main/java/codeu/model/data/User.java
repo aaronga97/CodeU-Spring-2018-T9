@@ -78,4 +78,9 @@ public class User {
     return admin;
   }
 
+  /** Set admin attribute */
+  public void setAdmin(Boolean admin){
+    this.admin = admin;
+  }
+
 }
