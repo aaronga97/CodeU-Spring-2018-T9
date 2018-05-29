@@ -78,10 +78,10 @@ public class ProfileServlet extends HttpServlet {
             throws IOException, ServletException {
 
         String requestUrl = request.getRequestURI();
-        String username = requestUrl.substring("/users/".length());
+        String profileUsername = requestUrl.substring("/users/".length());
 
         // see if user exists
-        User user = userStore.getUser(username);
+        User user = userStore.getUser(profileUsername);
 
         if (user == null) {
             // if no user exists, set profilePage attribute to be empty string
@@ -89,7 +89,7 @@ public class ProfileServlet extends HttpServlet {
             System.out.println("No user exists.");
         } else {
             // set profilePage attribute to be username
-            request.setAttribute("profilePage", username);
+            request.setAttribute("profilePage", profileUsername);
         }
         // forward request to profile.jsp
         request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
@@ -103,10 +103,10 @@ public class ProfileServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String requestUrl = request.getRequestURI();
-        String username = requestUrl.substring("/users/".length());
+        String profileUsername = requestUrl.substring("/users/".length());
 
         // gets user
-        User user = userStore.getUser(username);
+        User user = userStore.getUser(profileUsername);
 
         // gets bio from request
         String bio = request.getParameter("bio");
@@ -121,6 +121,6 @@ public class ProfileServlet extends HttpServlet {
         userStore.updateUser(user);
 
         // redirects user back to their profile page as a GET request
-        response.sendRedirect("/users/" + username);
+        response.sendRedirect("/users/" + profileUsername);
     }
 }
