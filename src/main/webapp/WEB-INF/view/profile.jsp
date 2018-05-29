@@ -22,12 +22,12 @@ UserStore userStore = UserStore.getInstance();
 
       <%
       String currentUser = (String) request.getSession().getAttribute("user");
-      String username = (String) request.getAttribute("profilePage");
-      User thisUser = userStore.getUser(username);
+      String profileUser = (String) request.getAttribute("profilePage");
+      User thisUser = userStore.getUser(profileUser);
 
-      if (username.equals("")) { %>
+      if (profileUser.equals("")) { %>
         <h1>User does not exist.</h1>
-      <% } else if (currentUser != null && currentUser.equals(username)) { %>
+      <% } else if (currentUser != null && currentUser.equals(profileUser)) { %>
         <h1>Welcome to your page!</h1>
         <br/>
         <% /** Gives current user a form that allows them to edit their own bio */ %>
@@ -38,7 +38,7 @@ UserStore userStore = UserStore.getInstance();
             <button type="submit">Submit</button>
         </form>
       <% } else { %>
-        <h1>Welcome to <%= username %>'s Page!</h1>
+        <h1>Welcome to <%= profileUser %>'s Page!</h1>
         <br/>
         <a> About Me </a>
         <br/>
