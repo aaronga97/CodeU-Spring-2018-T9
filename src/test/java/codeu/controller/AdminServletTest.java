@@ -28,6 +28,7 @@ import javax.servlet.http.HttpSession;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.junit.Assert;
 
 public class AdminServletTest {
 
@@ -117,6 +118,9 @@ public class AdminServletTest {
 
     Mockito.when(mockSession.getAttribute("user")).thenReturn("not_admin_username");
     Mockito.when(mockUserStore.getUser("not_admin_username")).thenReturn(not_admin_user);
+
+    boolean b = not_admin_user.isAdmin();
+    Assert.assertEquals(b, false);
 
     adminServlet.doGet(mockRequest, mockResponse);
 
