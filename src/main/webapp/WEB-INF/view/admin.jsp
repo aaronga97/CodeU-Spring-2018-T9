@@ -54,6 +54,18 @@ Integer messageSize = messageStore.countTotalMessages();
 
     <p>New features coming soon...</p>
 
+    <form action="/admin" method="POST">
+        <p> <b>Make someone admin:<b> </p>
+        <input type="text" name="toBeAdminUser" value="" placeholder="username" >
+        <br/>
+        <button type="submit">Submit</button>
+    </form>
+
+    <% if(request.getAttribute("error") != null){ %>
+        <h2 style="color:red"><%= request.getAttribute("error") %></h2>
+    <% } else if(request.getAttribute("success") != null){%>
+        <h2 style="color:green"><%= request.getAttribute("success") %></h2>
+    <% } %>
 
   </div>
 </body>

@@ -12,6 +12,8 @@ import java.util.List;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -33,7 +35,7 @@ public class ServerStartupListener implements ServletContextListener {
 
 			Conversation actFeedConversation = PersistentStorageAgent.getInstance().loadActFeedConversation();
 			ConversationStore.getInstance().setActFeedConversation(actFeedConversation);
-			
+
 			/**
 			 * Checks to see if the actFeedConversation has been set in datastore yet.
 			 * If not, creates a new activityFeedConversation and writes it through to datastore.
@@ -45,6 +47,16 @@ public class ServerStartupListener implements ServletContextListener {
 				ConversationStore.getInstance().setActFeedConversation(convo);
 				PersistentStorageAgent.getInstance().actFeedWriteThrough(convo);
 			}
+
+      UserStore userStore = UserStore.getInstance();
+      String username = "admin";
+      /** Check if admin exists, if not create it */
+      if(!userStore.isUserRegistered(username)){
+        String password = "admin";
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), true);
+        userStore.addUser(user);
+      }
 
       List<Message> messages = PersistentStorageAgent.getInstance().loadMessages();
       MessageStore.getInstance().setMessages(messages);
