@@ -144,5 +144,28 @@ public class AdminServletTest {
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 
+  /** Test when they want to make a user admin but the user is already admin */
+  @Test
+  public void testDoPost_UserIsAlreadyAdmin() throws IOException, ServletException {
+    User admin_user =
+        new User(
+            UUID.randomUUID(),
+            "admin_username",
+            "admin_password",
+            Instant.now(),
+            true);
+
+    Mockito.when(mockRequest.getParameter("toBeAdminUser")).thenReturn("admin_username");
+    Mockito.when(mockUserStore.getUser("admin_username")).thenReturn(admin_user);
+
+    boolean b = admin_user.isAdmin();
+    Assert.assertEquals(b, true);
+
+    adminServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockRequest)
+        .setAttribute("error", "User admin_username is already an admin.");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
 
 }
