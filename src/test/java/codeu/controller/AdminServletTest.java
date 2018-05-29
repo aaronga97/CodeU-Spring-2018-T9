@@ -90,8 +90,8 @@ public class AdminServletTest {
     User admin_user =
         new User(
             UUID.randomUUID(),
-            "not_admin_username",
-            "not_admin_password",
+            "admin_username",
+            "admin_password",
             Instant.now(),
             true);
 
@@ -129,6 +129,19 @@ public class AdminServletTest {
     adminServlet.doGet(mockRequest, mockResponse);
 
     Mockito.verify(mockResponse).sendRedirect("/");
+  }
+
+  /** Test when they want to make a user admin but the user doesn't exist */
+  @Test
+  public void testDoPost_UserDoesNotExist() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("toBeAdminUser")).thenReturn("unexistentUser");
+    Mockito.when(mockUserStore.getUser("unexistentUser")).thenReturn(null);
+
+    adminServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockRequest)
+        .setAttribute("error", "User unexistentUser doesn't exist.");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 
 
