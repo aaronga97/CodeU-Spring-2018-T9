@@ -83,24 +83,28 @@ public class AdminServletTest {
     Mockito.verify(mockResponse).sendRedirect("/login");
   }
 
-/*
+
+  /** Tests that when user is a valid admin to forward the request into ./admin */
   @Test
-  public void testDoGet_ValidUser() throws IOException, ServletException {
+  public void testDoGet_ValidAdminUser() throws IOException, ServletException {
     User admin_user =
         new User(
             UUID.randomUUID(),
-            "admin_username",
-            "admin_password",
-            Instant.now());
+            "not_admin_username",
+            "not_admin_password",
+            Instant.now(),
+            true);
 
     Mockito.when(mockSession.getAttribute("user")).thenReturn("admin_username");
     Mockito.when(mockUserStore.getUser("admin_username")).thenReturn(admin_user);
+
+    boolean b = admin_user.isAdmin();
+    Assert.assertEquals(b, true);
 
     adminServlet.doGet(mockRequest, mockResponse);
 
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
-  */
 
   /**
    * Tests that when you get a user from the session and the user DOES exist but
