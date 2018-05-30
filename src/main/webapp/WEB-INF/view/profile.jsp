@@ -22,14 +22,21 @@ UserStore userStore = UserStore.getInstance();
 
       <%
       String currentUser = (String) request.getSession().getAttribute("user");
-      String username = (String) request.getAttribute("profilePage");
-      User thisUser = userStore.getUser(username);
+      String profileUser = (String) request.getAttribute("profilePage");
+      User thisUser = userStore.getUser(profileUser);
 
-      if (username.equals("")) { %>
+      if (profileUser.equals("")) { %>
         <h1>User does not exist.</h1>
-      <% } else if (currentUser != null && currentUser.equals(username)) { %>
-        <h1>Welcome to your page!</h1>
+
+      <% } else if (currentUser != null && currentUser.equals(profileUser)) { %>
+        <h2>Welcome to your page!</h2>
+        <% /** Gets the bio of this user to display on their profile page */ %>
+        <% String profilePageBio = thisUser.getBio(); %>
+        <h3>About Me</h3>
+        <a> <%= profilePageBio %> </a>
         <br/>
+        <br/>
+
         <% /** Gives current user a form that allows them to edit their own bio */ %>
         <a> Edit your bio here! (only you can see this) </a>
         <form action="/users/<%= currentUser %>" method="POST">
@@ -37,11 +44,10 @@ UserStore userStore = UserStore.getInstance();
             <br/>
             <button type="submit">Submit</button>
         </form>
+
       <% } else { %>
-        <h1>Welcome to <%= username %>'s Page!</h1>
-        <br/>
-        <a> About Me </a>
-        <br/>
+        <h2>Welcome to <%= profileUser %>'s Page!</h2>
+        <h3>About Me</h3>
         <% /** Gets the bio of this user to display on their profile page */ %>
         <% String profilePageBio = thisUser.getBio(); %>
         <a> <%= profilePageBio %> </a>
