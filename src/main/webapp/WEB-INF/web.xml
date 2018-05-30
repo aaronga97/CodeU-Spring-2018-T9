@@ -97,16 +97,6 @@
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>UserVerificationServlet</servlet-name>
-    <servlet-class>codeu.controller.UserVerificationServlet</servlet-class>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>UserVerificationServlet</servlet-name>
-    <url-pattern>/userVerification</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
     <servlet-name>NewPasswordServlet</servlet-name>
     <servlet-class>codeu.controller.NewPasswordServlet</servlet-class>
   </servlet>

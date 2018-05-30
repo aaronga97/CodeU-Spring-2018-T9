@@ -21,7 +21,7 @@ import java.util.UUID;
 public class User {
   private final UUID id;
   private final String name;
-  private final String passwordHash;
+  private String passwordHash;
   private final Instant creation;
   private String bio;
   private Boolean admin;
@@ -56,6 +56,12 @@ public class User {
   /** Returns the password hash of this User. */
   public String getPasswordHash() {
     return passwordHash;
+  }
+
+  /**Sets new password hash of this user. */
+  public void setPasswordHash(String newPasswordHash){
+    this.passwordHash = newPasswordHash;
+
   }
 
   /** Returns the creation time of this User. */

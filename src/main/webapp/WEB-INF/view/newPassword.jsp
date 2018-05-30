@@ -31,6 +31,10 @@
     <% } %>
 
     <form action="/newPassword" method="POST">
+      <label for="username">Username: </label>
+      <br/>
+      <input type="text" name="usernameVerification" id="username">
+      <br/><br/>
       <label for="password">New password: </label>
       <br/>
       <input type="password" name="newPassword" id="newPassword">
