@@ -28,6 +28,7 @@ import javax.servlet.http.HttpSession;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.junit.Assert;
 
 public class AdminServletTest {
 
@@ -82,24 +83,28 @@ public class AdminServletTest {
     Mockito.verify(mockResponse).sendRedirect("/login");
   }
 
-/*
+
+  /** Tests that when user is a valid admin to forward the request into ./admin */
   @Test
-  public void testDoGet_ValidUser() throws IOException, ServletException {
+  public void testDoGet_ValidAdminUser() throws IOException, ServletException {
     User admin_user =
         new User(
             UUID.randomUUID(),
             "admin_username",
             "admin_password",
-            Instant.now());
+            Instant.now(),
+            true);
 
     Mockito.when(mockSession.getAttribute("user")).thenReturn("admin_username");
     Mockito.when(mockUserStore.getUser("admin_username")).thenReturn(admin_user);
+
+    boolean b = admin_user.isAdmin();
+    Assert.assertEquals(true, b);
 
     adminServlet.doGet(mockRequest, mockResponse);
 
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
-  */
 
   /**
    * Tests that when you get a user from the session and the user DOES exist but
@@ -118,10 +123,77 @@ public class AdminServletTest {
     Mockito.when(mockSession.getAttribute("user")).thenReturn("not_admin_username");
     Mockito.when(mockUserStore.getUser("not_admin_username")).thenReturn(not_admin_user);
 
+    boolean b = not_admin_user.isAdmin();
+    Assert.assertEquals(false, b);
+
     adminServlet.doGet(mockRequest, mockResponse);
 
     Mockito.verify(mockResponse).sendRedirect("/");
   }
 
+  /** Test when they want to make a user admin but the user doesn't exist */
+  @Test
+  public void testDoPost_UserDoesNotExist() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("toBeAdminUser")).thenReturn("unexistentUser");
+    Mockito.when(mockUserStore.getUser("unexistentUser")).thenReturn(null);
+
+    adminServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockRequest)
+        .setAttribute("error", "User unexistentUser doesn't exist.");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
+
+  /** Test when they want to make a user admin but the user is already admin */
+  @Test
+  public void testDoPost_UserIsAlreadyAdmin() throws IOException, ServletException {
+    User admin_user =
+        new User(
+            UUID.randomUUID(),
+            "admin_username",
+            "admin_password",
+            Instant.now(),
+            true);
+
+    Mockito.when(mockRequest.getParameter("toBeAdminUser")).thenReturn("admin_username");
+    Mockito.when(mockUserStore.getUser("admin_username")).thenReturn(admin_user);
+
+    boolean b = admin_user.isAdmin();
+    Assert.assertEquals(true, b);
+
+    adminServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockRequest)
+        .setAttribute("error", "User admin_username is already an admin.");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
+
+  /** Test when they want to make user admin and he is eligible for it*/
+  @Test
+  public void testDoPost_MakeUserAdmin() throws IOException, ServletException {
+    User soon_admin_user =
+        new User(
+            UUID.randomUUID(),
+            "soon_admin_username",
+            "soon_admin_password",
+            Instant.now(),
+            false);
+
+    Mockito.when(mockRequest.getParameter("toBeAdminUser")).thenReturn("soon_admin_username");
+    Mockito.when(mockUserStore.getUser("soon_admin_username")).thenReturn(soon_admin_user);
+
+    boolean b = soon_admin_user.isAdmin();
+    Assert.assertEquals(false, b);
+
+    adminServlet.doPost(mockRequest, mockResponse);
+
+    soon_admin_user.setAdmin(true);
+    boolean c = soon_admin_user.isAdmin();
+    Assert.assertEquals(true, c);
+
+    Mockito.verify(mockRequest)
+        .setAttribute("success", "soon_admin_username is now an admin!");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
 
 }
