@@ -99,7 +99,7 @@ public class AdminServletTest {
     Mockito.when(mockUserStore.getUser("admin_username")).thenReturn(admin_user);
 
     boolean b = admin_user.isAdmin();
-    Assert.assertEquals(b, true);
+    Assert.assertEquals(true, b);
 
     adminServlet.doGet(mockRequest, mockResponse);
 
@@ -124,7 +124,7 @@ public class AdminServletTest {
     Mockito.when(mockUserStore.getUser("not_admin_username")).thenReturn(not_admin_user);
 
     boolean b = not_admin_user.isAdmin();
-    Assert.assertEquals(b, false);
+    Assert.assertEquals(false, b);
 
     adminServlet.doGet(mockRequest, mockResponse);
 
@@ -159,7 +159,7 @@ public class AdminServletTest {
     Mockito.when(mockUserStore.getUser("admin_username")).thenReturn(admin_user);
 
     boolean b = admin_user.isAdmin();
-    Assert.assertEquals(b, true);
+    Assert.assertEquals(true, b);
 
     adminServlet.doPost(mockRequest, mockResponse);
 
@@ -183,13 +183,13 @@ public class AdminServletTest {
     Mockito.when(mockUserStore.getUser("soon_admin_username")).thenReturn(soon_admin_user);
 
     boolean b = soon_admin_user.isAdmin();
-    Assert.assertEquals(b, false);
+    Assert.assertEquals(false, b);
 
     adminServlet.doPost(mockRequest, mockResponse);
 
     soon_admin_user.setAdmin(true);
     boolean c = soon_admin_user.isAdmin();
-    Assert.assertEquals(c, true);
+    Assert.assertEquals(true, c);
 
     Mockito.verify(mockRequest)
         .setAttribute("success", "soon_admin_username is now an admin!");
