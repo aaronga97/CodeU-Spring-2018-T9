@@ -4,6 +4,7 @@ import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import codeu.model.data.User;
+import codeu.model.data.Message;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +14,8 @@ import java.io.IOException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import java.util.UUID;
+import java.util.List;
 
 /**
  * Servlet class responsible for the profile page.
@@ -88,8 +91,16 @@ public class ProfileServlet extends HttpServlet {
             request.setAttribute("profilePage", "");
             System.out.println("No user exists.");
         } else {
-            // set profilePage attribute to be username
+            // set profilePage attribute of request to be username
             request.setAttribute("profilePage", profileUsername);
+
+            UUID author = user.getId();
+            MessageStore m = MessageStore.getInstance();
+            List<Message> sentMessages = m.getMessagesOfUser(author);
+
+            // set messages attribute of request to be sentMessages
+            request.setAttribute("messages", sentMessages);
+
         }
         // forward request to profile.jsp
         request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);

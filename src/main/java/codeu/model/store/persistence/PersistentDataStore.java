@@ -117,7 +117,7 @@ public class PersistentDataStore {
     return conversations;
   }
 
-	  /**
+  /**
    * Loads the activity feed's Conversation objects from the Datastore service and returns it
    *
    * @throws PersistentDataStoreException if an error was detected during the load from the
@@ -129,7 +129,7 @@ public class PersistentDataStore {
     Query query = new Query("act-conversation");
     PreparedQuery results = datastore.prepare(query);
 
-		UUID uuid = null;
+    UUID uuid = null;
     UUID ownerUuid = null;
     String title = null;
     Instant creationTime = null;
@@ -150,7 +150,7 @@ public class PersistentDataStore {
         throw new PersistentDataStoreException(e);
       }
     }
-		return actFeedConversation = new Conversation(uuid, ownerUuid, title, creationTime);
+    return actFeedConversation = new Conversation(uuid, ownerUuid, title, creationTime);
   }
 
   /**
@@ -221,11 +221,11 @@ public class PersistentDataStore {
     datastore.put(conversationEntity);
   }
 
-	/**
-		* Write the activity feed's conversation object to the Datastore service.
-		* This should only happen one time, the first time the server is opened up w/o
-		* this conversation stored in datastore. */
-	public void actFeedWriteThrough(Conversation conversation) {
+  /**
+   * Write the activity feed's conversation object to the Datastore service.
+   * This should only happen one time, the first time the server is opened up w/o
+   * this conversation stored in datastore. */
+  public void actFeedWriteThrough(Conversation conversation) {
     Entity conversationEntity = new Entity("act-conversation", conversation.getId().toString());
     conversationEntity.setProperty("uuid", conversation.getId().toString());
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
