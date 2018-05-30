@@ -24,15 +24,14 @@ UserStore userStore = UserStore.getInstance();
       String currentUser = (String) request.getSession().getAttribute("user");
       String profileUser = (String) request.getAttribute("profilePage");
       User thisUser = userStore.getUser(profileUser);
-
       if (profileUser.equals("")) { %>
         <h1>User does not exist.</h1>
 
       <% } else if (currentUser != null && currentUser.equals(profileUser)) { %>
-        <h2>Welcome to your page!</h2>
+        <h2 style="color:blue">Welcome to your page!</h2>
         <% /** Gets the bio of this user to display on their profile page */ %>
         <% String profilePageBio = thisUser.getBio(); %>
-        <h3>About Me</h3>
+        <h3 style="color:purple">About Me</h3>
         <a> <%= profilePageBio %> </a>
         <br/>
         <br/>
@@ -46,8 +45,8 @@ UserStore userStore = UserStore.getInstance();
         </form>
 
       <% } else { %>
-        <h2>Welcome to <%= profileUser %>'s Page!</h2>
-        <h3>About Me</h3>
+        <h2 style="color:blue">Welcome to <%= profileUser %>'s Page!</h2>
+        <h3 style="color:purple">About Me</h3>
         <% /** Gets the bio of this user to display on their profile page */ %>
         <% String profilePageBio = thisUser.getBio(); %>
         <a> <%= profilePageBio %> </a>
