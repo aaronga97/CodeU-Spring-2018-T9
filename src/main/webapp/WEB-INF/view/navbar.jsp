@@ -12,7 +12,7 @@ once they are logged in and adds a link to the site's activity feed --%>
 	<a id="navTitle" href="/">CodeU Chat App</a>
 	<a href="/conversations">Conversations</a>
 	<% if(username != null) { %>
-		<a href="/users/<%= username %>" > <%= username %> profile</a>
+		<a href="/users/<%= username %>" > <%= username %>'s Profile</a>
 	<% } else { %>
 		<a href="/login">Login</a>
 	<% } %>
