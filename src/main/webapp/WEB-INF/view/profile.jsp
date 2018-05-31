@@ -55,7 +55,7 @@ UserStore userStore = UserStore.getInstance();
          <h2 style="color:skyblue"> <%= profileUser %>'s Sent Messages </h2>
          <% List<Message> userMessages = (List) request.getAttribute("messages");
             for (Message m: userMessages) { %>
-                <a> <%= m.getTime() %> : <%= m.getContent() %> </a>
+                <a> <strong> <%= m.getTime() %> </strong> : <%= m.getContent() %> </a>
                 <br/>
             <% } %>
       <% } %>
