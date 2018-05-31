@@ -4,8 +4,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.time.Instant" %>
-<%@ page import="java.time.LocalDateTime" %>
-<%@ page import="java.time.ZoneId" %>
 <%
 /** Gets the UserStore instance to access all users. */
 UserStore userStore = UserStore.getInstance();
@@ -56,22 +54,8 @@ UserStore userStore = UserStore.getInstance();
          <% } %>
          <h2 style="color:skyblue"> <%= profileUser %>'s Sent Messages </h2>
          <% List<Message> userMessages = (List) request.getAttribute("messages");
-            Instant instant = null;
-            LocalDateTime localDate = null;
-            for (Message m: userMessages) {
-                instant = m.getCreationTime();
-                localDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-                int hour = localDate.getHour();
-                String timeAMPM = "";
-                if (hour > 12) {
-                    hour = hour % 12;
-                    timeAMPM = "PM";
-                } else {
-                    timeAMPM = "AM";
-                }
-                String date = localDate.getMonth().toString() + " " + localDate.getDayOfMonth() + ", " + localDate.getYear() + " - " + hour + ":" + localDate.getMinute() + " " + timeAMPM;
-                %>
-                <a> <%= date %> : <%= m.getContent() %> </a>
+            for (Message m: userMessages) { %>
+                <a> <%= m.getTime() %> : <%= m.getContent() %> </a>
                 <br/>
             <% } %>
       <% } %>
