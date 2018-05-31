@@ -14,7 +14,7 @@ public class Activity {
 	private final UUID activityId;
 
 	/** Used to determine the all time popularity of an activity. */
-	private final int allTimeCount;
+	private int allTimeCount;
 	/** Will be used to determine the day to day popularity of an activity. */
 	//private final int dailyCount;
 
@@ -22,7 +22,7 @@ public class Activity {
 	private final Instant creation;	
 	
 	/** Used to display an appropriate message about the activity to the activity feed */
-	private final String message;
+	private String message;
 
 	/** 
 	 * User ID and username of the user most relevant to the activity.
@@ -81,5 +81,13 @@ public class Activity {
 		return username;
 	}
 	
+	public void increaseAllTimeCount() {
+		allTimeCount += 1;
+	}
+
+	public void setMessage(String newMessage) {
+		message = newMessage; 
+	}
+
 }
  
