@@ -15,9 +15,12 @@
 package codeu.controller;
 
 import codeu.model.data.User;
+import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.UUID;
 
 import javax.servlet.RequestDispatcher;
@@ -38,6 +41,8 @@ public class AdminServletTest {
   private RequestDispatcher mockRequestDispatcher;
   private HttpSession mockSession;
   private UserStore mockUserStore;
+  private MessageStore mockMessageStore;
+  private ConversationStore mockConversationStore;
 
   @Before
   public void setup() {
@@ -53,6 +58,12 @@ public class AdminServletTest {
         .thenReturn(mockRequestDispatcher);
 
     mockUserStore = Mockito.mock(UserStore.class);
+    adminServlet.setUserStore(mockUserStore);
+
+    mockMessageStore = Mockito.mock(MessageStore.class);
+    adminServlet.setUserStore(mockUserStore);
+
+    mockConversationStore = Mockito.mock(ConversationStore.class);
     adminServlet.setUserStore(mockUserStore);
   }
 
@@ -85,7 +96,8 @@ public class AdminServletTest {
 
 
   /** Tests that when user is a valid admin to forward the request into ./admin */
-/*  @Test
+  /*
+  @Test
   public void testDoGet_ValidAdminUser() throws IOException, ServletException {
     User admin_user =
         new User(
@@ -95,6 +107,9 @@ public class AdminServletTest {
             Instant.now(),
             true);
 
+    HashMap<String, String> map = new HashMap<String, String>();
+    map.put("Test stat: ", "123");
+
     Mockito.when(mockSession.getAttribute("user")).thenReturn("admin_username");
     Mockito.when(mockUserStore.getUser("admin_username")).thenReturn(admin_user);
 
@@ -103,10 +118,10 @@ public class AdminServletTest {
 
     adminServlet.doGet(mockRequest, mockResponse);
 
+    Mockito.verify(mockRequest).setAttribute("map", map);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
-  */
-
+*/
   /**
    * Tests that when you get a user from the session and the user DOES exist but
    * is NOT in admin list checks that user is redirected to /.
