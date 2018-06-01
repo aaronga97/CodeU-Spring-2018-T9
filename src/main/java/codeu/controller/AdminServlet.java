@@ -60,6 +60,20 @@ public class AdminServlet extends HttpServlet {
   void setMessageStore(MessageStore messageStore) { this.messageStore = messageStore; }
   void setConversationStore(ConversationStore conversationStore) { this.conversationStore = conversationStore; }
 
+  /**
+   * Gets the correct stats from datastore and stores them in a map, simulating a json file
+   */
+  private void addStats(HashMap<String, String> map) {
+    // Retrieve sizes of each Datastore
+    Integer userSize = userStore.countTotalUsers();
+    Integer messageSize = messageStore.countTotalMessages();
+    Integer convSize = conversationStore.countTotalConversations();
+
+    // Adds them to the map
+    map.put("Total Users: ", userSize.toString());
+    map.put("Total Messages: ", messageSize.toString());
+    map.put("Total Conversations: ", convSize.toString());
+  }
 
   /**
    * This function fires when a user requests the /admin URL. It simply forwards the request to
@@ -70,7 +84,6 @@ public class AdminServlet extends HttpServlet {
       throws IOException, ServletException {
 
     HashMap<String, String> map = new HashMap<>();
-    
 
     String username = (String) request.getSession().getAttribute("user");
 
@@ -90,8 +103,10 @@ public class AdminServlet extends HttpServlet {
     }
 
     if(user.isAdmin()){
-
-      // user is in admin list, give access to admin site
+      // user is in admin list, give access to admin site, and send map as attribute
+      addStats(map);
+      request.setAttribute("map", map);
+      map.forEach((key,value) -> System.out.println(key + value));
       request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
       return;
     }
