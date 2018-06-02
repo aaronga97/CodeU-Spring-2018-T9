@@ -14,10 +14,11 @@
   limitations under the License.
 --%>
 <%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Map" %>
 
 <!DOCTYPE html>
 
-<% HashMap<String, String> map = (HashMap<String, String>) request.getAttribute("map");%>
+<% Map<String, String> adminStatsMap = (HashMap<String, String>) request.getAttribute("adminStatsMap");%>
 
 <html>
 <head>
@@ -31,9 +32,9 @@
   <div id="container">
     <h1>Admin Page</h1>
 
-      <% for (HashMap.Entry<String, String> entry : map.entrySet()) { %>
-        <p> <b> <%= entry.getKey() %> </b> <%= entry.getValue() %> </p>
-      <% } %>
+      <p> <b>Total users: </b> <%= adminStatsMap.get("userSize")%></p>
+      <p> <b>Total conversations: </b> <%= adminStatsMap.get("convSize")%></p>
+      <p> <b>Total messages: </b> <%= adminStatsMap.get("messageSize")%></p>
 
     <p>New features coming soon...</p>
 

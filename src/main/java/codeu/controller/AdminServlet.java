@@ -21,6 +21,7 @@ import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -63,16 +64,16 @@ public class AdminServlet extends HttpServlet {
   /**
    * Gets the correct stats from datastore and stores them in a map, simulating a json file
    */
-  private void addStats(HashMap<String, String> map) {
+  private void addStats(Map<String, String> map) {
     // Retrieve sizes of each Datastore
     Integer userSize = userStore.countTotalUsers();
     Integer messageSize = messageStore.countTotalMessages();
     Integer convSize = conversationStore.countTotalConversations();
 
     // Adds them to the map
-    map.put("Total Users: ", userSize.toString());
-    map.put("Total Messages: ", messageSize.toString());
-    map.put("Total Conversations: ", convSize.toString());
+    map.put("userSize", userSize.toString());
+    map.put("messageSize", messageSize.toString());
+    map.put("convSize", convSize.toString());
   }
 
   /**
@@ -83,7 +84,7 @@ public class AdminServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
-    HashMap<String, String> map = new HashMap<>();
+    Map<String, String> adminStatsMap = new HashMap<>();
 
     String username = (String) request.getSession().getAttribute("user");
 
@@ -104,9 +105,9 @@ public class AdminServlet extends HttpServlet {
 
     if(user.isAdmin()){
       // user is in admin list, give access to admin site, and send map as attribute
-      addStats(map);
-      request.setAttribute("map", map);
-      map.forEach((key,value) -> System.out.println(key + value));
+      addStats(adminStatsMap);
+      request.setAttribute("adminStatsMap", adminStatsMap);
+      adminStatsMap.forEach((key,value) -> System.out.println(key + " = " + value));
       request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
       return;
     }
