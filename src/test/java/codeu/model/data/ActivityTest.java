@@ -23,7 +23,7 @@ public class ActivityTest {
 		Assert.assertEquals(0, activity.getAllTimeCount());
 		activity.increaseAllTimeCount();
 		Assert.assertEquals(1, activity.getAllTimeCount());
-		
+    
 		Assert.assertEquals(creation, activity.getCreationTime());
 		Assert.assertEquals(message, activity.getMessage());
 		Assert.assertEquals(userId, activity.getUserId());
