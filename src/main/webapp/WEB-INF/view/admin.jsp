@@ -18,7 +18,7 @@
 
 <!DOCTYPE html>
 
-<% Map<String, String> adminStatsMap = (HashMap<String, String>) request.getAttribute("adminStatsMap");%>
+<% Map<String, String> adminStatsMap = (Map<String, String>) request.getAttribute("adminStatsMap");%>
 
 <html>
 <head>
