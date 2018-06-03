@@ -2,6 +2,8 @@ package codeu.controller;
 
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
@@ -37,6 +39,7 @@ public class NewPasswordServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String newPassword = request.getParameter("newPassword");
         String reTypedNewPassword = request.getParameter("reTypedNewPassword");
+        reTypedNewPassword = Jsoup.clean(reTypedNewPassword, Whitelist.none());
         String username =request.getParameter("usernameVerification");
 
         if (!userStore.isUserRegistered(username)) {
