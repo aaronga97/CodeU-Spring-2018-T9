@@ -64,7 +64,7 @@ public class AdminServlet extends HttpServlet {
   /**
    * Gets the correct stats from datastore and stores them in a map, simulating a json file
    */
-  private void addStats(Map<String, String> map) {
+  public void addStats(Map<String, String> map) {
     // Retrieve sizes of each Datastore
     Integer userSize = userStore.countTotalUsers();
     Integer messageSize = messageStore.countTotalMessages();

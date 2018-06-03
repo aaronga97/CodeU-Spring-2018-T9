@@ -14,14 +14,15 @@
 
 package codeu.controller;
 
+import codeu.model.data.Conversation;
+import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -59,12 +60,6 @@ public class AdminServletTest {
 
     mockUserStore = Mockito.mock(UserStore.class);
     adminServlet.setUserStore(mockUserStore);
-
-    mockMessageStore = Mockito.mock(MessageStore.class);
-    adminServlet.setUserStore(mockUserStore);
-
-    mockConversationStore = Mockito.mock(ConversationStore.class);
-    adminServlet.setUserStore(mockUserStore);
   }
 
   /**
@@ -94,11 +89,16 @@ public class AdminServletTest {
     Mockito.verify(mockResponse).sendRedirect("/login");
   }
 
-
-  /** Tests that when user is a valid admin to forward the request into ./admin */
+  /** Tests that when user is a valid admin to forward the request into ./admin ,
+   *  with correct attributes in the adminStatsMap as well.
+   */
   /*
   @Test
   public void testDoGet_ValidAdminUser() throws IOException, ServletException {
+    //Initialize every fake objects/attributes needed, admin_user, fakeMap, fakeUserList
+    //fakeMessageList, and fakeConversationList
+    UUID fakeConversationId = UUID.randomUUID();
+
     User admin_user =
         new User(
             UUID.randomUUID(),
@@ -107,21 +107,74 @@ public class AdminServletTest {
             Instant.now(),
             true);
 
-    HashMap<String, String> map = new HashMap<String, String>();
-    map.put("Test stat: ", "123");
+    List<User> fakeUserList = new ArrayList<>();
+    List<Message> fakeMessageList = new ArrayList<>();
+    List<Conversation> fakeConversationList = new ArrayList<>();
 
+    Map<String, String> fakeMap = new HashMap<String, String>();
+
+    //Fill fakeLists with 1 instance each
+    fakeUserList.add(admin_user);
+
+    fakeMessageList.add(
+            new Message(
+                    UUID.randomUUID(),
+                    fakeConversationId,
+                    UUID.randomUUID(),
+                    "test message",
+                    Instant.now()));
+
+    fakeConversationList.add(
+            new Conversation(
+                    UUID.randomUUID(),
+                    UUID.randomUUID(),
+                    "test_conversation",
+                    Instant.now()));
+
+    Integer userSize = fakeMessageList.size();
+    Integer messageSize = fakeMessageList.size();
+    Integer convSize = fakeConversationList.size();
+
+    //Return admin username when getUser
     Mockito.when(mockSession.getAttribute("user")).thenReturn("admin_username");
     Mockito.when(mockUserStore.getUser("admin_username")).thenReturn(admin_user);
 
+    //Validate user is admin
     boolean b = admin_user.isAdmin();
     Assert.assertEquals(true, b);
 
+    //Call method that adds stats
+    adminServlet.addStats(fakeMap);
+
+    //Return the size of total users, messages, conversation
+    Mockito.when(mockUserStore.countTotalUsers()).thenReturn(userSize);
+    Mockito.when(mockMessageStore.countTotalMessages()).thenReturn(messageSize);
+    Mockito.when(mockConversationStore.countTotalConversations()).thenReturn(convSize);
+
+    //Check that size matches expected size
+    Integer expectedValue = 1;
+    Assert.assertEquals(expectedValue, userSize);
+    Assert.assertEquals(expectedValue, messageSize);
+    Assert.assertEquals(expectedValue, convSize);
+
+    //Insert those attributes into map
+    fakeMap.put("userSize", userSize.toString());
+    fakeMap.put("convSize", convSize.toString());
+    fakeMap.put("messageSize", messageSize.toString());
+
+    //Test map attributes
+    Assert.assertEquals(expectedValue.toString(), fakeMap.get("userSize"));
+    Assert.assertEquals(expectedValue.toString(), fakeMap.get("convSize"));
+    Assert.assertEquals(expectedValue.toString(), fakeMap.get("messageSize"));
+
     adminServlet.doGet(mockRequest, mockResponse);
 
-    Mockito.verify(mockRequest).setAttribute("map", map);
+    //Verify map is sent and get request forwarded
+    Mockito.verify(mockRequest).setAttribute("adminStatsMap", fakeMap);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
-*/
+  */
+
   /**
    * Tests that when you get a user from the session and the user DOES exist but
    * is NOT in admin list checks that user is redirected to /.
