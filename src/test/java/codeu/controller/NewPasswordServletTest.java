@@ -10,24 +10,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class UserVerificationTest {
-    private UserVerificationServlet userVerificationServlet;
+public class NewPasswordServletTest {
+    private NewPasswordServlet newPasswordServlet;
     private HttpServletRequest mockRequest;
     private HttpServletResponse mockResponse;
     private RequestDispatcher mockRequestDispatcher;
 
     @Before
     public void setup() throws IOException {
-        userVerificationServlet = new UserVerificationServlet();
+        newPasswordServlet = new NewPasswordServlet();
         mockRequest = Mockito.mock(HttpServletRequest.class);
         mockResponse = Mockito.mock(HttpServletResponse.class);
         mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
-        Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/userVerification.jsp"))
+        Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/newPassword.jsp"))
                 .thenReturn(mockRequestDispatcher);
     }
     @Test
     public void testDoGet() throws IOException, ServletException {
-        userVerificationServlet.doGet(mockRequest, mockResponse);
+        newPasswordServlet.doGet(mockRequest, mockResponse);
 
         Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
     }
