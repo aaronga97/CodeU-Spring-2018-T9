@@ -60,6 +60,12 @@ public class AdminServletTest {
 
     mockUserStore = Mockito.mock(UserStore.class);
     adminServlet.setUserStore(mockUserStore);
+
+    mockMessageStore = Mockito.mock(MessageStore.class);
+    adminServlet.setMessageStore(mockMessageStore);
+
+    mockConversationStore = Mockito.mock(ConversationStore.class);
+    adminServlet.setConversationStore(mockConversationStore);
   }
 
   /**
@@ -92,7 +98,6 @@ public class AdminServletTest {
   /** Tests that when user is a valid admin to forward the request into ./admin ,
    *  with correct attributes in the adminStatsMap as well.
    */
-  /*
   @Test
   public void testDoGet_ValidAdminUser() throws IOException, ServletException {
     //Initialize every fake objects/attributes needed, admin_user, fakeMap, fakeUserList
@@ -173,7 +178,6 @@ public class AdminServletTest {
     Mockito.verify(mockRequest).setAttribute("adminStatsMap", fakeMap);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
-  */
 
   /**
    * Tests that when you get a user from the session and the user DOES exist but
