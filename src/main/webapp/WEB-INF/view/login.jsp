@@ -43,7 +43,7 @@
     </form>
 
     <p>New users can register <a href="/register">here</a>.</p>
-    <p>Forgot password? click <a href="/userVerification">here</a>.</p>
+    <p>Forgot password? click <a href="/newPassword">here</a>.</p>
   </div>
 </body>
 </html>
