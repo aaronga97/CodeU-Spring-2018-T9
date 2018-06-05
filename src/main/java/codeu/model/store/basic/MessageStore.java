@@ -108,4 +108,14 @@ public class MessageStore {
     }
     return sentMessages;
   }
+
+  /** Return most recent message sent + time. */
+  public Message getLatestMessage(){
+    if(messages.size() > 0) {
+      int lastMessage = messages.size()-1;
+      return messages.get(lastMessage);
+    } else {
+      return null;
+    }
+  }
 }

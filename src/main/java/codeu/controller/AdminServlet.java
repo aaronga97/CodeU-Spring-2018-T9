@@ -15,6 +15,7 @@
 package codeu.controller;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
@@ -70,10 +71,29 @@ public class AdminServlet extends HttpServlet {
     Integer messageSize = messageStore.countTotalMessages();
     Integer convSize = conversationStore.countTotalConversations();
 
+
     // Adds them to the map
     map.put("userSize", userSize.toString());
     map.put("messageSize", messageSize.toString());
     map.put("convSize", convSize.toString());
+
+    Message latestMessage = messageStore.getLatestMessage();
+    if(latestMessage == null) {
+      //If there's no latestMessage send empty attributes
+      map.put("latestMessageContent", "");
+      map.put("latestMessageTime", "");
+    } else {
+      //else set body and time of creation
+      String latestMessageContent = latestMessage.getContent();
+      String latestMessageTime = latestMessage.getTime();
+
+      map.put("latestMessageContent", latestMessageContent);
+      map.put("latestMessageTime", latestMessageTime);
+
+      System.out.println(latestMessageContent);
+      System.out.println(latestMessageTime);
+    }
+
   }
 
   /**
