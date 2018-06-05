@@ -104,6 +104,13 @@ public class UserStoreTest {
   }
 
   @Test
+  public void testGetLatestUser() {
+    User latestUser = userStore.getLatestUser();
+
+    Assert.assertEquals(USER_THREE, latestUser);
+  }
+
+  @Test
   public void testIsUserRegistered_true() {
     Assert.assertTrue(userStore.isUserRegistered(USER_ONE.getName()));
   }
