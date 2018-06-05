@@ -60,6 +60,13 @@ public class ConversationStoreTest {
   }
 
   @Test
+  public void testGetLatestConversation() {
+    Conversation latestConversation = conversationStore.getLatestConversation();
+
+    Assert.assertEquals(CONVERSATION_ONE, latestConversation);
+  }
+
+  @Test
   public void testGetTotalConversations() {
     Integer resultSize = conversationStore.countTotalConversations();
     Integer expectedResult = 1;

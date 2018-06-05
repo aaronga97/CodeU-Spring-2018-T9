@@ -77,6 +77,7 @@ public class AdminServlet extends HttpServlet {
     map.put("messageSize", messageSize.toString());
     map.put("convSize", convSize.toString());
 
+    // Adds latest message
     Message latestMessage = messageStore.getLatestMessage();
     if(latestMessage == null) {
       //If there's no latestMessage send empty attributes
@@ -94,6 +95,7 @@ public class AdminServlet extends HttpServlet {
       System.out.println(latestMessageTime);
     }
 
+    // Adds latest conversation
     Conversation latestConversation = conversationStore.getLatestConversation();
     if(latestConversation == null) {
       //If there's no latestConversation send empty attributes
@@ -110,6 +112,8 @@ public class AdminServlet extends HttpServlet {
       System.out.println(latestConversationTitle);
       System.out.println(latestConversationTime);
     }
+
+
 
   }
 
