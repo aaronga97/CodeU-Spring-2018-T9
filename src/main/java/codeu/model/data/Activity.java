@@ -31,6 +31,13 @@ public class Activity {
 	private final UUID userId;
 	private final String username;
 	
+	/** 
+	 * Declares whether it is an activity object for a conversation or for a user registration 
+	 * 'C' is used for a conversation while 'R' is used for a registration. 
+	 * May eventually be changed to an enum.
+	 */
+	private final char type;
+	
 	/**
 	 * Constructs a new Activity.
 	 *
@@ -42,13 +49,14 @@ public class Activity {
 	 * @param 
 	 */
 	
-	public Activity(UUID activityId, Instant creation, String message, UUID userId, String username) {
+	public Activity(UUID activityId, Instant creation, String message, UUID userId, String username, char type) {
 		this.activityId = activityId;
 		this.allTimeCount = 0;
 		this.creation = creation;
 		this.message = message;
 		this.userId = userId;
 		this.username = username;
+		this.type = type;
 	}
 	
 	/** Returns the ID of this activity. */
@@ -79,6 +87,11 @@ public class Activity {
 	/** Returns the username of the user associated with the activity */
 	public String getUsername() {
 		return username;
+	}
+
+	/** Returns the type of activity **/
+	public char getType() {
+		return type;
 	}
 	
 	public void increaseAllTimeCount() {
