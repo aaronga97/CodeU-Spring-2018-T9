@@ -117,6 +117,15 @@ public class ConversationStore {
     this.conversations = conversations;
   }
 
+  /** Return latest conversation created */
+  public Conversation getLatestConversation(){
+    if(conversations.size() > 0) {
+      int lastConversation = conversations.size()-1;
+      return conversations.get(lastConversation);
+    }
+    return null;
+  }
+
 	/** Sets the activity feed conversation stored by this ConversationStore. */
 	public void setActFeedConversation(Conversation actFeedConversation) {
 		this.actFeedConversation = actFeedConversation;

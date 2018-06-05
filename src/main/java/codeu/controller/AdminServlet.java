@@ -94,6 +94,23 @@ public class AdminServlet extends HttpServlet {
       System.out.println(latestMessageTime);
     }
 
+    Conversation latestConversation = conversationStore.getLatestConversation();
+    if(latestConversation == null) {
+      //If there's no latestConversation send empty attributes
+      map.put("latestConversationTitle", "");
+      map.put("latestConversationTime", "");
+    } else {
+      //else set body and time of creation
+      String latestConversationTitle= latestConversation.getTitle();
+      String latestConversationTime = latestConversation.getTime();
+
+      map.put("latestConversationTitle", latestConversationTitle);
+      map.put("latestConversationTime", latestConversationTime);
+
+      System.out.println(latestConversationTitle);
+      System.out.println(latestConversationTime);
+    }
+
   }
 
   /**
