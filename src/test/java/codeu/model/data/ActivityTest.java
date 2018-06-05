@@ -14,14 +14,20 @@ public class ActivityTest {
 		String message = "Test_Message";
 		UUID userId = UUID.randomUUID();
 		String username = "Test_Username";
+		char type = 'T';
 
-		Activity activity = new Activity(activityId, creation, message, userId, username);
+		Activity activity = new Activity(activityId, creation, message, userId, username, type);
 
 		Assert.assertEquals(activityId, activity.getActivityId());
+		
 		Assert.assertEquals(0, activity.getAllTimeCount());
+		activity.increaseAllTimeCount();
+		Assert.assertEquals(1, activity.getAllTimeCount());
+    
 		Assert.assertEquals(creation, activity.getCreationTime());
 		Assert.assertEquals(message, activity.getMessage());
 		Assert.assertEquals(userId, activity.getUserId());
 		Assert.assertEquals(username, activity.getUsername());
+		Assert.assertEquals(type, activity.getType());
   }
 }
