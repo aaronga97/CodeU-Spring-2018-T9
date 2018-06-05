@@ -43,4 +43,9 @@
     </form>
   </div>
 </body>
+
+<script>
+    document.getElementById("username").focus();
+</script>
+
 </html>
