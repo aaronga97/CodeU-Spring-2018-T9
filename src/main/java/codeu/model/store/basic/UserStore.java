@@ -136,10 +136,11 @@ public class UserStore {
 
   /** Return latest User created */
   public User getLatestUser(){
-    if(users.size() > 0) {
-      int lastUser = users.size()-1;
-      return users.get(lastUser);
+    if(users == null || users.isEmpty()) {
+      return null;
     }
-    return null;
+
+    int lastUser = users.size()-1;
+    return users.get(lastUser);
   }
 }

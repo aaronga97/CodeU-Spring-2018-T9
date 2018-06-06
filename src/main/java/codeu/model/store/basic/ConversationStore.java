@@ -119,11 +119,12 @@ public class ConversationStore {
 
   /** Return latest conversation created */
   public Conversation getLatestConversation(){
-    if(conversations.size() > 0) {
-      int lastConversation = conversations.size()-1;
-      return conversations.get(lastConversation);
+    if(conversations == null || conversations.isEmpty()) {
+      return null;
     }
-    return null;
+
+    int lastConversation = conversations.size()-1;
+    return conversations.get(lastConversation);
   }
 
 	/** Sets the activity feed conversation stored by this ConversationStore. */

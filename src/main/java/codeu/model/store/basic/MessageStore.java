@@ -111,10 +111,12 @@ public class MessageStore {
 
   /** Return latest message created */
   public Message getLatestMessage(){
-    if(messages.size() > 0) {
-      int lastMessage = messages.size()-1;
-      return messages.get(lastMessage);
+
+    if(messages == null || messages.isEmpty()) {
+      return null;
     }
-    return null;
+
+    int lastMessage = messages.size()-1;
+    return messages.get(lastMessage);
   }
 }
