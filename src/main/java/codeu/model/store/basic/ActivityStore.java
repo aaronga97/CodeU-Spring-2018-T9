@@ -16,14 +16,14 @@ public class ActivityStore {
 
 	/** Singleton instance of ActivityStore. */
 	private static ActivityStore instance;
-	
+
 	/**
 	 * Returns the singleton instance of ActivityStore that should be shared between all
 	 * servlet classes. Do not call this function from a test; use getTestInstance() instead.
 	 */
 	public static ActivityStore getInstance() {
 		if (instance == null) {
-			instance = new ActivityStore(PersistentStorageAgent.getInstance());		
+			instance = new ActivityStore(PersistentStorageAgent.getInstance());
 		}
 		return instance;
 	}
@@ -34,9 +34,9 @@ public class ActivityStore {
 	 * @param persistentStorageAgent a mock used for testing
 	 */
 	public static ActivityStore getTestInstance(PersistentStorageAgent persistentStorageAgent) {
-		return new ActivityStore(persistentStorageAgent);	
+		return new ActivityStore(persistentStorageAgent);
 	}
-	
+
 	/**
 	 * The PersistentStorageAgent responsible for loading Activities from and saving Activities
 	 * to Datastore.
@@ -55,14 +55,14 @@ public class ActivityStore {
 	/** Add a new activity to the current set of activities known to the application. */
 	public void addActivity(Activity activity) {
 		activities.add(activity);
-		//persistentStorageAgent.writeThrough(activity);
+		persistentStorageAgent.writeThrough(activity);
 	}
 
 	/** Find and return the Activity with the given Id, mainly used for testing. */
 	public Activity getActivityWithId(UUID id) {
 		for (Activity activity : activities) {
 			if(activity.getActivityId().equals(id)) {
-				return activity;			
+				return activity;
 			}
 		}
 		return null;
