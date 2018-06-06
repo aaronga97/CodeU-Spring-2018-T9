@@ -118,7 +118,7 @@ public class ConversationStore {
   }
 
   /** Return latest conversation created */
-  public Conversation getLatestConversation(){
+  public Conversation getLastConversationIndex(){
     if(conversations == null || conversations.isEmpty()) {
       return null;
     }

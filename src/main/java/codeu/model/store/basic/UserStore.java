@@ -135,7 +135,7 @@ public class UserStore {
   }
 
   /** Return latest User created */
-  public User getLatestUser(){
+  public User getLastUserIndex(){
     if(users == null || users.isEmpty()) {
       return null;
     }

@@ -91,8 +91,8 @@ public class MessageStoreTest {
     }
 
     @Test
-    public void testGetLatestMessage() {
-        Message latestMessage = messageStore.getLatestMessage();
+    public void testGetLastMessageIndex() {
+        Message latestMessage = messageStore.getLastMessageIndex();
 
         Assert.assertEquals(MESSAGE_THREE, latestMessage);
     }

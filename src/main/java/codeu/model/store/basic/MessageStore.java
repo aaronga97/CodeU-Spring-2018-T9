@@ -110,7 +110,7 @@ public class MessageStore {
   }
 
   /** Return latest message created */
-  public Message getLatestMessage(){
+  public Message getLastMessageIndex(){
 
     if(messages == null || messages.isEmpty()) {
       return null;

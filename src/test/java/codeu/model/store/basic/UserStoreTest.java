@@ -104,8 +104,8 @@ public class UserStoreTest {
   }
 
   @Test
-  public void testGetLatestUser() {
-    User latestUser = userStore.getLatestUser();
+  public void testGetLastUserIndex() {
+    User latestUser = userStore.getLastUserIndex();
 
     Assert.assertEquals(USER_THREE, latestUser);
   }

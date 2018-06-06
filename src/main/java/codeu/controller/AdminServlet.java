@@ -78,7 +78,7 @@ public class AdminServlet extends HttpServlet {
     map.put("convSize", convSize.toString());
 
     // Adds latest Message
-    Message latestMessage = messageStore.getLatestMessage();
+    Message latestMessage = messageStore.getLastMessageIndex();
     if(latestMessage == null) {
       //If there's no latestMessage send empty attributes
       map.put("latestMessageContent", "");
@@ -96,7 +96,7 @@ public class AdminServlet extends HttpServlet {
     }
 
     // Adds latest Conversation
-    Conversation latestConversation = conversationStore.getLatestConversation();
+    Conversation latestConversation = conversationStore.getLastConversationIndex();
     if(latestConversation == null) {
       //If there's no latestConversation send empty attributes
       map.put("latestConversationTitle", "");
@@ -114,7 +114,7 @@ public class AdminServlet extends HttpServlet {
     }
 
     // Adds latest User
-    User latestUser = userStore.getLatestUser();
+    User latestUser = userStore.getLastUserIndex();
     if(latestUser == null) {
       //If there's no latestUser send empty attributes
       map.put("latestUserName", "");

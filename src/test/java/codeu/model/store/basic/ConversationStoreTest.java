@@ -60,8 +60,8 @@ public class ConversationStoreTest {
   }
 
   @Test
-  public void testGetLatestConversation() {
-    Conversation latestConversation = conversationStore.getLatestConversation();
+  public void testGetLastConversationIndex() {
+    Conversation latestConversation = conversationStore.getLastConversationIndex();
 
     Assert.assertEquals(CONVERSATION_ONE, latestConversation);
   }
