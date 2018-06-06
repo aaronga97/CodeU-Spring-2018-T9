@@ -1,6 +1,7 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.Activity;
+import codeu.model.data.Type;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class ActivityStoreTest {
 	private PersistentStorageAgent mockPersistentStorageAgent;
 	private UUID activityId = UUID.randomUUID();
 
-	private final Activity ACTIVITY_ONE = new Activity(activityId, Instant.ofEpochMilli(1000), "activity_one", UUID.randomUUID(), "test_user1", 'T');
+	private final Activity ACTIVITY_ONE = new Activity(activityId, 8, Instant.ofEpochMilli(1000), "activity_one", UUID.randomUUID(), "test_user1", Type.CONVERSATION, UUID.randomUUID(), "test_conversation_name");
 
 	@Before
 	public void setup() {
@@ -31,27 +32,27 @@ public class ActivityStoreTest {
 	@Test
 	public void testGetActivityWithId_found() {
 		Activity resultActivity = activityStore.getActivityWithId(activityId);
-		
+
 		assertEquals(ACTIVITY_ONE, resultActivity);
 	}
 
 		@Test
 	public void testGetActivityWithId_notFound() {
 		Activity resultActivity = activityStore.getActivityWithId(UUID.randomUUID());
-		
+
 		Assert.assertNull(resultActivity);
 	}
 
 	@Test
 	public void testAddActivity() {
 	UUID inputActivityId = UUID.randomUUID();
-	Activity inputActivity = new Activity(inputActivityId, Instant.ofEpochMilli(1000), "activity_two", UUID.randomUUID(), "test_user2", 'T');
+	Activity inputActivity = new Activity(inputActivityId, 1, Instant.ofEpochMilli(1000), "activity_two", UUID.randomUUID(), "test_user2", Type.CONVERSATION, UUID.randomUUID(), "test_conversation_name2");
 
 		activityStore.addActivity(inputActivity);
 		Activity resultActivity = activityStore.getActivityWithId(inputActivityId);
 
 		assertEquals(inputActivity, resultActivity);
-		//Mockito.verify(mockPersistentStorageAgent).writeThrough(inputConversation); Will be added later
+		Mockito.verify(mockPersistentStorageAgent).writeThrough(inputActivity);
 	}
 
 	private void assertEquals(Activity expectedActivity, Activity actualActivity) {
@@ -62,6 +63,8 @@ public class ActivityStoreTest {
 		Assert.assertEquals(expectedActivity.getUserId(), actualActivity.getUserId());
 		Assert.assertEquals(expectedActivity.getUsername(), actualActivity.getUsername());
 		Assert.assertEquals(expectedActivity.getType(), actualActivity.getType());
+		Assert.assertEquals(expectedActivity.getConversationId(), actualActivity.getConversationId());
+		Assert.assertEquals(expectedActivity.getConversationName(), actualActivity.getConversationName());
 	}
-	
+
 }
