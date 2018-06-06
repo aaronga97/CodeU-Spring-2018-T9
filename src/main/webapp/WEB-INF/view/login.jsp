@@ -46,4 +46,9 @@
     <p>Forgot password? click <a href="/newPassword">here</a>.</p>
   </div>
 </body>
+
+<script>
+    document.getElementById("username").focus();
+</script>
+
 </html>

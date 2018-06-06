@@ -37,7 +37,7 @@
       <form action="/conversations" method="POST">
           <div class="form-group">
             <label class="form-control-label">Title:</label>
-          <input type="text" name="conversationTitle">
+          <input type="text" name="conversationTitle" id="newConversation">
         </div>
 
         <button type="submit">Create</button>
@@ -74,4 +74,9 @@
     <hr/>
   </div>
 </body>
+
+<script>
+    document.getElementById("newConversation").focus();
+</script>
+
 </html>
