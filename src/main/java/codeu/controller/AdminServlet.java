@@ -15,6 +15,7 @@
 package codeu.controller;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
@@ -70,10 +71,62 @@ public class AdminServlet extends HttpServlet {
     Integer messageSize = messageStore.countTotalMessages();
     Integer convSize = conversationStore.countTotalConversations();
 
+
     // Adds them to the map
     map.put("userSize", userSize.toString());
     map.put("messageSize", messageSize.toString());
     map.put("convSize", convSize.toString());
+
+    // Adds latest Message
+    Message latestMessage = messageStore.getLastMessageIndex();
+    if(latestMessage == null) {
+      //If there's no latestMessage send empty attributes
+      map.put("latestMessageContent", "");
+      map.put("latestMessageTime", "");
+    } else {
+      //else set body and time of creation
+      String latestMessageContent = latestMessage.getContent();
+      String latestMessageTime = latestMessage.getTime();
+
+      map.put("latestMessageContent", latestMessageContent);
+      map.put("latestMessageTime", latestMessageTime);
+
+      System.out.println(latestMessageContent);
+      System.out.println(latestMessageTime);
+    }
+
+    // Adds latest Conversation
+    Conversation latestConversation = conversationStore.getLastConversationIndex();
+    if(latestConversation == null) {
+      //If there's no latestConversation send empty attributes
+      map.put("latestConversationTitle", "");
+      map.put("latestConversationTime", "");
+    } else {
+      //else set body and time of creation
+      String latestConversationTitle= latestConversation.getTitle();
+      String latestConversationTime = latestConversation.getTime();
+
+      map.put("latestConversationTitle", latestConversationTitle);
+      map.put("latestConversationTime", latestConversationTime);
+
+      System.out.println(latestConversationTitle);
+      System.out.println(latestConversationTime);
+    }
+
+    // Adds latest User
+    User latestUser = userStore.getLastUserIndex();
+    if(latestUser == null) {
+      //If there's no latestUser send empty attributes
+      map.put("latestUserName", "");
+    } else {
+      //else set body and time of creation
+      String latestUserName= latestUser.getName();
+
+      map.put("latestUserName", latestUserName);
+
+      System.out.println(latestUserName);
+    }
+
   }
 
   /**
