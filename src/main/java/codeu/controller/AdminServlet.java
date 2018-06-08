@@ -83,30 +83,34 @@ public class AdminServlet extends HttpServlet {
       //If there's no latestMessage send empty attributes
       map.put("lastMessageContent", "");
       map.put("lastMessageTime", "");
+      map.put("lastMessageUser", "");
     } else {
       //else set body and time of creation
       String lastMessageContent = lastMessage.getContent();
       String lastMessageTime = lastMessage.getTime();
+      String lastMessageUser = userStore.getUser(lastMessage.getAuthorId()).getName();
 
       map.put("lastMessageContent", lastMessageContent);
       map.put("lastMessageTime", lastMessageTime);
+      map.put("lastMessageUser", lastMessageUser);
 
       System.out.println(lastMessageContent);
       System.out.println(lastMessageTime);
+      System.out.println(lastMessageUser);
     }
 
     // Adds latest Conversation
     Conversation lastConversation = conversationStore.getLastConversationIndex();
     if(lastConversation == null) {
       //If there's no lastConversation send empty attributes
-      map.put("lastConversationTitle", "");
+      map.put("lastConversationName", "");
       map.put("lastConversationTime", "");
     } else {
       //else set body and time of creation
       String lastConversationTitle= lastConversation.getTitle();
       String lastConversationTime = lastConversation.getTime();
 
-      map.put("lastConversationTitle", lastConversationTitle);
+      map.put("lastConversationName", lastConversationTitle);
       map.put("lastConversationTime", lastConversationTime);
 
       System.out.println(lastConversationTitle);

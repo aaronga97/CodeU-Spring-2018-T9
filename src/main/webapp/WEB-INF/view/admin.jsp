@@ -13,12 +13,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
-<%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Map" %>
 
 <!DOCTYPE html>
 
-<% Map<String, String> adminStatsMap = (Map<String, String>) request.getAttribute("adminStatsMap");%>
+<% Map<String, String> adminStatsMap = (Map<String, String>) request.getAttribute("adminStatsMap");
+   String userName = adminStatsMap.get("lastUserName");
+   String userTime = adminStatsMap.get("lastUserTime");
+   String convName = adminStatsMap.get("lastConversationName");
+   String convTime = adminStatsMap.get("lastConversationTime");
+   String messageName = adminStatsMap.get("lastMessageContent");
+   String messageTime = adminStatsMap.get("lastMessageTime");
+   String messageUser = adminStatsMap.get("lastMessageUser"); %>
 
 <html>
 <head>
@@ -36,7 +42,11 @@
       <p> <b>Total conversations: </b> <%= adminStatsMap.get("convSize")%></p>
       <p> <b>Total messages: </b> <%= adminStatsMap.get("messageSize")%></p>
 
-    <p>New features coming soon...</p>
+      <p> <b>Last User created: </b> <a href="/users/<%= userName %>"><%= userName %></a> at <%= userTime %></p>
+      <p> <b>Last Conversation created: </b> <a href="/conversations/<%= convName %>"><%= convName %></a> at <%= convTime %></p>
+      <p> <b>Last Message sent: </b> "<%= messageName %>" by <a href="/users/<%= messageUser %>"> <%= messageUser %></a> at <%= messageTime %></p>
+
+    <br>
 
     <form action="/admin" method="POST">
         <p> <b>Make someone admin:<b> </p>
@@ -51,6 +61,7 @@
         <h2 style="color:green"><%= request.getAttribute("success") %></h2>
     <% } %>
 
+      <br><br><br>
   </div>
 </body>
 </html>
