@@ -78,53 +78,57 @@ public class AdminServlet extends HttpServlet {
     map.put("convSize", convSize.toString());
 
     // Adds latest Message
-    Message latestMessage = messageStore.getLastMessageIndex();
-    if(latestMessage == null) {
+    Message lastMessage = messageStore.getLastMessageIndex();
+    if(lastMessage == null) {
       //If there's no latestMessage send empty attributes
-      map.put("latestMessageContent", "");
-      map.put("latestMessageTime", "");
+      map.put("lastMessageContent", "");
+      map.put("lastMessageTime", "");
     } else {
       //else set body and time of creation
-      String latestMessageContent = latestMessage.getContent();
-      String latestMessageTime = latestMessage.getTime();
+      String lastMessageContent = lastMessage.getContent();
+      String lastMessageTime = lastMessage.getTime();
 
-      map.put("latestMessageContent", latestMessageContent);
-      map.put("latestMessageTime", latestMessageTime);
+      map.put("lastMessageContent", lastMessageContent);
+      map.put("lastMessageTime", lastMessageTime);
 
-      System.out.println(latestMessageContent);
-      System.out.println(latestMessageTime);
+      System.out.println(lastMessageContent);
+      System.out.println(lastMessageTime);
     }
 
     // Adds latest Conversation
-    Conversation latestConversation = conversationStore.getLastConversationIndex();
-    if(latestConversation == null) {
-      //If there's no latestConversation send empty attributes
-      map.put("latestConversationTitle", "");
-      map.put("latestConversationTime", "");
+    Conversation lastConversation = conversationStore.getLastConversationIndex();
+    if(lastConversation == null) {
+      //If there's no lastConversation send empty attributes
+      map.put("lastConversationTitle", "");
+      map.put("lastConversationTime", "");
     } else {
       //else set body and time of creation
-      String latestConversationTitle= latestConversation.getTitle();
-      String latestConversationTime = latestConversation.getTime();
+      String lastConversationTitle= lastConversation.getTitle();
+      String lastConversationTime = lastConversation.getTime();
 
-      map.put("latestConversationTitle", latestConversationTitle);
-      map.put("latestConversationTime", latestConversationTime);
+      map.put("lastConversationTitle", lastConversationTitle);
+      map.put("lastConversationTime", lastConversationTime);
 
-      System.out.println(latestConversationTitle);
-      System.out.println(latestConversationTime);
+      System.out.println(lastConversationTitle);
+      System.out.println(lastConversationTime);
     }
 
     // Adds latest User
-    User latestUser = userStore.getLastUserIndex();
-    if(latestUser == null) {
+    User lastUser = userStore.getLastUserIndex();
+    if(lastUser == null) {
       //If there's no latestUser send empty attributes
-      map.put("latestUserName", "");
+      map.put("lastUserName", "");
+      map.put("lastUserTime", "");
     } else {
-      //else set body and time of creation
-      String latestUserName= latestUser.getName();
+      //else set name and time of creation
+      String lastUserName = lastUser.getName();
+      String lastUserTime = lastUser.getTime();
 
-      map.put("latestUserName", latestUserName);
+      map.put("lastUserName", lastUserName);
+      map.put("lastUserTime", lastUserTime);
 
-      System.out.println(latestUserName);
+      System.out.println(lastUserName);
+      System.out.println(lastUserTime);
     }
 
   }
