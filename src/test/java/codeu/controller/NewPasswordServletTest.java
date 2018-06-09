@@ -49,7 +49,7 @@ public class NewPasswordServletTest {
         Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
     }
 
-    /**test for when a user does not exist*/
+    /**test for when a user does not exist.*/
     @Test
     public void testDoPost_NotAnExistingUser() throws IOException, ServletException {
         Mockito.when(mockRequest.getParameter("usernameVerification")).thenReturn("test username");
