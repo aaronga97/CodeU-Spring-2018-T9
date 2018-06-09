@@ -68,11 +68,6 @@ public class Conversation {
     return creation;
   }
 
-  /** Sets the boolean for this Conversation. */
-  public void setPrivate(Boolean b) {
-    privateConversation = b;
-  }
-
   /** Returns the boolean stating whether or not this Conversation is private. */
   public Boolean getPrivate() {
     return privateConversation;
