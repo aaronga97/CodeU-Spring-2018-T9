@@ -143,4 +143,9 @@ public class UserStore {
     int lastUser = users.size()-1;
     return users.get(lastUser);
   }
+
+  /** Returns the list of all Users by this UserStore. */
+  public List<User> getUsers() {
+    return users;
+  }
 }

@@ -28,6 +28,9 @@ public class Conversation {
   public final UUID owner;
   public final Instant creation;
   public final String title;
+  /** This Boolean states whether or not the Conversation is private or not (by default is set to false).
+   * Only true when between two users become pals and want to message each other. */
+  public Boolean privateConversation;
 
   /**
    * Constructs a new Conversation.
@@ -37,11 +40,12 @@ public class Conversation {
    * @param title the title of this Conversation
    * @param creation the creation time of this Conversation
    */
-  public Conversation(UUID id, UUID owner, String title, Instant creation) {
+  public Conversation(UUID id, UUID owner, String title, Instant creation, Boolean privateConvo) {
     this.id = id;
     this.owner = owner;
     this.creation = creation;
     this.title = title;
+    this.privateConversation = privateConvo;
   }
 
   /** Returns the ID of this Conversation. */
@@ -62,6 +66,16 @@ public class Conversation {
   /** Returns the creation time of this Conversation. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  /** Sets the boolean for this Conversation. */
+  public void setPrivate(Boolean b) {
+    privateConversation = b;
+  }
+
+  /** Returns the boolean stating whether or not this Conversation is private. */
+  public Boolean getPrivate() {
+    return privateConversation;
   }
 
   /** Returns the Instant into a String time format to display to users. */

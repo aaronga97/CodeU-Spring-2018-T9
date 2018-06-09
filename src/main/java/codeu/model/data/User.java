@@ -14,6 +14,11 @@
 
 package codeu.model.data;
 
+import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.persistence.PersistentDataStore;
+
+import java.util.List;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -43,6 +48,7 @@ public class User {
     this.creation = creation;
     setBio(name + " hasn't written a bio yet.");
     this.admin = admin;
+    createConversations();
   }
 
   /** Returns the ID of this User. */
@@ -104,6 +110,36 @@ public class User {
     }
     String date = localDate.getMonth().toString() + " " + localDate.getDayOfMonth() + ", " + localDate.getYear() + " - " + hour + ":" + localDate.getMinute() + " " + timeAMPM;
     return date;
+  }
+
+  /** When a User is initialized, this method creates a private Conversation with every other User that already exists. */
+  public void createConversations() {
+    // get all USers from UserStore
+    // for each User, create a new Conversation with this User and set to private
+    // add all Conversations to ConversationStore
+    // writethrough to DataStore
+    UserStore userStore = UserStore.getInstance();
+    List<User> users = userStore.getUsers();
+    ConversationStore conversationStore = ConversationStore.getInstance();
+    List<Conversation> conversations = conversationStore.getAllConversations();
+
+    for (User u: users) {
+      String otherUserName = u.getName();
+      String firstUser;
+      String secondUser;
+      /** Gets the conversation link by the names of the two users in alphabetical order */
+       if ((this.name).compareTo(otherUserName) < 0) {
+       firstUser = this.name;
+       secondUser = otherUserName;
+       } else {
+       firstUser = otherUserName;
+       secondUser = this.name;
+       }
+       String conversationName = firstUser + secondUser;
+      Conversation c = new Conversation(UUID.randomUUID(), this.id, conversationName, Instant.now(), true);
+      conversationStore.addConversation(c);
+    }
+
   }
 
 }
