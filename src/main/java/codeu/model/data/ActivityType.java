@@ -1,1 +1,4 @@
-  public enum ActivityType {CONVERSATION, REGISTRATION};
+package codeu.model.data;
+public enum ActivityType {
+  CONVERSATION, REGISTRATION
+}
