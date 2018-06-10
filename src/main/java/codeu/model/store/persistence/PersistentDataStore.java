@@ -275,7 +275,7 @@ public class PersistentDataStore {
     activityEntity.setProperty("message", activity.getMessage());
     activityEntity.setProperty("user_uuid", activity.getUserId().toString());
     activityEntity.setProperty("username", activity.getUsername());
-    activityEntity.setProperty("type", activity.getActivityType().toString());
+    activityEntity.setProperty("type", activity.getType().toString());
     if (activity.getConversationId() == null) {
       activityEntity.setProperty("conversation_uuid", activity.getConversationId());
     } else {
