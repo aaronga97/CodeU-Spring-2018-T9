@@ -30,7 +30,7 @@ public class ActivityTest {
     Assert.assertEquals(message, activity.getMessage());
     Assert.assertEquals(userId, activity.getUserId());
     Assert.assertEquals(username, activity.getUsername());
-    Assert.assertEquals(type, activity.getType());
+    Assert.assertEquals(type, activity.getActivityType());
     Assert.assertEquals(conversationId, activity.getConversationId());
     Assert.assertEquals(conversationName, activity.getConversationName());
 
