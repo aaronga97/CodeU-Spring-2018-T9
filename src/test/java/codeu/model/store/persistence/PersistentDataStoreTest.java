@@ -194,7 +194,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(messageOne, resultActivityOne.getMessage());
     Assert.assertEquals(userUuidOne, resultActivityOne.getUserId());
     Assert.assertEquals(usernameOne, resultActivityOne.getUsername());
-    Assert.assertEquals(typeOne, resultActivityOne.getType());
+    Assert.assertEquals(typeOne, resultActivityOne.getActivityType());
     Assert.assertEquals(conversationIdOne, resultActivityOne.getConversationId());
     Assert.assertEquals(conversationNameOne, resultActivityOne.getConversationName());
 
@@ -205,7 +205,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(messageTwo, resultActivityTwo.getMessage());
     Assert.assertEquals(userUuidTwo, resultActivityTwo.getUserId());
     Assert.assertEquals(usernameTwo, resultActivityTwo.getUsername());
-    Assert.assertEquals(typeTwo, resultActivityTwo.getType());
+    Assert.assertEquals(typeTwo, resultActivityTwo.getActivityType());
     Assert.assertEquals(conversationIdTwo, resultActivityTwo.getConversationId());
     Assert.assertEquals(conversationNameTwo, resultActivityTwo.getConversationName());
 
