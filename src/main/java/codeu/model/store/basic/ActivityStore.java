@@ -24,7 +24,7 @@ public class ActivityStore {
   public static ActivityStore getInstance() {
     if (instance == null) {
       instance = new ActivityStore(PersistentStorageAgent.getInstance());
-  }
+    }
     return instance;
   }
 
@@ -48,8 +48,8 @@ public class ActivityStore {
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private ActivityStore(PersistentStorageAgent persistentStorageAgent) {
-	  this.persistentStorageAgent = persistentStorageAgent;
-	  activities = new ArrayList<>();
+    this.persistentStorageAgent = persistentStorageAgent;
+    activities = new ArrayList<>();
   }
 
   /** Add a new activity to the current set of activities known to the application. */
@@ -61,9 +61,9 @@ public class ActivityStore {
   /** Find and return the Activity with the given Id, mainly used for testing. */
   public Activity getActivityWithId(UUID id) {
     for (Activity activity : activities) {
-	    if(activity.getActivityId().equals(id)) {
-			  return activity;
-		  }
+      if(activity.getActivityId().equals(id)) {
+        return activity;
+      }
     }
     return null;
   }
