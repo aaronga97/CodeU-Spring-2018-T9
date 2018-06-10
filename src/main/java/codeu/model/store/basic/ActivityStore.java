@@ -70,6 +70,6 @@ public class ActivityStore {
 
   /** Sets the List of Activities stored by this ActivityStore. */
   public void setActivities(List<Activity> activities) {
-	  this.activities = activities;
+    this.activities = activities;
   }
 }
