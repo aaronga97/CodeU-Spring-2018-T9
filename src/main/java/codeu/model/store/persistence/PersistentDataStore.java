@@ -18,7 +18,6 @@ import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.data.Activity;
-import codeu.model.data.Type;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -208,23 +207,21 @@ public class PersistentDataStore {
 
     for (Entity entity : results.asIterable()) {
       try {
-				UUID activityUuid = UUID.fromString((String) entity.getProperty("activity_uuid"));
-        int allTimeCount = (int) Integer.parseInt((String) entity.getProperty("allTimeCount"));
+        UUID activityUuid = UUID.fromString((String) entity.getProperty("activity_uuid"));
+        int allTimeCount = Integer.parseInt((String) entity.getProperty("allTimeCount"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-				String message = (String) entity.getProperty("message");
-				UUID userUuid = UUID.fromString((String) entity.getProperty("user_uuid"));
+		    String message = (String) entity.getProperty("message");
+		    UUID userUuid = UUID.fromString((String) entity.getProperty("user_uuid"));
         String username = (String) entity.getProperty("username");
-        Type type = Type.valueOf((String) entity.getProperty("type"));
-        UUID conversationId;
-        if (entity.getProperty("conversation_uuid") == null) {
-          conversationId = null;
-        } else {
+        ActivityType type = Type.valueOf((String) entity.getProperty("type"));
+        UUID conversationId = null;
+        if (entity.getProperty("conversation_uuid") != null) {
           conversationId = UUID.fromString((String) entity.getProperty("conversation_uuid"));
         }
         String conversationName = (String) entity.getProperty("conversation_name");
 
-				Activity activity = new Activity(activityUuid, allTimeCount, creationTime, message, userUuid, username, type, conversationId, conversationName);
-				activities.add(activity);
+        Activity activity = new Activity(activityUuid, allTimeCount, creationTime, message, userUuid, username, type, conversationId, conversationName);
+        activities.add(activity);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
