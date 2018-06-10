@@ -104,7 +104,7 @@ public class PersistentDataStore {
         UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
         String title = (String) entity.getProperty("title");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        Boolean privateConversation = Boolean.parseBoolean((String) entity.getProperty("private_conversation"));
+        boolean privateConversation = Boolean.parseBoolean((String) entity.getProperty("private_conversation"));
         Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, privateConversation);
         conversations.add(conversation);
       } catch (Exception e) {
@@ -134,7 +134,7 @@ public class PersistentDataStore {
     UUID ownerUuid = null;
     String title = null;
     Instant creationTime = null;
-    Boolean privateConversation = null;
+    boolean privateConversation = false;
     Conversation actFeedConversation = null;
 
     for (Entity entity : results.asIterable()) {
@@ -221,7 +221,7 @@ public class PersistentDataStore {
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
     conversationEntity.setProperty("title", conversation.getTitle());
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
-    conversationEntity.setProperty("private_conversation", conversation.getPrivate().toString());
+    conversationEntity.setProperty("private_conversation", Boolean.toString(conversation.getPrivate()));
     datastore.put(conversationEntity);
   }
 
@@ -235,7 +235,7 @@ public class PersistentDataStore {
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
     conversationEntity.setProperty("title", conversation.getTitle());
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
-    conversationEntity.setProperty("private_conversation", conversation.getPrivate().toString());
+    conversationEntity.setProperty("private_conversation", Boolean.toString(conversation.getPrivate()));
     datastore.put(conversationEntity);
   }
 

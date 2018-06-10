@@ -16,7 +16,6 @@ package codeu.model.data;
 
 import codeu.model.store.basic.UserStore;
 import codeu.model.store.basic.ConversationStore;
-import codeu.model.store.persistence.PersistentDataStore;
 
 import java.util.List;
 import java.time.Instant;
@@ -24,122 +23,147 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
 
-/** Class representing a registered user. */
+/**
+ * Class representing a registered user.
+ */
 public class User {
-  private final UUID id;
-  private final String name;
-  private String passwordHash;
-  private final Instant creation;
-  private String bio;
-  private Boolean admin;
+    private final UUID id;
+    private final String name;
+    private String passwordHash;
+    private final Instant creation;
+    private String bio;
+    private Boolean admin;
 
-  /**
-   * Constructs a new User & initially sets an empty bio for user.
-   *
-   * @param id the ID of this User
-   * @param name the username of this User
-   * @param passwordHash the password hash of this User
-   * @param creation the creation time of this User
-   */
-  public User(UUID id, String name, String passwordHash, Instant creation, Boolean admin) {
-    this.id = id;
-    this.name = name;
-    this.passwordHash = passwordHash;
-    this.creation = creation;
-    setBio(name + " hasn't written a bio yet.");
-    this.admin = admin;
-    createConversations();
-  }
-
-  /** Returns the ID of this User. */
-  public UUID getId() {
-    return id;
-  }
-
-  /** Returns the username of this User. */
-  public String getName() {
-    return name;
-  }
-
-  /** Returns the password hash of this User. */
-  public String getPasswordHash() {
-    return passwordHash;
-  }
-
-  /**Sets new password hash of this user. */
-  public void setPasswordHash(String newPasswordHash){
-    this.passwordHash = newPasswordHash;
-
-  }
-
-  /** Returns the creation time of this User. */
-  public Instant getCreationTime() {
-    return creation;
-  }
-
-  /** Sets the bio of this User. */
-  public void setBio (String aboutMe) {
-    bio = aboutMe;
-  }
-
-  /** Returns the bio of this User. */
-  public String getBio() {
-    return bio;
-  }
-
-  /** Returns if user is admin */
-  public Boolean isAdmin() {
-    return admin;
-  }
-
-  /** Set admin attribute */
-  public void setAdmin(Boolean admin){
-    this.admin = admin;
-  }
-
-  /** Returns the Instant into a String time format to display to users. */
-  public String getTime() {
-    LocalDateTime localDate = LocalDateTime.ofInstant(creation, ZoneId.systemDefault());
-    int hour = localDate.getHour();
-    String timeAMPM = "";
-    if (hour > 12) {
-      hour = hour % 12;
-      timeAMPM = "PM";
-    } else {
-      timeAMPM = "AM";
-    }
-    String date = localDate.getMonth().toString() + " " + localDate.getDayOfMonth() + ", " + localDate.getYear() + " - " + hour + ":" + localDate.getMinute() + " " + timeAMPM;
-    return date;
-  }
-
-  /** When a User is initialized, this method creates a private Conversation with every other User that already exists. */
-  public void createConversations() {
-    // get all USers from UserStore
-    // for each User, create a new Conversation with this User and set to private
-    // add all Conversations to ConversationStore
-    // writethrough to DataStore
-    UserStore userStore = UserStore.getInstance();
-    List<User> users = userStore.getUsers();
-    ConversationStore conversationStore = ConversationStore.getInstance();
-    List<Conversation> conversations = conversationStore.getAllConversations();
-
-    for (User u: users) {
-      String otherUserName = u.getName();
-      String firstUser;
-      String secondUser;
-      /** Gets the conversation link by the names of the two users in alphabetical order */
-       if ((this.name).compareTo(otherUserName) < 0) {
-       firstUser = this.name;
-       secondUser = otherUserName;
-       } else {
-       firstUser = otherUserName;
-       secondUser = this.name;
-       }
-       String conversationName = firstUser + secondUser;
-      Conversation c = new Conversation(UUID.randomUUID(), this.id, conversationName, Instant.now(), true);
-      conversationStore.addConversation(c);
+    /**
+     * Constructs a new User with an empty bio.
+     * Automatically creates a new Conversation with every existing User.
+     *
+     * @param id           the ID of this User
+     * @param name         the username of this User
+     * @param passwordHash the password hash of this User
+     * @param creation     the creation time of this User
+     * @param admin        states whether this User is an admin
+     */
+    public User(UUID id, String name, String passwordHash, Instant creation, Boolean admin) {
+        this.id = id;
+        this.name = name;
+        this.passwordHash = passwordHash;
+        this.creation = creation;
+        setBio(name + " hasn't written a bio yet.");
+        this.admin = admin;
+        createConversations();
     }
 
-  }
+    /**
+     * Returns the ID of this User.
+     */
+    public UUID getId() {
+        return id;
+    }
 
+    /**
+     * Returns the username of this User.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Returns the password hash of this User.
+     */
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    /**
+     * Sets new password hash of this user.
+     */
+    public void setPasswordHash(String newPasswordHash) {
+        this.passwordHash = newPasswordHash;
+
+    }
+
+    /**
+     * Returns the creation time of this User.
+     */
+    public Instant getCreationTime() {
+        return creation;
+    }
+
+    /**
+     * Sets the bio of this User.
+     */
+    public void setBio(String aboutMe) {
+        bio = aboutMe;
+    }
+
+    /**
+     * Returns the bio of this User.
+     */
+    public String getBio() {
+        return bio;
+    }
+
+    /**
+     * Returns if user is admin
+     */
+    public Boolean isAdmin() {
+        return admin;
+    }
+
+    /**
+     * Set admin attribute
+     */
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
+
+    /**
+     * Returns the Instant into a String time format to display to users.
+     */
+    public String getTime() {
+        LocalDateTime localDate = LocalDateTime.ofInstant(creation, ZoneId.systemDefault());
+        int hour = localDate.getHour();
+        String timeAMPM = "";
+        if (hour > 12) {
+            hour = hour % 12;
+            timeAMPM = "PM";
+        } else {
+            timeAMPM = "AM";
+        }
+        String date = localDate.getMonth().toString() + " " + localDate.getDayOfMonth() + ", " + localDate.getYear() + " - " + hour + ":" + localDate.getMinute() + " " + timeAMPM;
+        return date;
+    }
+
+    /**
+     * When a User is initialized, this method creates a private Conversation with every other User that already exists.
+     */
+    private void createConversations() {
+        /* get all Users from UserStore */
+        UserStore userStore = UserStore.getInstance();
+        List<User> users = userStore.getUsers();
+
+        ConversationStore conversationStore = ConversationStore.getInstance();
+
+        /* For each existing User, create a new Conversation with this User and set to private */
+        for (User u : users) {
+            /* Sets the order of user's names by alphabetical order. By default, sets this User as firstUser and existing User as secondUser. */
+            String firstUser = this.name;
+            String secondUser = u.getName();
+
+            /* If the order of firstUser and secondUser isn't already in alphabetical order, swap the two users - firstUser and secondUser. */
+            if ((firstUser).compareTo(secondUser) > 0) {
+                String temp = firstUser;
+                firstUser = secondUser;
+                secondUser = temp;
+            }
+
+            /* Creates conversation link by concatenating the two user's names in alphabetical order. */
+            String conversationName = firstUser + secondUser;
+            Conversation c = new Conversation(UUID.randomUUID(), this.id, conversationName, Instant.now(), true);
+
+            /* Adds new conversation to the ConversationStore */
+            conversationStore.addConversation(c);
+        }
+    }
 }
