@@ -163,7 +163,7 @@ public class PersistentDataStoreTest {
     String messageOne = "test message one";
     UUID userUuidOne = UUID.fromString("10000001-2222-3333-4444-555555555555");
     String usernameOne = "test username one";
-    ActivityType typeOne = Type.CONVERSATION;
+    ActivityType typeOne = ActivityType.CONVERSATION;
     UUID conversationIdOne = UUID.fromString("10000002-2222-3333-4444-555555555555");
     String conversationNameOne = "test conversation name one";
     Activity inputActivityOne = new Activity(activityIdOne, allTimeCountOne, creationOne, messageOne, userUuidOne, usernameOne, typeOne, conversationIdOne, conversationNameOne);
@@ -174,7 +174,7 @@ public class PersistentDataStoreTest {
     String messageTwo = "test message two";
     UUID userUuidTwo = UUID.fromString("10000004-2222-3333-4444-555555555555");
     String usernameTwo = "test username two";
-    ActivityType typeTwo = Type.REGISTRATION;
+    ActivityType typeTwo = ActivityType.REGISTRATION;
     UUID conversationIdTwo = null;
     String conversationNameTwo = null;
     Activity inputActivityTwo = new Activity(activityIdTwo, allTimeCountTwo, creationTwo, messageTwo, userUuidTwo, usernameTwo, typeTwo, conversationIdTwo, conversationNameTwo);
@@ -198,7 +198,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(conversationIdOne, resultActivityOne.getConversationId());
     Assert.assertEquals(conversationNameOne, resultActivityOne.getConversationName());
 
-    /*Activity resultActivityTwo = resultActivities.get(1);
+    Activity resultActivityTwo = resultActivities.get(1);
     Assert.assertEquals(activityIdTwo, resultActivityTwo.getActivityId());
     Assert.assertEquals(allTimeCountTwo, resultActivityTwo.getAllTimeCount());
     Assert.assertEquals(creationTwo, resultActivityTwo.getCreationTime());
@@ -207,7 +207,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(usernameTwo, resultActivityTwo.getUsername());
     Assert.assertEquals(typeTwo, resultActivityTwo.getType());
     Assert.assertEquals(conversationIdTwo, resultActivityTwo.getConversationId());
-    Assert.assertEquals(conversationNameTwo, resultActivityTwo.getConversationName());*/
+    Assert.assertEquals(conversationNameTwo, resultActivityTwo.getConversationName());
 
 
   }

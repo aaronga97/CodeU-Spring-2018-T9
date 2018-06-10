@@ -46,7 +46,7 @@ public class ActivityStoreTest {
   @Test
   public void testAddActivity() {
     UUID inputActivityId = UUID.randomUUID();
-    Activity inputActivity = new Activity(inputActivityId, 1, Instant.ofEpochMilli(1000), "activity_two", UUID.randomUUID(), "test_user2", Type.CONVERSATION, UUID.randomUUID(), "test_conversation_name2");
+    Activity inputActivity = new Activity(inputActivityId, 1, Instant.ofEpochMilli(1000), "activity_two", UUID.randomUUID(), "test_user2", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name2");
 
     activityStore.addActivity(inputActivity);
     Activity resultActivity = activityStore.getActivityWithId(inputActivityId);
