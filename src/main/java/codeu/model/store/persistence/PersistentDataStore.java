@@ -17,6 +17,7 @@ package codeu.model.store.persistence;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.Activity;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -28,6 +29,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.lang.*;
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -67,7 +69,10 @@ public class PersistentDataStore {
         String userName = (String) entity.getProperty("username");
         String passwordHash = (String) entity.getProperty("password_hash");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        User user = new User(uuid, userName, passwordHash, creationTime);
+        String bio = (String) entity.getProperty("bio");
+        Boolean admin = Boolean.parseBoolean((String) entity.getProperty("admin"));
+        User user = new User(uuid, userName, passwordHash, creationTime, admin);
+        user.setBio(bio);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -94,7 +99,7 @@ public class PersistentDataStore {
     // Retrieve all conversations from the datastore.
     Query query = new Query("chat-conversations").addSort("creation_time", SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
-		
+
     for (Entity entity : results.asIterable()) {
       try {
         UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
@@ -125,12 +130,12 @@ public class PersistentDataStore {
     // Retrieve all activity feed conversation from the datastore.
     Query query = new Query("act-conversation");
     PreparedQuery results = datastore.prepare(query);
-		
+
 		UUID uuid = null;
     UUID ownerUuid = null;
     String title = null;
     Instant creationTime = null;
-    Conversation actFeedConversation = null;		
+    Conversation actFeedConversation = null;
 
     for (Entity entity : results.asIterable()) {
       try {
@@ -138,8 +143,8 @@ public class PersistentDataStore {
         ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
         title = (String) entity.getProperty("title");
         creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        
-				
+
+
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
@@ -185,6 +190,49 @@ public class PersistentDataStore {
     return messages;
   }
 
+	  /**
+   * Loads all Activity objects from the Datastore service and returns them in a List, sorted in
+   * ascending order by creation time.
+   *
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public List<Activity> loadActivities() throws PersistentDataStoreException {
+
+    List<Activity> activities = new ArrayList<>();
+
+    // Retrieve all activities from the datastore.
+    Query query = new Query("activity-objects").addSort("creation_time", SortDirection.ASCENDING);
+    PreparedQuery results = datastore.prepare(query);
+
+    for (Entity entity : results.asIterable()) {
+      try {
+        UUID activityUuid = UUID.fromString((String) entity.getProperty("activity_uuid"));
+        int allTimeCount = Integer.parseInt((String) entity.getProperty("allTimeCount"));
+        Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+        String message = (String) entity.getProperty("message");
+        UUID userUuid = UUID.fromString((String) entity.getProperty("user_uuid"));
+        String username = (String) entity.getProperty("username");
+        ActivityType type = Type.valueOf((String) entity.getProperty("type"));
+        UUID conversationId = null;
+        if (entity.getProperty("conversation_uuid") != null) {
+          conversationId = UUID.fromString((String) entity.getProperty("conversation_uuid"));
+        }
+        String conversationName = (String) entity.getProperty("conversation_name");
+
+        Activity activity = new Activity(activityUuid, allTimeCount, creationTime, message, userUuid, username, type, conversationId, conversationName);
+        activities.add(activity);
+      } catch (Exception e) {
+        // In a production environment, errors should be very rare. Errors which may
+        // occur include network errors, Datastore service errors, authorization errors,
+        // database entity definition mismatches, or service mismatches.
+        throw new PersistentDataStoreException(e);
+      }
+    }
+
+    return activities;
+  }
+
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
     Entity userEntity = new Entity("chat-users", user.getId().toString());
@@ -192,6 +240,8 @@ public class PersistentDataStore {
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("password_hash", user.getPasswordHash());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
+    userEntity.setProperty("bio", user.getBio());
+    userEntity.setProperty("admin", Boolean.toString(user.isAdmin()));
     datastore.put(userEntity);
   }
 
@@ -216,7 +266,26 @@ public class PersistentDataStore {
     datastore.put(conversationEntity);
   }
 
-	/** 
+  /** Write an Activity object to the Datastore service. */
+  public void writeThrough(Activity activity) {
+    Entity activityEntity = new Entity("activity-objects", activity.getActivityId().toString());
+    activityEntity.setProperty("activity_uuid", activity.getActivityId().toString());
+    activityEntity.setProperty("allTimeCount", Integer.toString(activity.getAllTimeCount()));
+    activityEntity.setProperty("creation_time", activity.getCreationTime().toString());
+    activityEntity.setProperty("message", activity.getMessage());
+    activityEntity.setProperty("user_uuid", activity.getUserId().toString());
+    activityEntity.setProperty("username", activity.getUsername());
+    activityEntity.setProperty("type", activity.getType().toString());
+    if (activity.getConversationId() == null) {
+      activityEntity.setProperty("conversation_uuid", activity.getConversationId());
+    } else {
+      activityEntity.setProperty("conversation_uuid", activity.getConversationId().toString());
+    }
+    activityEntity.setProperty("conversation_name", activity.getConversationName());
+    datastore.put(activityEntity);
+  }
+
+	/**
 		* Write the activity feed's conversation object to the Datastore service.
 		* This should only happen one time, the first time the server is opened up w/o
 		* this conversation stored in datastore. */
@@ -228,6 +297,5 @@ public class PersistentDataStore {
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
     datastore.put(conversationEntity);
   }
-	
-}
 
+}

@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 /**
  * Servlet class responsible for the profile page.
  */
@@ -32,7 +35,7 @@ public class ProfileServlet extends HttpServlet {
     private UserStore userStore;
 
     /**
-     * Set up state for handling chat requests.
+     * Set up state for handling profile page requests.
      */
     @Override
     public void init() throws ServletException {
@@ -74,27 +77,50 @@ public class ProfileServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        String username = request.getParameter("username");
+        String requestUrl = request.getRequestURI();
+        String profileUsername = requestUrl.substring("/users/".length());
 
-        // if user doesn't exist, set "username" attribute as empty string
-        // so that profile.jsp sends to a page that states that user doesn't exist
-        // otherwise set the username attribute
-        User user = userStore.getUser(username);
+        // see if user exists
+        User user = userStore.getUser(profileUsername);
+
         if (user == null) {
-            request.setAttribute("username", "");
+            // if no user exists, set profilePage attribute to be empty string
+            request.setAttribute("profilePage", "");
+            System.out.println("No user exists.");
         } else {
-            request.setAttribute("username", username);
+            // set profilePage attribute to be username
+            request.setAttribute("profilePage", profileUsername);
         }
-
         // forward request to profile.jsp
         request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
     }
 
     /**
-     *
+     * This function fires when a user wants to edit his/her own profile page. It checks if the user exists from the username of the URL requested.
+     * It sets the bio parameter to be the user's bio attribute and then updates the user in order to write the data to DataStore.
+     * It then redirects the user back to their profile page.
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        doGet(request, response);
+        String requestUrl = request.getRequestURI();
+        String profileUsername = requestUrl.substring("/users/".length());
+
+        // gets user
+        User user = userStore.getUser(profileUsername);
+
+        // gets bio from request
+        String bio = request.getParameter("bio");
+
+        // cleans bio String by removing any HTML tags
+        String cleanedBio = Jsoup.clean(bio, Whitelist.none());
+
+        // sets bio as instance variable for user
+        user.setBio(cleanedBio);
+
+        // updates UserStore to store the bio for next time program opens
+        userStore.updateUser(user);
+
+        // redirects user back to their profile page as a GET request
+        response.sendRedirect("/users/" + profileUsername);
     }
 }

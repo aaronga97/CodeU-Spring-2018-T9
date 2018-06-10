@@ -19,6 +19,7 @@ import java.util.UUID;
 import java.time.Instant;
 
 import codeu.model.store.basic.UserStore;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -48,7 +49,7 @@ public class ProfileServletTest {
     @Test
     public void testDoGet_ValidUser() throws IOException, ServletException {
         User userCandace = new User(
-                        UUID.randomUUID(), "Candace", "candacepassword", Instant.now());
+                        UUID.randomUUID(), "Candace", "candacepassword", Instant.now(), false);
         UserStore mockUserStore = Mockito.mock(UserStore.class);
 
         Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/candace");
@@ -71,4 +72,39 @@ public class ProfileServletTest {
         Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
     }
 
+    @Test
+    public void testDoPost() throws IOException, ServletException {
+        User userCandace = new User(
+                UUID.randomUUID(), "Candace", "candacepassword", Instant.now(), false);
+        UserStore mockUserStore = Mockito.mock(UserStore.class);
+
+        Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/candace");
+        Mockito.when(mockUserStore.getUser("candace")).thenReturn(userCandace);
+
+        Mockito.when(mockRequest.getParameter("bio")).thenReturn("This is Candace's bio.");
+
+        profileServlet.setUserStore(mockUserStore);
+        profileServlet.doPost(mockRequest, mockResponse);
+
+        Assert.assertEquals("This is Candace's bio.", userCandace.getBio());
+        Mockito.verify(mockResponse).sendRedirect("/users/candace");
+    }
+
+    @Test
+    public void testDoPostUncleanedBio() throws IOException, ServletException {
+        User userCandace = new User(
+                UUID.randomUUID(), "Candace", "candacepassword", Instant.now(), false);
+        UserStore mockUserStore = Mockito.mock(UserStore.class);
+
+        Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/candace");
+        Mockito.when(mockUserStore.getUser("candace")).thenReturn(userCandace);
+
+        Mockito.when(mockRequest.getParameter("bio")).thenReturn("<h1> This is Candace's bio. <h1>");
+
+        profileServlet.setUserStore(mockUserStore);
+        profileServlet.doPost(mockRequest, mockResponse);
+
+        Assert.assertEquals("This is Candace's bio.", userCandace.getBio());
+        Mockito.verify(mockResponse).sendRedirect("/users/candace");
+    }
 }

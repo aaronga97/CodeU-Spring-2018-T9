@@ -66,20 +66,19 @@ public class ActivityFeedServletTest {
         .thenReturn(fakeConversation);
 		
 		List<Message> fakeMessageList = new ArrayList<>();
-    fakeMessageList.add(
-        new Message(
-            UUID.randomUUID(),
-            fakeConversationId,
-            UUID.randomUUID(),
-            "test message",
-            Instant.now()));
+		
+		Message fakeMessage =  new Message(UUID.randomUUID(),fakeConversationId, 
+			UUID.randomUUID(), "test message", Instant.now());
+    
+		fakeMessageList.add(fakeMessage);
+	
     Mockito.when(mockMessageStore.getMessagesInConversation(fakeConversationId))
         .thenReturn(fakeMessageList);
 	
 		activityFeedServlet.doGet(mockRequest, mockResponse);
 
 		Mockito.verify(mockRequest).setAttribute("conversation", fakeConversation);
-    Mockito.verify(mockRequest).setAttribute("messages", fakeMessageList);
+		Mockito.verify(mockRequest).setAttribute("messages", fakeMessageList);
 		Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
 	}
 }
