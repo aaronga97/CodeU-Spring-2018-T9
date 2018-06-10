@@ -1,7 +1,7 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.Activity;
-import codeu.model.data.Type;
+import codeu.model.data.ActivityType;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class ActivityStoreTest {
   private PersistentStorageAgent mockPersistentStorageAgent;
   private UUID activityId = UUID.randomUUID();
 
-  private final Activity ACTIVITY_ONE = new Activity(activityId, 8, Instant.ofEpochMilli(1000), "activity_one", UUID.randomUUID(), "test_user1", Type.CONVERSATION, UUID.randomUUID(), "test_conversation_name");
+  private final Activity ACTIVITY_ONE = new Activity(activityId, 8, Instant.ofEpochMilli(1000), "activity_one", UUID.randomUUID(), "test_user1", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name");
 
   @Before
   public void setup() {
@@ -62,7 +62,7 @@ public class ActivityStoreTest {
     Assert.assertEquals(expectedActivity.getMessage(), actualActivity.getMessage());
     Assert.assertEquals(expectedActivity.getUserId(), actualActivity.getUserId());
     Assert.assertEquals(expectedActivity.getUsername(), actualActivity.getUsername());
-    Assert.assertEquals(expectedActivity.getType(), actualActivity.getActivityType());
+    Assert.assertEquals(expectedActivity.getActivityType(), actualActivity.getActivityType());
     Assert.assertEquals(expectedActivity.getConversationId(), actualActivity.getConversationId());
     Assert.assertEquals(expectedActivity.getConversationName(), actualActivity.getConversationName());
   }

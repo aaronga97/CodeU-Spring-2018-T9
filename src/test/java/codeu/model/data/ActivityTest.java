@@ -15,7 +15,7 @@ public class ActivityTest {
     String message = "Test_Message";
     UUID userId = UUID.randomUUID();
     String username = "Test_Username";
-    ActivityType type = Type.CONVERSATION;
+    ActivityType type = ActivityType.CONVERSATION;
     UUID conversationId = UUID.randomUUID();
     String conversationName = "Test_Conversation_Name";
 

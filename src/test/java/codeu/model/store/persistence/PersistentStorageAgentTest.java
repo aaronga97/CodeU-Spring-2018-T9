@@ -4,6 +4,7 @@ import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.data.Activity;
+import codeu.model.data.ActivityType;
 import java.time.Instant;
 import java.util.UUID;
 import org.junit.Before;
@@ -85,8 +86,8 @@ public class PersistentStorageAgentTest {
   public void testWriteThroughActivity() {
     Activity activity =
       new Activity(UUID.randomUUID(), 0, Instant.now(), "test_message", UUID.randomUUID(), "test_username", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name");
-    persistentStorageAgent.writeThrough(message);
-    Mockito.verify(mockPersistentDataStore).writeThrough(message);
+    persistentStorageAgent.writeThrough(activity);
+    Mockito.verify(mockPersistentDataStore).writeThrough(activity);
   }
 
 }
