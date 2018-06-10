@@ -4,7 +4,6 @@ import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.data.Activity;
-import codeu.model.data.Type;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.time.Instant;
@@ -164,7 +163,7 @@ public class PersistentDataStoreTest {
     String messageOne = "test message one";
     UUID userUuidOne = UUID.fromString("10000001-2222-3333-4444-555555555555");
     String usernameOne = "test username one";
-    Type typeOne = Type.CONVERSATION;
+    ActivityType typeOne = Type.CONVERSATION;
     UUID conversationIdOne = UUID.fromString("10000002-2222-3333-4444-555555555555");
     String conversationNameOne = "test conversation name one";
     Activity inputActivityOne = new Activity(activityIdOne, allTimeCountOne, creationOne, messageOne, userUuidOne, usernameOne, typeOne, conversationIdOne, conversationNameOne);
@@ -175,7 +174,7 @@ public class PersistentDataStoreTest {
     String messageTwo = "test message two";
     UUID userUuidTwo = UUID.fromString("10000004-2222-3333-4444-555555555555");
     String usernameTwo = "test username two";
-    Type typeTwo = Type.REGISTRATION;
+    ActivityType typeTwo = Type.REGISTRATION;
     UUID conversationIdTwo = null;
     String conversationNameTwo = null;
     Activity inputActivityTwo = new Activity(activityIdTwo, allTimeCountTwo, creationTwo, messageTwo, userUuidTwo, usernameTwo, typeTwo, conversationIdTwo, conversationNameTwo);

@@ -13,58 +13,57 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 public class ActivityStoreTest {
-	private ActivityStore activityStore;
-	private PersistentStorageAgent mockPersistentStorageAgent;
-	private UUID activityId = UUID.randomUUID();
+  private ActivityStore activityStore;
+  private PersistentStorageAgent mockPersistentStorageAgent;
+  private UUID activityId = UUID.randomUUID();
 
-	private final Activity ACTIVITY_ONE = new Activity(activityId, 8, Instant.ofEpochMilli(1000), "activity_one", UUID.randomUUID(), "test_user1", Type.CONVERSATION, UUID.randomUUID(), "test_conversation_name");
+  private final Activity ACTIVITY_ONE = new Activity(activityId, 8, Instant.ofEpochMilli(1000), "activity_one", UUID.randomUUID(), "test_user1", Type.CONVERSATION, UUID.randomUUID(), "test_conversation_name");
 
-	@Before
-	public void setup() {
-		mockPersistentStorageAgent = Mockito.mock(PersistentStorageAgent.class);
-		activityStore = activityStore.getTestInstance(mockPersistentStorageAgent);
+  @Before
+  public void setup() {
+    mockPersistentStorageAgent = Mockito.mock(PersistentStorageAgent.class);
+    activityStore = activityStore.getTestInstance(mockPersistentStorageAgent);
 
-		final List<Activity> activityList = new ArrayList<>();
-		activityList.add(ACTIVITY_ONE);
-		activityStore.setActivities(activityList);
-	}
+    final List<Activity> activityList = new ArrayList<>();
+    activityList.add(ACTIVITY_ONE);
+    activityStore.setActivities(activityList);
+  }
 
-	@Test
-	public void testGetActivityWithId_found() {
-		Activity resultActivity = activityStore.getActivityWithId(activityId);
+  @Test
+  public void testGetActivityWithId_found() {
+    Activity resultActivity = activityStore.getActivityWithId(activityId);
 
-		assertEquals(ACTIVITY_ONE, resultActivity);
-	}
+    assertEquals(ACTIVITY_ONE, resultActivity);
+  }
 
-		@Test
-	public void testGetActivityWithId_notFound() {
-		Activity resultActivity = activityStore.getActivityWithId(UUID.randomUUID());
+  @Test
+  public void testGetActivityWithId_notFound() {
+    Activity resultActivity = activityStore.getActivityWithId(UUID.randomUUID());
 
-		Assert.assertNull(resultActivity);
-	}
+    Assert.assertNull(resultActivity);
+  }
 
-	@Test
-	public void testAddActivity() {
-	UUID inputActivityId = UUID.randomUUID();
-	Activity inputActivity = new Activity(inputActivityId, 1, Instant.ofEpochMilli(1000), "activity_two", UUID.randomUUID(), "test_user2", Type.CONVERSATION, UUID.randomUUID(), "test_conversation_name2");
+  @Test
+  public void testAddActivity() {
+    UUID inputActivityId = UUID.randomUUID();
+    Activity inputActivity = new Activity(inputActivityId, 1, Instant.ofEpochMilli(1000), "activity_two", UUID.randomUUID(), "test_user2", Type.CONVERSATION, UUID.randomUUID(), "test_conversation_name2");
 
-		activityStore.addActivity(inputActivity);
-		Activity resultActivity = activityStore.getActivityWithId(inputActivityId);
+    activityStore.addActivity(inputActivity);
+    Activity resultActivity = activityStore.getActivityWithId(inputActivityId);
 
-		assertEquals(inputActivity, resultActivity);
-		Mockito.verify(mockPersistentStorageAgent).writeThrough(inputActivity);
-	}
+    assertEquals(inputActivity, resultActivity);
+    Mockito.verify(mockPersistentStorageAgent).writeThrough(inputActivity);
+  }
 
-	private void assertEquals(Activity expectedActivity, Activity actualActivity) {
-		Assert.assertEquals(expectedActivity.getActivityId(), actualActivity.getActivityId());
-		Assert.assertEquals(expectedActivity.getAllTimeCount(), actualActivity.getAllTimeCount());
-		Assert.assertEquals(expectedActivity.getCreationTime(), actualActivity.getCreationTime());
-		Assert.assertEquals(expectedActivity.getMessage(), actualActivity.getMessage());
-		Assert.assertEquals(expectedActivity.getUserId(), actualActivity.getUserId());
-		Assert.assertEquals(expectedActivity.getUsername(), actualActivity.getUsername());
-		Assert.assertEquals(expectedActivity.getType(), actualActivity.getType());
-		Assert.assertEquals(expectedActivity.getConversationId(), actualActivity.getConversationId());
-		Assert.assertEquals(expectedActivity.getConversationName(), actualActivity.getConversationName());
-	}
-
+  private void assertEquals(Activity expectedActivity, Activity actualActivity) {
+    Assert.assertEquals(expectedActivity.getActivityId(), actualActivity.getActivityId());
+    Assert.assertEquals(expectedActivity.getAllTimeCount(), actualActivity.getAllTimeCount());
+    Assert.assertEquals(expectedActivity.getCreationTime(), actualActivity.getCreationTime());
+    Assert.assertEquals(expectedActivity.getMessage(), actualActivity.getMessage());
+    Assert.assertEquals(expectedActivity.getUserId(), actualActivity.getUserId());
+    Assert.assertEquals(expectedActivity.getUsername(), actualActivity.getUsername());
+    Assert.assertEquals(expectedActivity.getType(), actualActivity.getType());
+    Assert.assertEquals(expectedActivity.getConversationId(), actualActivity.getConversationId());
+    Assert.assertEquals(expectedActivity.getConversationName(), actualActivity.getConversationName());
+  }
 }
