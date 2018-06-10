@@ -210,8 +210,8 @@ public class PersistentDataStore {
         UUID activityUuid = UUID.fromString((String) entity.getProperty("activity_uuid"));
         int allTimeCount = Integer.parseInt((String) entity.getProperty("allTimeCount"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-		    String message = (String) entity.getProperty("message");
-		    UUID userUuid = UUID.fromString((String) entity.getProperty("user_uuid"));
+        String message = (String) entity.getProperty("message");
+        UUID userUuid = UUID.fromString((String) entity.getProperty("user_uuid"));
         String username = (String) entity.getProperty("username");
         ActivityType type = Type.valueOf((String) entity.getProperty("type"));
         UUID conversationId = null;
