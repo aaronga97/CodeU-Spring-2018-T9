@@ -10,6 +10,8 @@ import java.util.UUID;
 
 public class Activity {
 
+  public enum ActivityType {CONVERSATION, REGISTRATION};
+
   private final UUID activityId;
 
   /** Used to determine the all time popularity of an activity. */
@@ -35,7 +37,7 @@ public class Activity {
    * 'C' is used for a conversation while 'R' is used for a registration.
    * May eventually be changed to an enum.
    */
-  private final Type type;
+  private final ActivityType type;
 
   /*
    * Gives the ID of the conversation this activity is associated with, null if not associated
@@ -62,7 +64,7 @@ public class Activity {
    * @param username the username of the user associated with this activity
    * @param
    */
-  public Activity(UUID activityId, int allTimeCount, Instant creation, String message, UUID userId, String username, Type type, UUID conversationId, String conversationName) {
+  public Activity(UUID activityId, int allTimeCount, Instant creation, String message, UUID userId, String username, ActivityType type, UUID conversationId, String conversationName) {
     this.activityId = activityId;
     this.allTimeCount = allTimeCount;
     this.creation = creation;
@@ -106,7 +108,7 @@ public class Activity {
   }
 
   /** Returns the type of activity **/
-  public Type getType() {
+  public Type getActivityType() {
     return type;
   }
 
