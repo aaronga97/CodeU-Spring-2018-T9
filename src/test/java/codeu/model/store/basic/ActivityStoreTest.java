@@ -62,7 +62,7 @@ public class ActivityStoreTest {
     Assert.assertEquals(expectedActivity.getMessage(), actualActivity.getMessage());
     Assert.assertEquals(expectedActivity.getUserId(), actualActivity.getUserId());
     Assert.assertEquals(expectedActivity.getUsername(), actualActivity.getUsername());
-    Assert.assertEquals(expectedActivity.getType(), actualActivity.getType());
+    Assert.assertEquals(expectedActivity.getType(), actualActivity.getActivityType());
     Assert.assertEquals(expectedActivity.getConversationId(), actualActivity.getConversationId());
     Assert.assertEquals(expectedActivity.getConversationName(), actualActivity.getConversationName());
   }
