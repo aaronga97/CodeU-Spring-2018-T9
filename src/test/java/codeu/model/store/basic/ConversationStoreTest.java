@@ -101,5 +101,6 @@ public class ConversationStoreTest {
     Assert.assertEquals(expectedConversation.getTitle(), actualConversation.getTitle());
     Assert.assertEquals(
         expectedConversation.getCreationTime(), actualConversation.getCreationTime());
+    Assert.assertEquals(expectedConversation.getPrivate(), actualConversation.getPrivate());
   }
 }
