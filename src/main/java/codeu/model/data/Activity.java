@@ -108,7 +108,7 @@ public class Activity {
   }
 
   /** Returns the type of activity **/
-  public Type getActivityType() {
+  public ActivityType getActivityType() {
     return type;
   }
 

@@ -213,7 +213,7 @@ public class PersistentDataStore {
         String message = (String) entity.getProperty("message");
         UUID userUuid = UUID.fromString((String) entity.getProperty("user_uuid"));
         String username = (String) entity.getProperty("username");
-        ActivityType type = Type.valueOf((String) entity.getProperty("type"));
+        ActivityType type = ActivityType.valueOf((String) entity.getProperty("type"));
         UUID conversationId = null;
         if (entity.getProperty("conversation_uuid") != null) {
           conversationId = UUID.fromString((String) entity.getProperty("conversation_uuid"));
@@ -275,7 +275,7 @@ public class PersistentDataStore {
     activityEntity.setProperty("message", activity.getMessage());
     activityEntity.setProperty("user_uuid", activity.getUserId().toString());
     activityEntity.setProperty("username", activity.getUsername());
-    activityEntity.setProperty("type", activity.getType().toString());
+    activityEntity.setProperty("type", activity.getActivityType().toString());
     if (activity.getConversationId() == null) {
       activityEntity.setProperty("conversation_uuid", activity.getConversationId());
     } else {
