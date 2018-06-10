@@ -18,6 +18,7 @@ import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.data.Activity;
+import codeu.model.data.ActivityType;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -275,7 +276,7 @@ public class PersistentDataStore {
     activityEntity.setProperty("message", activity.getMessage());
     activityEntity.setProperty("user_uuid", activity.getUserId().toString());
     activityEntity.setProperty("username", activity.getUsername());
-    activityEntity.setProperty("type", activity.getType().toString());
+    activityEntity.setProperty("type", activity.getActivityType().toString());
     if (activity.getConversationId() == null) {
       activityEntity.setProperty("conversation_uuid", activity.getConversationId());
     } else {
