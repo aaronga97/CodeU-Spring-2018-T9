@@ -36,6 +36,24 @@ UserStore userStore = UserStore.getInstance();
             <h1 style="color:dodgerblue">Welcome to your page!</h1>
         <% } else { %>
             <h1 style="color:dodgerblue">Welcome to <%= profileUser %>'s Page!</h1>
+
+            <%
+            String conversationName = "../chat/";
+            String firstUser;
+            String secondUser;
+            /** Gets the conversation link by the names of the two users in alphabetical order */
+            if (currentUser.compareTo(profileUser) < 0) {
+                firstUser = currentUser;
+                secondUser = profileUser;
+            } else {
+                firstUser = profileUser;
+                secondUser = currentUser;
+            }
+            conversationName = conversationName + firstUser + secondUser;
+            %>
+
+            <a href="/chat/<%= conversationName %>"> View Conversation with <%= profileUser %> </a>
+
         <% } %>
         <% /** Gets the bio of this user to display on their profile page */ %>
             <% String profilePageBio = thisUser.getBio(); %>

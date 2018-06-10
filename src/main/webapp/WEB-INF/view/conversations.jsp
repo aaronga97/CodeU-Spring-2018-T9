@@ -61,10 +61,13 @@
       <ul class="mdl-list">
     <%
       for(Conversation conversation : conversations){
+        // only display conversations that are not private
+        if (!conversation.getPrivate()) {
     %>
       <li><a href="/chat/<%= conversation.getTitle() %>">
         <%= conversation.getTitle() %></a></li>
     <%
+        }
       }
     %>
       </ul>

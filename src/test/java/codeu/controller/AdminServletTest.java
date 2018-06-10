@@ -134,7 +134,8 @@ public class AdminServletTest {
                     UUID.randomUUID(),
                     UUID.randomUUID(),
                     "test_conversation",
-                    Instant.now()));
+                    Instant.now(),
+                    false));
 
     Integer userSize = fakeMessageList.size();
     Integer messageSize = fakeMessageList.size();
