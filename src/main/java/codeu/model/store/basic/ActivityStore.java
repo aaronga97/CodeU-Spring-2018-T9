@@ -45,12 +45,11 @@ public class ActivityStore {
   private PersistentStorageAgent persistentStorageAgent;
 
   /** The in-memory list of Activities. */
-  private List<Activity> activities;
+  private List<Activity> activities = new ArrayList<>();
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private ActivityStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
-    activities = new ArrayList<>();
   }
 
   /** Add a new activity to the current set of activities known to the application. */
