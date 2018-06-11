@@ -10,7 +10,12 @@ import java.util.UUID;
 
 public class Activity {
 
-  //public enum ActivityType {CONVERSATION, REGISTRATION};
+  /**
+   * Enum used to give a "type" to an activity object,
+   * by which one can determine what action the activity object is associated with.
+   */
+
+  public enum ActivityType {CONVERSATION, REGISTRATION};
 
   private final UUID activityId;
 
@@ -60,7 +65,7 @@ public class Activity {
    * @param allTimeCount the count of this activity
    * @param creation the creation time of this activity
    * @param message the message associated this activity
-   * @param userID the id of the user associated with this activity
+   * @param userId the id of the user associated with this activity
    * @param username the username of the user associated with this activity
    * @param
    */

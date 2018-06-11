@@ -1,7 +1,7 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.Activity;
-import codeu.model.data.ActivityType;
+import codeu.model.data.Activity.ActivityType;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.time.Instant;
 import java.util.ArrayList;

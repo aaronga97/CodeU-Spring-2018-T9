@@ -1,5 +1,7 @@
 package codeu.model.data;
 
+import codeu.model.data.Activity.ActivityType;
+
 import java.time.Instant;
 import java.util.UUID;
 import org.junit.Assert;
