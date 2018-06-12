@@ -13,26 +13,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
-<%@ page import="codeu.model.data.Conversation" %>
-<%@ page import="codeu.model.data.Message" %>
-<%@ page import="codeu.model.data.User" %>
-<%@ page import="codeu.model.store.basic.ConversationStore" %>
-<%@ page import="codeu.model.store.basic.MessageStore" %>
-<%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="java.util.Map" %>
 
 <!DOCTYPE html>
 
-<%
-/** Retrieve an instance of each Datastore */
-ConversationStore conversationStore = ConversationStore.getInstance();
-UserStore userStore = UserStore.getInstance();
-MessageStore messageStore = MessageStore.getInstance();
-
-/** Retrieve sizes of each Datastore */
-Integer convSize = conversationStore.countTotalConversations();
-Integer userSize = userStore.countTotalUsers();
-Integer messageSize = messageStore.countTotalMessages();
-%>
+<% Map<String, String> adminStatsMap = (Map<String, String>) request.getAttribute("adminStatsMap");
+   String userName = adminStatsMap.get("lastUserName");
+   String userTime = adminStatsMap.get("lastUserTime");
+   String convName = adminStatsMap.get("lastConversationName");
+   String convTime = adminStatsMap.get("lastConversationTime");
+   String messageName = adminStatsMap.get("lastMessageContent");
+   String messageTime = adminStatsMap.get("lastMessageTime");
+   String messageUser = adminStatsMap.get("lastMessageUser"); %>
 
 <html>
 <head>
@@ -46,13 +38,15 @@ Integer messageSize = messageStore.countTotalMessages();
   <div id="container">
     <h1>Admin Page</h1>
 
-    <p> <b>Total Users: </b> <%= userSize %></p>
+      <p> <b>Total users: </b> <%= adminStatsMap.get("userSize")%></p>
+      <p> <b>Total conversations: </b> <%= adminStatsMap.get("convSize")%></p>
+      <p> <b>Total messages: </b> <%= adminStatsMap.get("messageSize")%></p>
 
-    <p> <b>Total Messages: </b> <%= messageSize %></p>
+      <p> <b>Last User created: </b> <a href="/users/<%= userName %>"><%= userName %></a> at <%= userTime %></p>
+      <p> <b>Last Conversation created: </b> <a href="/chat/<%= convName %>"><%= convName %></a> at <%= convTime %></p>
+      <p> <b>Last Message sent: </b> "<%= messageName %>" by <a href="/users/<%= messageUser %>"> <%= messageUser %></a> at <%= messageTime %></p>
 
-    <p> <b>Total Conversations: </b> <%= convSize %></p>
-
-    <p>New features coming soon...</p>
+    <br>
 
     <form action="/admin" method="POST">
         <p> <b>Make someone admin:<b> </p>
@@ -67,6 +61,7 @@ Integer messageSize = messageStore.countTotalMessages();
         <h2 style="color:green"><%= request.getAttribute("success") %></h2>
     <% } %>
 
+      <br><br><br>
   </div>
 </body>
 </html>

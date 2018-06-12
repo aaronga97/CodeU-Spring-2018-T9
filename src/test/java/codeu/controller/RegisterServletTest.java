@@ -81,7 +81,7 @@ public class RegisterServletTest {
 
 				UUID fakeConversationId = UUID.randomUUID();
     Conversation fakeConversation =
-        new Conversation(fakeConversationId, UUID.randomUUID(), "test_conversation", Instant.now());
+        new Conversation(fakeConversationId, UUID.randomUUID(), "test_conversation", Instant.now(), false);
     Mockito.when(mockConversationStore.getActFeedConversation())
         .thenReturn(fakeConversation);
 

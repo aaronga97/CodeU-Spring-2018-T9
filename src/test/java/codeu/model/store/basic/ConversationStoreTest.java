@@ -18,7 +18,13 @@ public class ConversationStoreTest {
 
   private final Conversation CONVERSATION_ONE =
       new Conversation(
-          UUID.randomUUID(), UUID.randomUUID(), "conversation_one", Instant.ofEpochMilli(1000));
+          UUID.randomUUID(), UUID.randomUUID(), "conversation_one", Instant.ofEpochMilli(1000), false);
+  private final Conversation CONVERSATION_TWO =
+          new Conversation(
+                  UUID.randomUUID(), UUID.randomUUID(), "conversation_two", Instant.ofEpochMilli(2000), false);
+  private final Conversation CONVERSATION_THREE =
+          new Conversation(
+                  UUID.randomUUID(), UUID.randomUUID(), "conversation_three", Instant.ofEpochMilli(3000), false);
 
   @Before
   public void setup() {
@@ -27,6 +33,8 @@ public class ConversationStoreTest {
 
     final List<Conversation> conversationList = new ArrayList<>();
     conversationList.add(CONVERSATION_ONE);
+    conversationList.add(CONVERSATION_TWO);
+    conversationList.add(CONVERSATION_THREE);
     conversationStore.setConversations(conversationList);
   }
 
@@ -60,9 +68,16 @@ public class ConversationStoreTest {
   }
 
   @Test
+  public void testGetLastConversationIndex() {
+    Conversation latestConversation = conversationStore.getLastConversationIndex();
+
+    Assert.assertEquals(CONVERSATION_THREE, latestConversation);
+  }
+
+  @Test
   public void testGetTotalConversations() {
     Integer resultSize = conversationStore.countTotalConversations();
-    Integer expectedResult = 1;
+    Integer expectedResult = 3;
 
     Assert.assertEquals(expectedResult, resultSize);
   }
@@ -70,7 +85,7 @@ public class ConversationStoreTest {
   @Test
   public void testAddConversation() {
     Conversation inputConversation =
-        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now(), false);
 
     conversationStore.addConversation(inputConversation);
     Conversation resultConversation =

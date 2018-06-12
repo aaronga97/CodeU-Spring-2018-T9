@@ -11,6 +11,7 @@ public class ActivityTest {
 
   @Test
   public void testCreate() {
+
     UUID activityId = UUID.randomUUID();
     int allTimeCount = 0;
     Instant creation = Instant.now();
@@ -35,6 +36,7 @@ public class ActivityTest {
     Assert.assertEquals(type, activity.getActivityType());
     Assert.assertEquals(conversationId, activity.getConversationId());
     Assert.assertEquals(conversationName, activity.getConversationName());
+
 
   }
 }
