@@ -3,9 +3,12 @@ package codeu.controller;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.Activity;
+import codeu.model.data.Activity.ActivityType;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.ActivityStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -23,7 +26,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 public class ActivityFeedServletTest {
-	
+
 	private ActivityFeedServlet activityFeedServlet;
 	private HttpServletRequest mockRequest;
 	private HttpSession mockSession;
@@ -32,7 +35,8 @@ public class ActivityFeedServletTest {
   private ConversationStore mockConversationStore;
   private MessageStore mockMessageStore;
   private UserStore mockUserStore;
-	
+	private ActivityStore mockActivityStore;
+
 	@Before
 	public void setup() {
 		activityFeedServlet = new ActivityFeedServlet();
@@ -54,31 +58,25 @@ public class ActivityFeedServletTest {
 
     mockUserStore = Mockito.mock(UserStore.class);
     activityFeedServlet.setUserStore(mockUserStore);
+
+		mockActivityStore = Mockito.mock(ActivityStore.class);
+		activityFeedServlet.setActivityStore(mockActivityStore);
   }
-	
+
 	@Test
 	public void testDoGet() throws IOException, ServletException {
-	
-		UUID fakeConversationId = UUID.randomUUID();
-    Conversation fakeConversation =
-        new Conversation(fakeConversationId, UUID.randomUUID(), "test_conversation", Instant.now());
-    Mockito.when(mockConversationStore.getActFeedConversation())
-        .thenReturn(fakeConversation);
-		
-		List<Message> fakeMessageList = new ArrayList<>();
-		
-		Message fakeMessage =  new Message(UUID.randomUUID(),fakeConversationId, 
-			UUID.randomUUID(), "test message", Instant.now());
-    
-		fakeMessageList.add(fakeMessage);
-	
-    Mockito.when(mockMessageStore.getMessagesInConversation(fakeConversationId))
-        .thenReturn(fakeMessageList);
-	
+
+		List<Activity> fakeActivityList = new ArrayList<>();
+		Activity fakeActivity =  new Activity(UUID.randomUUID(), 0, Instant.now(), "test_activity", UUID.randomUUID(), "test_username",
+			ActivityType.REGISTRATION, null, null);
+		fakeActivityList.add(fakeActivity);
+
+    Mockito.when(mockActivityStore.getActivities()).thenReturn(fakeActivityList);
+
 		activityFeedServlet.doGet(mockRequest, mockResponse);
 
-		Mockito.verify(mockRequest).setAttribute("conversation", fakeConversation);
-		Mockito.verify(mockRequest).setAttribute("messages", fakeMessageList);
+		Mockito.verify(mockRequest).setAttribute("activities", fakeActivityList);
+
 		Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
 	}
 }

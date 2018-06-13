@@ -3,9 +3,11 @@ package codeu.controller;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.Activity;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.ActivityStore;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.List;
@@ -32,6 +34,9 @@ public class ServerStartupListener implements ServletContextListener {
 
       List<Conversation> conversations = PersistentStorageAgent.getInstance().loadConversations();
       ConversationStore.getInstance().setConversations(conversations);
+
+      List<Activity> activities = PersistentStorageAgent.getInstance().loadActivities();
+      ActivityStore.getInstance().setActivities(activities);
 
 			Conversation actFeedConversation = PersistentStorageAgent.getInstance().loadActFeedConversation();
 			ConversationStore.getInstance().setActFeedConversation(actFeedConversation);

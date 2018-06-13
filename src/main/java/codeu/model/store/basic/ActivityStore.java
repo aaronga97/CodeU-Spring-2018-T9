@@ -58,6 +58,11 @@ public class ActivityStore {
     persistentStorageAgent.writeThrough(activity);
   }
 
+  /** Return the list of activities found in this ActivityStore */
+  public List<Activity> getActivities() {
+    return activities;
+  }
+
   /** Find and return the Activity with the given Id, mainly used for testing. */
   public Activity getActivityWithId(UUID id) {
     for (Activity activity : activities) {

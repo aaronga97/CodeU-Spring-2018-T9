@@ -3,9 +3,11 @@ package codeu.controller;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.Activity;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.ActivityStore;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,10 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-/** Servlet class responsible for the activity feed page. */ 
+/** Servlet class responsible for the activity feed page. */
 
 public class ActivityFeedServlet extends HttpServlet {
-	
+
 	  /** Store class that gives access to Users. */
   private UserStore userStore;
 
@@ -29,6 +31,9 @@ public class ActivityFeedServlet extends HttpServlet {
 
   /** Store class that gives access to Conversations. */
   private ConversationStore conversationStore;
+
+	/** Store class that gives access to Conversations. */
+	private ActivityStore activityStore;
 
   /**
    * Set up state for handling conversation-related requests. This method is only called when
@@ -40,6 +45,7 @@ public class ActivityFeedServlet extends HttpServlet {
     setUserStore(UserStore.getInstance());
 		setMessageStore(MessageStore.getInstance());
     setConversationStore(ConversationStore.getInstance());
+		setActivityStore(ActivityStore.getInstance());
   }
 
   /**
@@ -56,8 +62,8 @@ public class ActivityFeedServlet extends HttpServlet {
    */
   void setMessageStore(MessageStore messageStore) {
     this.messageStore = messageStore;
-  }	
-	
+  }
+
   /**
    * Sets the ConversationStore used by this servlet. This function provides a common setup method
    * for use by the test framework or the servlet's init() function.
@@ -66,27 +72,33 @@ public class ActivityFeedServlet extends HttpServlet {
     this.conversationStore = conversationStore;
   }
 
-	
+	/**
+	 * Sets the ActivityStore used by this servlet. This function provides a common setup method
+	 * for use by the test framework or the servlet's init() function.
+	 */
+	void setActivityStore(ActivityStore activityStore) {
+		this.activityStore = activityStore;
+	}
+
 	/**
 	*This function fires when a user requests the /activityfeed URL. It forwards the
 	*request to activityfeed.jsp.
 	*/
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) 
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-		
-		Conversation conversation = conversationStore.getActFeedConversation();
-   
-    UUID conversationId = conversation.getId();
 
-    List<Message> messages = messageStore.getMessagesInConversation(conversationId);
+		//Conversation conversation = conversationStore.getActFeedConversation();
 
-    request.setAttribute("conversation", conversation);
-    request.setAttribute("messages", messages);
-   
+    //UUID conversationId = conversation.getId();
+
+    List<Activity> activities = activityStore.getActivities();
+
+    request.setAttribute("activities", activities);
+
 		request.getRequestDispatcher("/WEB-INF/view/activityfeed.jsp").forward(request, response);
-		
-	
+
+
 	}
 
 }

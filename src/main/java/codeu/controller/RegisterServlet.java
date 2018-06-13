@@ -20,6 +20,11 @@ import codeu.model.store.basic.ConversationStore;
 import codeu.model.data.Message;
 import codeu.model.store.basic.MessageStore;
 
+import codeu.model.data.Activity;
+import codeu.model.data.Activity.ActivityType;
+import codeu.model.store.basic.ActivityStore;
+
+
 public class RegisterServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
@@ -31,6 +36,9 @@ public class RegisterServlet extends HttpServlet {
 	/** Store class that gives access to messages. */
 	private MessageStore messageStore;
 
+  /** Store class that gives access to activities. */
+	private ActivityStore activityStore;
+
   /**
    * Set up state for handling registration-related requests. This method is only called when
    * running in a server, not when running in a test.
@@ -41,6 +49,7 @@ public class RegisterServlet extends HttpServlet {
     setUserStore(UserStore.getInstance());
 		setConversationStore(conversationStore.getInstance());
 		setMessageStore(messageStore.getInstance());
+    setActivityStore(activityStore.getInstance());
   }
 
   /**
@@ -65,6 +74,14 @@ public class RegisterServlet extends HttpServlet {
    */
   void setMessageStore(MessageStore messageStore) {
     this.messageStore = messageStore;
+  }
+
+  /**
+   * Sets the ActivityStore used by this servlet. This function provides a common setup method for
+   * use by the test framework or the servlet's init() function.
+   */
+  void setActivityStore(ActivityStore activityStore) {
+    this.activityStore = activityStore;
   }
 
   @Override
@@ -97,19 +114,20 @@ public class RegisterServlet extends HttpServlet {
     User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), false);
     userStore.addUser(user);
 
-		String messageContent = "User " + user.getName() + " joined the site!";
+		//String messageContent = "User " + user.getName() + " joined the site!";
 
-		Conversation conversation = conversationStore.getActFeedConversation();
+		//Conversation conversation = conversationStore.getActFeedConversation();
 
-		 Message message =
+		 /*Message message =
         new Message(
             UUID.randomUUID(),
             conversation.getId(),
             conversation.getOwnerId(),
             messageContent,
-            Instant.now());
+            Instant.now());*/
+    Activity activity = new Activity(UUID.randomUUID(), 0, Instant.now(), "joined the site!", user.getId(), user.getName(), ActivityType.REGISTRATION, null, null);
 
-		messageStore.addMessage(message);
+		activityStore.addActivity(activity);
 
     response.sendRedirect("/login");
   }
