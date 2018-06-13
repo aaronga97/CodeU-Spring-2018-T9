@@ -37,6 +37,7 @@ public class NewPasswordServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
         String newPassword = request.getParameter("newPassword");
         String reTypedNewPassword = request.getParameter("reTypedNewPassword");
         reTypedNewPassword = Jsoup.clean(reTypedNewPassword, Whitelist.none());
