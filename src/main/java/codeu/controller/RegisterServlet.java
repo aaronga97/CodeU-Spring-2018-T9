@@ -86,7 +86,7 @@ public class RegisterServlet extends HttpServlet {
 
     Activity activity = new Activity(UUID.randomUUID(), 0, Instant.now(), "joined the site!", user.getId(), user.getName(), ActivityType.REGISTRATION, null, null);
 
-		activityStore.addActivity(activity);
+    activityStore.addActivity(activity);
 
     response.sendRedirect("/login");
   }
