@@ -124,7 +124,7 @@ public class NewPasswordServletTest {
         newPasswordServlet.doPost(mockRequest, mockResponse);
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
-        
+
         Assert.assertEquals("test username", user.getName());
        Assert.assertNotEquals(
                "$2a$10$.e.4EEfngEXmxAO085XnYOmDntkqod0C384jOR9oagwxMnPNHaGLa", user.getPasswordHash());
