@@ -38,21 +38,6 @@ public class ServerStartupListener implements ServletContextListener {
       List<Activity> activities = PersistentStorageAgent.getInstance().loadActivities();
       ActivityStore.getInstance().setActivities(activities);
 
-			Conversation actFeedConversation = PersistentStorageAgent.getInstance().loadActFeedConversation();
-			ConversationStore.getInstance().setActFeedConversation(actFeedConversation);
-
-			/**
-			 * Checks to see if the actFeedConversation has been set in datastore yet.
-			 * If not, creates a new activityFeedConversation and writes it through to datastore.
-			 * Should only ever happen one time.
-			 */
-
-			if (ConversationStore.getInstance().getActFeedConversation().getId() == null ) {
-				Conversation convo = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "actFeedConversation", Instant.now(), false);
-				ConversationStore.getInstance().setActFeedConversation(convo);
-				PersistentStorageAgent.getInstance().actFeedWriteThrough(convo);
-			}
-
       UserStore userStore = UserStore.getInstance();
       String username = "admin";
       /** Check if admin exists, if not create it */
