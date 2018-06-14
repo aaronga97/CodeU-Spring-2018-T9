@@ -28,44 +28,43 @@ import org.mockito.Mockito;
 
 public class ActivityFeedServletTest {
 
-	private ActivityFeedServlet activityFeedServlet;
-	private HttpServletRequest mockRequest;
-	private HttpSession mockSession;
-	private HttpServletResponse mockResponse;
-	private RequestDispatcher mockRequestDispatcher;
-	private ActivityStore mockActivityStore;
+  private ActivityFeedServlet activityFeedServlet;
+  private HttpServletRequest mockRequest;
+  private HttpSession mockSession;
+  private HttpServletResponse mockResponse;
+  private RequestDispatcher mockRequestDispatcher;
+  private ActivityStore mockActivityStore;
 
-	@Before
-	public void setup() {
-		activityFeedServlet = new ActivityFeedServlet();
+  @Before
+  public void setup() {
+    activityFeedServlet = new ActivityFeedServlet();
 
-		mockRequest = Mockito.mock(HttpServletRequest.class);
+    mockRequest = Mockito.mock(HttpServletRequest.class);
     mockSession = Mockito.mock(HttpSession.class);
     Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
 
     mockResponse = Mockito.mock(HttpServletResponse.class);
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
-		Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/activityfeed.jsp"))
-		.thenReturn(mockRequestDispatcher);
+    Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/activityfeed.jsp")).thenReturn(mockRequestDispatcher);
 
-		mockActivityStore = Mockito.mock(ActivityStore.class);
-		activityFeedServlet.setActivityStore(mockActivityStore);
+    mockActivityStore = Mockito.mock(ActivityStore.class);
+    activityFeedServlet.setActivityStore(mockActivityStore);
   }
 
-	@Test
-	public void testDoGet() throws IOException, ServletException {
+  @Test
+  public void testDoGet() throws IOException, ServletException {
 
-		List<Activity> fakeActivityList = new ArrayList<>();
-		Activity fakeActivity =  new Activity(UUID.randomUUID(), 0, Instant.now(), "test_activity", UUID.randomUUID(), "test_username",
-			ActivityType.REGISTRATION, null, null);
-		fakeActivityList.add(fakeActivity);
+    List<Activity> fakeActivityList = new ArrayList<>();
+    Activity fakeActivity =  new Activity(UUID.randomUUID(), 0, Instant.now(), "test_activity", UUID.randomUUID(), "test_username",
+      ActivityType.REGISTRATION, null, null);
+    fakeActivityList.add(fakeActivity);
 
     Mockito.when(mockActivityStore.getActivities()).thenReturn(fakeActivityList);
 
-		activityFeedServlet.doGet(mockRequest, mockResponse);
+    activityFeedServlet.doGet(mockRequest, mockResponse);
 
-		Mockito.verify(mockRequest).setAttribute("activities", fakeActivityList);
+    Mockito.verify(mockRequest).setAttribute("activities", fakeActivityList);
 
-		Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
-	}
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
 }
