@@ -33,7 +33,7 @@
     <form action="/newPassword" method="POST">
       <label for="username">Username: </label>
       <br/>
-      <input type="text" name="usernameVerification" id="username">
+      <input type="text" name="usernameVerification" id="usernameVerification">
       <br/><br/>
       <label for="password">New password: </label>
       <br/>
