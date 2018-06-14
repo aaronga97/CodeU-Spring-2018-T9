@@ -1,6 +1,7 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.Activity;
+import codeu.model.data.Activity.ActivityType;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,63 +15,61 @@ import java.util.UUID;
 
 public class ActivityStore {
 
-	/** Singleton instance of ActivityStore. */
-	private static ActivityStore instance;
-	
-	/**
-	 * Returns the singleton instance of ActivityStore that should be shared between all
-	 * servlet classes. Do not call this function from a test; use getTestInstance() instead.
-	 */
-	public static ActivityStore getInstance() {
-		if (instance == null) {
-			instance = new ActivityStore(PersistentStorageAgent.getInstance());		
-		}
-		return instance;
-	}
+  /** Singleton instance of ActivityStore. */
+  private static ActivityStore instance;
 
-	/**
-	 * Instance getter function used for testing. Supply a mock for PersistentStorageAgent.
-	 *
-	 * @param persistentStorageAgent a mock used for testing
-	 */
-	public static ActivityStore getTestInstance(PersistentStorageAgent persistentStorageAgent) {
-		return new ActivityStore(persistentStorageAgent);	
-	}
-	
-	/**
-	 * The PersistentStorageAgent responsible for loading Activities from and saving Activities
-	 * to Datastore.
-	 */
-	private PersistentStorageAgent persistentStorageAgent;
+  /**
+   * Returns the singleton instance of ActivityStore that should be shared between all
+   * servlet classes. Do not call this function from a test; use getTestInstance() instead.
+   */
+  public static ActivityStore getInstance() {
+    if (instance == null) {
+      instance = new ActivityStore(PersistentStorageAgent.getInstance());
+    }
+    return instance;
+  }
 
-	/** The in-memory list of Activities. */
-	private List<Activity> activities;
+  /**
+   * Instance getter function used for testing. Supply a mock for PersistentStorageAgent.
+   *
+   * @param persistentStorageAgent a mock used for testing
+   */
+  public static ActivityStore getTestInstance(PersistentStorageAgent persistentStorageAgent) {
+    return new ActivityStore(persistentStorageAgent);
+  }
 
-	/** This class is a singleton, so its constructor is private. Call getInstance() instead. */
-	private ActivityStore(PersistentStorageAgent persistentStorageAgent) {
-		this.persistentStorageAgent = persistentStorageAgent;
-		activities = new ArrayList<>();
-	}
+  /**
+   * The PersistentStorageAgent responsible for loading Activities from and saving Activities
+   * to Datastore.
+   */
+  private PersistentStorageAgent persistentStorageAgent;
 
-	/** Add a new activity to the current set of activities known to the application. */
-	public void addActivity(Activity activity) {
-		activities.add(activity);
-		//persistentStorageAgent.writeThrough(activity);
-	}
+  /** The in-memory list of Activities. */
+  private List<Activity> activities = new ArrayList<>();
 
-	/** Find and return the Activity with the given Id, mainly used for testing. */
-	public Activity getActivityWithId(UUID id) {
-		for (Activity activity : activities) {
-			if(activity.getActivityId().equals(id)) {
-				return activity;			
-			}
-		}
-		return null;
-	}
+  /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
+  private ActivityStore(PersistentStorageAgent persistentStorageAgent) {
+    this.persistentStorageAgent = persistentStorageAgent;
+  }
 
-	/** Sets the List of Activities stored by this ActivityStore. */
-	public void setActivities(List<Activity> activities) {
-		this.activities = activities;
-	}
+  /** Add a new activity to the current set of activities known to the application. */
+  public void addActivity(Activity activity) {
+    activities.add(activity);
+    persistentStorageAgent.writeThrough(activity);
+  }
 
+  /** Find and return the Activity with the given Id, mainly used for testing. */
+  public Activity getActivityWithId(UUID id) {
+    for (Activity activity : activities) {
+      if(activity.getActivityId().equals(id)) {
+        return activity;
+      }
+    }
+    return null;
+  }
+
+  /** Sets the List of Activities stored by this ActivityStore. */
+  public void setActivities(List<Activity> activities) {
+    this.activities = activities;
+  }
 }
