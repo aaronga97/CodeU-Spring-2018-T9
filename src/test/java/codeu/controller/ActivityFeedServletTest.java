@@ -33,9 +33,6 @@ public class ActivityFeedServletTest {
 	private HttpSession mockSession;
 	private HttpServletResponse mockResponse;
 	private RequestDispatcher mockRequestDispatcher;
-  private ConversationStore mockConversationStore;
-  private MessageStore mockMessageStore;
-  private UserStore mockUserStore;
 	private ActivityStore mockActivityStore;
 
 	@Before
@@ -50,15 +47,6 @@ public class ActivityFeedServletTest {
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
 		Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/activityfeed.jsp"))
 		.thenReturn(mockRequestDispatcher);
-
-		mockConversationStore = Mockito.mock(ConversationStore.class);
-    activityFeedServlet.setConversationStore(mockConversationStore);
-
-    mockMessageStore = Mockito.mock(MessageStore.class);
-    activityFeedServlet.setMessageStore(mockMessageStore);
-
-    mockUserStore = Mockito.mock(UserStore.class);
-    activityFeedServlet.setUserStore(mockUserStore);
 
 		mockActivityStore = Mockito.mock(ActivityStore.class);
 		activityFeedServlet.setActivityStore(mockActivityStore);
