@@ -108,4 +108,15 @@ public class MessageStore {
     }
     return sentMessages;
   }
+
+  /** Return latest message created */
+  public Message getLastMessageIndex(){
+
+    if(messages == null || messages.isEmpty()) {
+      return null;
+    }
+
+    int lastMessage = messages.size()-1;
+    return messages.get(lastMessage);
+  }
 }

@@ -91,6 +91,13 @@ public class MessageStoreTest {
     }
 
     @Test
+    public void testGetLastMessageIndex() {
+        Message latestMessage = messageStore.getLastMessageIndex();
+
+        Assert.assertEquals(MESSAGE_THREE, latestMessage);
+    }
+
+    @Test
     public void testGetMessagesOfUser() {
         List<Message> sentMessages = messageStore.getMessagesOfUser(USER_ONE);
         int expectedSize = 2;

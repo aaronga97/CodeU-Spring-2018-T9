@@ -37,7 +37,7 @@
       <form action="/conversations" method="POST">
           <div class="form-group">
             <label class="form-control-label">Title:</label>
-          <input type="text" name="conversationTitle">
+          <input type="text" name="conversationTitle" id="newConversation">
         </div>
 
         <button type="submit">Create</button>
@@ -61,10 +61,13 @@
       <ul class="mdl-list">
     <%
       for(Conversation conversation : conversations){
+        // only display conversations that are not private
+        if (!conversation.getPrivate()) {
     %>
       <li><a href="/chat/<%= conversation.getTitle() %>">
         <%= conversation.getTitle() %></a></li>
     <%
+        }
       }
     %>
       </ul>
@@ -74,4 +77,9 @@
     <hr/>
   </div>
 </body>
+
+<script>
+    document.getElementById("newConversation").focus();
+</script>
+
 </html>

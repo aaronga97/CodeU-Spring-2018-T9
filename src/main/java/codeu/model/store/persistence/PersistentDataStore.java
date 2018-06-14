@@ -107,7 +107,8 @@ public class PersistentDataStore {
         UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
         String title = (String) entity.getProperty("title");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime);
+        boolean privateConversation = Boolean.parseBoolean((String) entity.getProperty("private_conversation"));
+        Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, privateConversation);
         conversations.add(conversation);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -136,6 +137,7 @@ public class PersistentDataStore {
     UUID ownerUuid = null;
     String title = null;
     Instant creationTime = null;
+    boolean privateConversation = false;
     Conversation actFeedConversation = null;
 
     for (Entity entity : results.asIterable()) {
@@ -144,7 +146,7 @@ public class PersistentDataStore {
         ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
         title = (String) entity.getProperty("title");
         creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-
+        privateConversation = Boolean.parseBoolean((String) entity.getProperty("private_conversation"));
 
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -153,7 +155,8 @@ public class PersistentDataStore {
         throw new PersistentDataStoreException(e);
       }
     }
-    return actFeedConversation = new Conversation(uuid, ownerUuid, title, creationTime);
+    actFeedConversation = new Conversation(uuid, ownerUuid, title, creationTime, privateConversation);
+    return actFeedConversation;
   }
 
   /**
@@ -264,6 +267,7 @@ public class PersistentDataStore {
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
     conversationEntity.setProperty("title", conversation.getTitle());
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
+    conversationEntity.setProperty("private_conversation", Boolean.toString(conversation.getPrivate()));
     datastore.put(conversationEntity);
   }
 
@@ -296,6 +300,7 @@ public class PersistentDataStore {
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
     conversationEntity.setProperty("title", conversation.getTitle());
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
+    conversationEntity.setProperty("private_conversation", Boolean.toString(conversation.getPrivate()));
     datastore.put(conversationEntity);
   }
 

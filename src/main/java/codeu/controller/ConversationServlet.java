@@ -129,7 +129,7 @@ public class ConversationServlet extends HttpServlet {
     }
 
     Conversation conversation =
-        new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now());
+        new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), false);
 
     conversationStore.addConversation(conversation);
 
