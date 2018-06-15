@@ -80,8 +80,8 @@ public class RegisterServlet extends HttpServlet {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
 
-    if(username.length()<3 || username.length()>13){
-        request.setAttribute("error", "username must be between 3 and 13 characters");
+    if(username.length()<3 || username.length()>14){
+        request.setAttribute("error", "username must be between 3 and 14 characters");
         request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
         return;
     }
