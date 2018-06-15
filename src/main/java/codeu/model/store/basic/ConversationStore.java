@@ -17,6 +17,7 @@ package codeu.model.store.basic;
 import codeu.model.data.Conversation;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -61,14 +62,14 @@ public class ConversationStore {
   /** The in-memory activity feed conversation. */
   private Conversation actFeedConversation;
 
-  /** The in-memory list of restricted conversation names reserved for private conversations. */
-  private List<String> restrictedConversationNames;
+  /** The in-memory set of restricted conversation names reserved for private conversations. */
+  private final HashSet<String> restrictedConversationNames;
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private ConversationStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
     conversations = new ArrayList<>();
-    restrictedConversationNames = new ArrayList<>();
+    restrictedConversationNames = new HashSet<>();
   }
 
 	/** Access the current set of conversations known to the application. */
@@ -81,19 +82,14 @@ public class ConversationStore {
     return actFeedConversation;
   }
 
-  /** Access the list of restricted conversation names. */
-  public List<String> getRestrictedConversationNames() {
+  /** Access the set of restricted conversation names. */
+  public HashSet<String> getRestrictedConversationNames() {
       return restrictedConversationNames;
   }
 
-  /** Checks if a name exists in the list of restricted conversation names. */
+  /** Checks if a name exists in the set of restricted conversation names. */
   public boolean isRestrictedName(String name) {
-      for (String n: restrictedConversationNames) {
-          if (name.equals(n)) {
-              return true;
-          }
-      }
-      return false;
+      return restrictedConversationNames.contains(name);
   }
 
   /** Add a new conversation to the current set of conversations known to the application. */
