@@ -133,4 +133,19 @@ public class UserStore {
   public void setUsers(List<User> users) {
     this.users = users;
   }
+
+  /** Return latest User created */
+  public User getLastUserIndex(){
+    if(users == null || users.isEmpty()) {
+      return null;
+    }
+
+    int lastUser = users.size()-1;
+    return users.get(lastUser);
+  }
+
+  /** Returns the list of all Users by this UserStore. */
+  public List<User> getUsers() {
+    return users;
+  }
 }

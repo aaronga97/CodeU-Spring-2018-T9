@@ -43,7 +43,7 @@ public class ServerStartupListener implements ServletContextListener {
 			 */
 
 			if (ConversationStore.getInstance().getActFeedConversation().getId() == null ) {
-				Conversation convo = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "actFeedConversation", Instant.now());
+				Conversation convo = new Conversation(UUID.randomUUID(), UUID.randomUUID(), "actFeedConversation", Instant.now(), false);
 				ConversationStore.getInstance().setActFeedConversation(convo);
 				PersistentStorageAgent.getInstance().actFeedWriteThrough(convo);
 			}
