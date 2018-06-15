@@ -78,6 +78,19 @@ public class RegisterServlet extends HttpServlet {
       throws IOException, ServletException {
 
     String username = request.getParameter("username");
+    String password = request.getParameter("password");
+
+    if(username.length()<3 || username.length()>13){
+        request.setAttribute("error", "username must be between 3 and 13 characters");
+        request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+        return;
+    }
+
+    if(password.length()<5||password.length()>13 || !password.matches("(.*[a-z].*)")|| !password.matches( "(.*[0-9].*)")){
+      request.setAttribute("error", "Password must be between 5 and 13 characters and contain both letters and numbers.");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
 
     if (!username.matches("[\\w*\\s*]*")) {
       request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
@@ -91,7 +104,6 @@ public class RegisterServlet extends HttpServlet {
       return;
     }
 
-    String password = request.getParameter("password");
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
     User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), false);
