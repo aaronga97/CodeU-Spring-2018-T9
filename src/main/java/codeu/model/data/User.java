@@ -134,10 +134,15 @@ public class User {
     public HashSet<String> getPals() {
         return pals;
     }
-    
+
     /** Adds a pal to the list of this User's pals. */
     public void addPal(String name) {
         this.pals.add(name);
+    }
+
+    /** Checks whether a given name is in this User's list of pals. */
+    public boolean isPal(String name) {
+        return this.pals.contains(name);
     }
 
     /**
