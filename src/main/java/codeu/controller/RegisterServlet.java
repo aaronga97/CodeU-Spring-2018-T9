@@ -14,22 +14,18 @@ import org.mindrot.jbcrypt.BCrypt;
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
 
-import codeu.model.data.Conversation;
-import codeu.model.store.basic.ConversationStore;
+import codeu.model.data.Activity;
+import codeu.model.data.Activity.ActivityType;
+import codeu.model.store.basic.ActivityStore;
 
-import codeu.model.data.Message;
-import codeu.model.store.basic.MessageStore;
 
 public class RegisterServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
   private UserStore userStore;
 
-	/** Store class that gives access to conversations. */
-	private ConversationStore conversationStore;
-
-	/** Store class that gives access to messages. */
-	private MessageStore messageStore;
+  /** Store class that gives access to activities. */
+	private ActivityStore activityStore;
 
   /**
    * Set up state for handling registration-related requests. This method is only called when
@@ -39,8 +35,7 @@ public class RegisterServlet extends HttpServlet {
   public void init() throws ServletException {
     super.init();
     setUserStore(UserStore.getInstance());
-		setConversationStore(conversationStore.getInstance());
-		setMessageStore(messageStore.getInstance());
+    setActivityStore(activityStore.getInstance());
   }
 
   /**
@@ -51,20 +46,12 @@ public class RegisterServlet extends HttpServlet {
     this.userStore = userStore;
   }
 
-	  /**
-   * Sets the ConversationStore used by this servlet. This function provides a common setup method
-   * for use by the test framework or the servlet's init() function.
-   */
-  void setConversationStore(ConversationStore conversationStore) {
-    this.conversationStore = conversationStore;
-  }
-
   /**
-   * Sets the MessageStore used by this servlet. This function provides a common setup method for
+   * Sets the ActivityStore used by this servlet. This function provides a common setup method for
    * use by the test framework or the servlet's init() function.
    */
-  void setMessageStore(MessageStore messageStore) {
-    this.messageStore = messageStore;
+  void setActivityStore(ActivityStore activityStore) {
+    this.activityStore = activityStore;
   }
 
   @Override
@@ -97,19 +84,9 @@ public class RegisterServlet extends HttpServlet {
     User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), false);
     userStore.addUser(user);
 
-		String messageContent = "User " + user.getName() + " joined the site!";
+    Activity activity = new Activity(UUID.randomUUID(), 0, Instant.now(), "joined the site!", user.getId(), user.getName(), ActivityType.REGISTRATION, null, null);
 
-		Conversation conversation = conversationStore.getActFeedConversation();
-
-		 Message message =
-        new Message(
-            UUID.randomUUID(),
-            conversation.getId(),
-            conversation.getOwnerId(),
-            messageContent,
-            Instant.now());
-
-		messageStore.addMessage(message);
+    activityStore.addActivity(activity);
 
     response.sendRedirect("/login");
   }

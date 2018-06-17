@@ -1,10 +1,10 @@
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
+<%@ page import="codeu.model.data.Activity" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
 <%
-Conversation conversation = (Conversation) request.getAttribute("conversation");
-List<Message> messages = (List<Message>) request.getAttribute("messages");
+List<Activity> activities = (List<Activity>) request.getAttribute("activities");
 %>
 
 <!DOCTYPE html>
@@ -16,30 +16,34 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 	<%@include file= "chatbox.jsp"%>
 </head>
 <body onload= "scrollChat()">
-	
+
 	<%@include file= "navbar.jsp"%>
-	
+
 	<div id="container">
  		<h1>Activity Feed
 			<a href="" style="float: right">&#8635;</a></h1>
-	
+
 	<hr/>
 	<div id="chat">
 		<ul>
 	<%
-		for (Message message : messages) {
+		for (Activity activity : activities) {
+		String author = activity.getUsername();
+
+		String url = "/users/";
+		url += author;
 	%>
 
-		<li><%= message.getContent() %></li>
+		<li><strong> <a href=<%= url %> > <%= author%></a>: </strong><%= activity.getMessage() %></li>
 
 	<%
 		}
 	%>
 
 		</ul>
-	</div>	
-	<hr/>  	
+	</div>
+	<hr/>
   </div>
-	
+
 </body>
 </html>

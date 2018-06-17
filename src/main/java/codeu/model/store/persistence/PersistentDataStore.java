@@ -305,7 +305,6 @@ public class PersistentDataStore {
     datastore.put(conversationEntity);
   }
 
-
   /** Write an Activity object to the Datastore service. */
   public void writeThrough(Activity activity) {
     Entity activityEntity = new Entity("activity-objects", activity.getActivityId().toString());
@@ -330,7 +329,6 @@ public class PersistentDataStore {
 		* This should only happen one time, the first time the server is opened up w/o
 		* this conversation stored in datastore. */
 	public void actFeedWriteThrough(Conversation conversation) {
-
     Entity conversationEntity = new Entity("act-conversation", conversation.getId().toString());
     conversationEntity.setProperty("uuid", conversation.getId().toString());
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
