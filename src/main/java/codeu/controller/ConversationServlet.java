@@ -104,9 +104,6 @@ public class ConversationServlet extends HttpServlet {
       request.setAttribute("error", "Please enter only letters and numbers.");
       request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
       return;
-    } else if (conversationStore.isRestrictedName(conversationTitle)) {
-      request.setAttribute("error", "Please enter a conversation title not consisting of two users as these are reserved for private conversations.");
-      request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
     }
 
     if (conversationStore.isTitleTaken(conversationTitle)) {

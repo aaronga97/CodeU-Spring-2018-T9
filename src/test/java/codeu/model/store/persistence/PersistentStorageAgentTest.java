@@ -41,12 +41,6 @@ public class PersistentStorageAgentTest {
   }
 
   @Test
-  public void testLoadRestrictedConversationNames() throws PersistentDataStoreException {
-    persistentStorageAgent.loadRestrictedConversationNames();
-    Mockito.verify(mockPersistentDataStore).loadRestrictedConversationNames();
-  }
-
-  @Test
   public void testLoadMessages() throws PersistentDataStoreException {
     persistentStorageAgent.loadMessages();
     Mockito.verify(mockPersistentDataStore).loadMessages();
