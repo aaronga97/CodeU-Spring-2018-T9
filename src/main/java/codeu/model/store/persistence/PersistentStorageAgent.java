@@ -81,6 +81,16 @@ public class PersistentStorageAgent {
     return persistentDataStore.loadConversations();
   }
 
+  /**
+   * Retrieve list of restricted conversation names from the Datastore service. The returned list may be empty.
+   *
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public List<String> loadRestrictedConversationNames() throws PersistentDataStoreException {
+    return persistentDataStore.loadRestrictedConversationNames();
+  }
+
 	/**
 	 * Retrieve the Activity Feed's conversation object from the Datastore service.
 	 *
