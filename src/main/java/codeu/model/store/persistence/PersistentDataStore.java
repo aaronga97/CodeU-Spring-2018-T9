@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.lang.*;
+import java.util.HashSet;
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -73,7 +74,9 @@ public class PersistentDataStore {
         String bio = (String) entity.getProperty("bio");
         Boolean admin = Boolean.parseBoolean((String) entity.getProperty("admin"));
         User user = new User(uuid, userName, passwordHash, creationTime, admin);
+        HashSet<String> pals = (HashSet<String>) entity.getProperty("pals");
         user.setBio(bio);
+        user.setPals(pals);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -246,6 +249,7 @@ public class PersistentDataStore {
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     userEntity.setProperty("bio", user.getBio());
     userEntity.setProperty("admin", Boolean.toString(user.isAdmin()));
+    userEntity.setProperty("pals", user.getPals());
     datastore.put(userEntity);
   }
 
