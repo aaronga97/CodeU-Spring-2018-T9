@@ -47,7 +47,7 @@ UserStore userStore = UserStore.getInstance();
                 firstUser = secondUser;
                 secondUser = temp;
             }
-            conversationName = conversationName + firstUser + secondUser;
+            conversationName = conversationName + firstUser + "&" +secondUser;
             %>
             <a href="/chat/<%= conversationName %>"> View Conversation with <%= profileUser %> </a>
 
