@@ -249,6 +249,8 @@ public class PersistentDataStore {
     userEntity.setProperty("bio", user.getBio());
     userEntity.setProperty("admin", Boolean.toString(user.isAdmin()));
     userEntity.setUnindexedProperty("pals", user.getPals());
+    userEntity.setUnindexedProperty("incoming_requests", user.getIncomingRequests());
+    userEntity.setUnindexedProperty("outgoing_requests", user.getOutgoingRequests());
     datastore.put(userEntity);
   }
 

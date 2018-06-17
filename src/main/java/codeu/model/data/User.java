@@ -37,6 +37,8 @@ public class User {
     private String bio;
     private Boolean admin;
     private ArrayList<String> pals;
+    private ArrayList<String> incomingRequests;
+    private ArrayList<String> outgoingRequests;
 
     /**
      * Constructs a new User with an empty bio.
@@ -56,6 +58,8 @@ public class User {
         setBio(name + " hasn't written a bio yet.");
         this.admin = admin;
         this.pals = new ArrayList<>();
+        this.incomingRequests = new ArrayList<>();
+        this.outgoingRequests = new ArrayList<>();
         createConversations();
     }
 
@@ -145,6 +149,54 @@ public class User {
     /** Checks whether a given name is in this User's list of pals. */
     public boolean isPal(String name) {
         return this.pals.contains(name);
+    }
+
+    /**
+     * Sets the incoming requests of this User.
+     */
+    public void setIncomingRequests(ArrayList<String> incoming) {
+        this.incomingRequests = incoming;
+    }
+
+    /** Adds a new request to incoming requests when someone requests this User as a pal. */
+    public void addIncomingRequest(String name) {
+        this.incomingRequests.add(name);
+    }
+
+    /** Removes a request from incoming requests when this User accepts/declines a pal. */
+    public void deleteIncomingRequest(String name) {
+        this.incomingRequests.remove(name);
+    }
+
+    /**
+     * Returns the incoming requests of this User.
+     */
+    public ArrayList<String> getIncomingRequests() {
+        return incomingRequests;
+    }
+
+    /**
+     * Sets the outgoing requests of this User.
+     */
+    public void setOutgoingRequests(ArrayList<String> outgoing) {
+        this.outgoingRequests = outgoing;
+    }
+
+    /**
+     * Returns the outgoing requests of this User.
+     */
+    public ArrayList<String> getOutgoingRequests() {
+        return outgoingRequests;
+    }
+
+    /** Adds a new request to outgoing requests when this User requests another person as a pal. */
+    public void addOutgoingRequest(String name) {
+        this.outgoingRequests.add(name);
+    }
+
+    /** Removes a request from outgoing requests when the other person accepts/declines a request from this User. */
+    public void deleteOutgoingRequest(String name) {
+        this.outgoingRequests.remove(name);
     }
 
     /**
