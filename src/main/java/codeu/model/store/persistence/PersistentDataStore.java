@@ -19,19 +19,18 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.data.Activity;
 import codeu.model.data.Activity.ActivityType;
-import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.lang.*;
-import java.util.HashSet;
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -73,8 +72,8 @@ public class PersistentDataStore {
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String bio = (String) entity.getProperty("bio");
         Boolean admin = Boolean.parseBoolean((String) entity.getProperty("admin"));
+        ArrayList<String> pals = (ArrayList<String>) entity.getProperty("pals");
         User user = new User(uuid, userName, passwordHash, creationTime, admin);
-        HashSet<String> pals = (HashSet<String>) entity.getProperty("pals");
         user.setBio(bio);
         user.setPals(pals);
         users.add(user);
@@ -249,7 +248,7 @@ public class PersistentDataStore {
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     userEntity.setProperty("bio", user.getBio());
     userEntity.setProperty("admin", Boolean.toString(user.isAdmin()));
-    userEntity.setProperty("pals", user.getPals());
+    userEntity.setUnindexedProperty("pals", user.getPals());
     datastore.put(userEntity);
   }
 

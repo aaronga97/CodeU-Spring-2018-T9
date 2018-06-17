@@ -8,6 +8,7 @@ import codeu.model.data.Activity.ActivityType;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.junit.After;
@@ -48,6 +49,7 @@ public class PersistentDataStoreTest {
     String bio1 = "test_bio1";
     User inputUserOne = new User(idOne, nameOne, passwordHashOne, creationOne, admin);
     inputUserOne.setBio(bio1);
+    ArrayList<String> pals1 = new ArrayList<>();
 
     UUID idTwo = UUID.fromString("10000001-2222-3333-4444-555555555555");
     String nameTwo = "test_username_two";
@@ -56,6 +58,12 @@ public class PersistentDataStoreTest {
     String bio2 = "test_bio2";
     User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo, creationTwo, admin);
     inputUserTwo.setBio(bio2);
+    ArrayList<String> pals2 = new ArrayList<>();
+
+    pals1.add(nameTwo);
+    pals2.add(nameOne);
+    inputUserOne.setPals(pals1);
+    inputUserTwo.setPals(pals2);
 
     // save
     persistentDataStore.writeThrough(inputUserOne);
@@ -71,6 +79,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(passwordHashOne, resultUserOne.getPasswordHash());
     Assert.assertEquals(creationOne, resultUserOne.getCreationTime());
     Assert.assertEquals(bio1, resultUserOne.getBio());
+    Assert.assertEquals(pals1, resultUserOne.getPals());
 
     User resultUserTwo = resultUsers.get(1);
     Assert.assertEquals(idTwo, resultUserTwo.getId());
@@ -78,6 +87,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(passwordHashTwo, resultUserTwo.getPasswordHash());
     Assert.assertEquals(creationTwo, resultUserTwo.getCreationTime());
     Assert.assertEquals(bio2, resultUserTwo.getBio());
+    Assert.assertEquals(pals2, resultUserTwo.getPals());
   }
 
   @Test

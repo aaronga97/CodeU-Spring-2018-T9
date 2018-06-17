@@ -17,12 +17,14 @@ package codeu.model.data;
 import codeu.model.store.basic.UserStore;
 import codeu.model.store.basic.ConversationStore;
 
+import java.lang.reflect.Array;
 import java.util.List;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
 import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  * Class representing a registered user.
@@ -34,7 +36,7 @@ public class User {
     private final Instant creation;
     private String bio;
     private Boolean admin;
-    private HashSet<String> pals;
+    private ArrayList<String> pals;
 
     /**
      * Constructs a new User with an empty bio.
@@ -53,7 +55,7 @@ public class User {
         this.creation = creation;
         setBio(name + " hasn't written a bio yet.");
         this.admin = admin;
-        this.pals = new HashSet<>();
+        this.pals = new ArrayList<>();
         createConversations();
     }
 
@@ -124,14 +126,14 @@ public class User {
     /**
      * Sets the pals of this User.
      */
-    public void setPals(HashSet<String> pals) {
+    public void setPals(ArrayList<String> pals) {
         this.pals = pals;
     }
 
     /**
      * Returns the pals of this User.
      */
-    public HashSet<String> getPals() {
+    public ArrayList<String> getPals() {
         return pals;
     }
 
