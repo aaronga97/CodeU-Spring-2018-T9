@@ -22,6 +22,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
+import java.util.HashSet;
 
 /**
  * Class representing a registered user.
@@ -33,6 +34,7 @@ public class User {
     private final Instant creation;
     private String bio;
     private Boolean admin;
+    private HashSet<String> pals;
 
     /**
      * Constructs a new User with an empty bio.
@@ -51,6 +53,7 @@ public class User {
         this.creation = creation;
         setBio(name + " hasn't written a bio yet.");
         this.admin = admin;
+        this.pals = new HashSet<>();
         createConversations();
     }
 
@@ -116,6 +119,25 @@ public class User {
      */
     public void setAdmin(Boolean admin) {
         this.admin = admin;
+    }
+
+    /**
+     * Sets the pals of this User.
+     */
+    public void setPals(HashSet<String> pals) {
+        this.pals = pals;
+    }
+
+    /**
+     * Returns the pals of this User.
+     */
+    public HashSet<String> getPals() {
+        return pals;
+    }
+    
+    /** Adds a pal to the list of this User's pals. */
+    public void addPal(String name) {
+        this.pals.add(name);
     }
 
     /**
