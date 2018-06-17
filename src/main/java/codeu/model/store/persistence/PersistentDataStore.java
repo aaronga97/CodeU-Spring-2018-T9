@@ -73,9 +73,13 @@ public class PersistentDataStore {
         String bio = (String) entity.getProperty("bio");
         Boolean admin = Boolean.parseBoolean((String) entity.getProperty("admin"));
         ArrayList<String> pals = (ArrayList<String>) entity.getProperty("pals");
+        ArrayList<String> incomingRequests = (ArrayList<String>) entity.getProperty("incoming_requests");
+        ArrayList<String> outgoingRequests = (ArrayList<String>) entity.getProperty("outgoing_requests");
         User user = new User(uuid, userName, passwordHash, creationTime, admin);
         user.setBio(bio);
         user.setPals(pals);
+        user.setIncomingRequests(incomingRequests);
+        user.setOutgoingRequests(outgoingRequests);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
