@@ -4,7 +4,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.time.Instant" %>
-<%@ page import="java.util.HashSet" %>
 <%
 /** Gets the UserStore instance to access all users. */
 UserStore userStore = UserStore.getInstance();
@@ -26,6 +25,7 @@ UserStore userStore = UserStore.getInstance();
 
       <%
       String currentUser = (String) request.getSession().getAttribute("user");
+      User currUser = userStore.getUser(currentUser);
       String profileUser = (String) request.getAttribute("profilePage");
       User thisUser = userStore.getUser(profileUser);
 
@@ -39,9 +39,8 @@ UserStore userStore = UserStore.getInstance();
             <h1 style="color:dodgerblue">Welcome to <%= profileUser %>'s Page!</h1>
 
             <%
-
             /** If the current user logged in is already pals with the profile user page they are viewing, then allow her/him to message and view their private conversation. Else, allow them to request this person as a pal. */
-            if (thisUser.isPal(profileUser)) {
+            if (currUser.isPal(profileUser)) {
               String conversationName = "../chat/";
               String firstUser = currentUser;
               String secondUser = profileUser;
