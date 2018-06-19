@@ -106,5 +106,15 @@
     <url-pattern>/newPassword</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>AjaxGetMessages</servlet-name>
+    <servlet-class>codeu.controller.AjaxGetMessages</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>AjaxGetMessages</servlet-name>
+    <url-pattern>/ajaxTest/*</url-pattern>
+  </servlet-mapping>
+
 
 </web-app>
