@@ -34,14 +34,49 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
   <%@include file= "navbar.jsp"%>
 
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+  <!-- Check for nulls, etc when it works -->
+  <p hidden id="conversationID"><%= conversation.getId() %></p>
+  <p hidden id="messagesSize"><%= messages.size() %></p>
+
+  <script>
+      //Put this in a separate js file once it works
+      var conversationID = $("#conversationID").text();
+      var messagesSize = $("#messagesSize").text();
+
+      $(document).on("click", "#refreshButton", function () {
+          var newMessagesCounter = 0;
+          $.get("/ajaxTest/" + conversationID + "/" + messagesSize, function (responseJson) {
+              var $ul = $("<ul>").appendTo($("#chat"));
+              $.each(responseJson, function(index, message) {
+                  $("<li>").text(message.content).appendTo($ul);
+                  newMessagesCounter++;
+              });
+          });
+          //Update messagesSize to the pastSize + theSize of new added messages
+          $("#messagesSize").text(newMessagesCounter + + messagesSize);
+      });
+  </script>
+
+  <body>
+  <!-- AJAX TEST ZONE -->
+  <h3>Ajax Test</h3>
+
+  <button id="refreshButton">Refresh with Ajax</button>
+
+  <!-- AJAX TEST ZONE -->
+
   <div id="container">
 
     <h1><%= conversation.getTitle() %>
+
       <a href="" style="float: right">&#8635;</a></h1>
 
     <hr/>
 
     <div id="chat">
+
       <ul>
 
     <%
@@ -57,6 +92,9 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <%
       }
      %>
+
+        <!-- Insert here new array with messages from ajax and add the ones not added yet -->
+
 
       </ul>
     </div>
