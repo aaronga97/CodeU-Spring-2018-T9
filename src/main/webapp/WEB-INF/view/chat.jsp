@@ -45,12 +45,13 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       var conversationID = $("#conversationID").text();
       var messagesSize = $("#messagesSize").text();
 
-      $(document).on("click", "#refreshButton", function () {
-          var newMessagesCounter = 0;
-          $.get("/ajaxTest/" + conversationID + "/" + messagesSize, function (responseJson) {
-              var $ul = $("<ul>").appendTo($("#chat"));
+      $(document).on("click", "#refreshButton", function () { //when refresh button is clicked call function
+          var newMessagesCounter = 0;                         //Counter to keep count of new messages
+          $.get("/ajaxTest/" + conversationID + "/" + messagesSize, function (responseJson) { //Make get request to ajaxTest servlet, and execute function with Ajax responseJson
+              //var $ul = $("<ul>").appendTo($("#chat"));
+              var $ul = $("#unorderedMessageList");
               $.each(responseJson, function(index, message) {
-                  $("<li>").text(message.content).appendTo($ul);
+                  $($ul).append("<li><strong>" + message.author + "</strong>" + ': ' + message.content + "</li>");
                   newMessagesCounter++;
               });
           });
@@ -77,7 +78,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
     <div id="chat">
 
-      <ul>
+      <ul id="unorderedMessageList">
 
     <%
       for (Message message : messages) {

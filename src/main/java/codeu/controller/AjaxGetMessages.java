@@ -107,6 +107,9 @@ public class AjaxGetMessages extends HttpServlet{
         }
 
         String messagesJson = new Gson().toJson(newMessageList);
+        System.out.println(messagesJson);
+
+        //Add name parameter instead of UUID to each message
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
