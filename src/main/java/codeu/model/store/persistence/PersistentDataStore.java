@@ -122,6 +122,40 @@ public class PersistentDataStore {
   }
 
   /**
+   * Loads list of restricted conversation names from the Datastore service and returns them in a List, sorted in
+   * ascending order by creation time.
+   *
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public List<String> loadRestrictedConversationNames() throws PersistentDataStoreException {
+
+    List<String> restrictedConversationNames = new ArrayList<>();
+
+    // Retrieve all conversations from the datastore.
+    Query query = new Query("chat-conversations").addSort("creation_time", SortDirection.ASCENDING);
+    PreparedQuery results = datastore.prepare(query);
+
+    for (Entity entity : results.asIterable()) {
+      try {
+        String title = (String) entity.getProperty("title");
+        boolean privateConversation = Boolean.parseBoolean((String) entity.getProperty("private_conversation"));
+        if (privateConversation) {
+          restrictedConversationNames.add(title);
+        }
+      } catch (Exception e) {
+        // In a production environment, errors should be very rare. Errors which may
+        // occur include network errors, Datastore service errors, authorization errors,
+        // database entity definition mismatches, or service mismatches.
+        throw new PersistentDataStoreException(e);
+      }
+    }
+
+    return restrictedConversationNames;
+  }
+
+
+  /**
    * Loads all Message objects from the Datastore service and returns them in a List, sorted in
    * ascending order by creation time.
    *
