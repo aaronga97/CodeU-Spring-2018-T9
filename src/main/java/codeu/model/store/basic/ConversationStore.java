@@ -59,9 +59,6 @@ public class ConversationStore {
   /** The in-memory list of Conversations. */
   private List<Conversation> conversations;
 
-  /** The in-memory activity feed conversation. */
-  private Conversation actFeedConversation;
-
   /** The in-memory set of restricted conversation names reserved for private conversations. */
   private final HashSet<String> restrictedConversationNames;
 
@@ -75,11 +72,6 @@ public class ConversationStore {
 	/** Access the current set of conversations known to the application. */
   public List<Conversation> getAllConversations() {
     return conversations;
-  }
-
-	/** Access the activity feed conversation known to the application. */
-  public Conversation getActFeedConversation() {
-    return actFeedConversation;
   }
 
   /** Access the set of restricted conversation names. */
@@ -145,10 +137,5 @@ public class ConversationStore {
     int lastConversation = conversations.size()-1;
     return conversations.get(lastConversation);
   }
-
-	/** Sets the activity feed conversation stored by this ConversationStore. */
-	public void setActFeedConversation(Conversation actFeedConversation) {
-		this.actFeedConversation = actFeedConversation;
-	}
 
 }
