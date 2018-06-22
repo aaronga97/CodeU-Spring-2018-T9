@@ -73,11 +73,14 @@ public class ActivityStore {
     return null;
   }
 
+  /** Find and return all activities associated with a username (case-insensitive). */
   public List<Activity> getUserActivities(String username) {
     List<Activity> activities = new ArrayList<>();
 
+    username = username.toLowerCase();
+
     for (Activity activity: this.activities) {
-      if (activity.getUsername().equals(username)) {
+      if (activity.getUsername().toLowerCase().equals(username)) {
         activities.add(activity);
       }
     }

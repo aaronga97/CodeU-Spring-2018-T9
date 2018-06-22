@@ -67,4 +67,37 @@ public class ActivityFeedServletTest {
 
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
+
+  @Test
+  public void testDoPost() throws IOException, ServletException {
+    List<Activity> fakeActivityList = new ArrayList<>();
+    Activity fakeActivity =  new Activity(UUID.randomUUID(), 0, Instant.now(), "test_activity", UUID.randomUUID(), "test_username",
+      ActivityType.REGISTRATION, null, null);
+    fakeActivityList.add(fakeActivity);
+
+    Mockito.when(mockRequest.getParameter("searchQuery")).thenReturn("test_activity");
+    Mockito.when(mockActivityStore.getUserActivities("test_activity")).thenReturn(fakeActivityList);
+
+    activityFeedServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+
+  }
+
+  @Test
+  public void testDoPostUncleanedSearchQuery() throws IOException, ServletException {
+    List<Activity> fakeActivityList = new ArrayList<>();
+    Activity fakeActivity =  new Activity(UUID.randomUUID(), 0, Instant.now(), "test_activity", UUID.randomUUID(), "test_username",
+      ActivityType.REGISTRATION, null, null);
+    fakeActivityList.add(fakeActivity);
+
+    Mockito.when(mockRequest.getParameter("searchQuery")).thenReturn("<h1> test_activity <h1>");
+    Mockito.when(mockActivityStore.getUserActivities("test_activity")).thenReturn(fakeActivityList);
+
+    activityFeedServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+
+  }
+  
 }

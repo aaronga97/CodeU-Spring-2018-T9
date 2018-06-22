@@ -48,7 +48,7 @@ List<Activity> activities = (List<Activity>) request.getAttribute("activities");
   <form action="/activityfeed" method= "POST">
 		<input type="text" name="searchQuery">
 
-		<button type = "submit">Search</button>
+		<button type = "submit">Search User</button>
 	</form>
 
 

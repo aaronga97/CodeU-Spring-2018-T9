@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 
 /** Servlet class responsible for the activity feed page. */
 
@@ -57,9 +60,11 @@ public class ActivityFeedServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-    String username = (String) request.getParameter("searchQuery");
+    String username = request.getParameter("searchQuery");
 
-    List<Activity> activities = activityStore.getUserActivities(username);
+    String cleanedUsername = Jsoup.clean(username, Whitelist.none());
+
+    List<Activity> activities = activityStore.getUserActivities(cleanedUsername);
 
     request.setAttribute("activities", activities);
 
