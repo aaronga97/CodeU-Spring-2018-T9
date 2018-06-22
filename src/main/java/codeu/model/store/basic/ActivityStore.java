@@ -73,6 +73,18 @@ public class ActivityStore {
     return null;
   }
 
+  public List<Activity> getUserActivities(String username) {
+    List<Activity> activities = new ArrayList<>();
+
+    for (Activity activity: this.activities) {
+      if (activity.getUsername().equals(username)) {
+        activities.add(activity);
+      }
+    }
+
+    return activities;
+  }
+
   /** Sets the List of Activities stored by this ActivityStore. */
   public void setActivities(List<Activity> activities) {
     this.activities = activities;

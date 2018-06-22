@@ -23,7 +23,8 @@ List<Activity> activities = (List<Activity>) request.getAttribute("activities");
  		<h1>Activity Feed
 			<a href="" style="float: right">&#8635;</a></h1>
 
-	<hr/>
+	  <hr/>
+
 	<div id="chat">
 		<ul>
 	<%
@@ -43,6 +44,14 @@ List<Activity> activities = (List<Activity>) request.getAttribute("activities");
 		</ul>
 	</div>
 	<hr/>
+
+  <form action="/activityfeed" method= "POST">
+		<input type="text" name="searchQuery">
+
+		<button type = "submit">Search</button>
+	</form>
+
+
   </div>
 
 </body>

@@ -54,4 +54,16 @@ public class ActivityFeedServlet extends HttpServlet {
 
   }
 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+    String username = (String) request.getParameter("searchQuery");
+
+    List<Activity> activities = activityStore.getUserActivities(username);
+
+    request.setAttribute("activities", activities);
+
+    request.getRequestDispatcher("/WEB-INF/view/activityfeed.jsp").forward(request, response);
+  }
+
 }
