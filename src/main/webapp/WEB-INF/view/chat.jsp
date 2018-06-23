@@ -41,23 +41,28 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   <p hidden id="messagesSize"><%= messages.size() %></p>
 
   <script>
-      //Put this in a separate js file once it works
+      //Get conversation ID
       var conversationID = $("#conversationID").text();
+      //Get messages shown since the last refresh/get request
       var messagesSize = $("#messagesSize").text();
+      var jsonSize = 0;
 
       $(document).on("click", "#refreshButton", function () { //when refresh button is clicked call function
-          var newMessagesCounter = 0;                         //Counter to keep count of new messages
-          $.get("/ajaxTest/" + conversationID + "/" + messagesSize, function (responseJson) { //Make get request to ajaxTest servlet, and execute function with Ajax responseJson
-              //var $ul = $("<ul>").appendTo($("#chat"));
+          //Make get request to ajaxTest servlet, and execute function with Ajax responseJson
+          $.get("/ajaxTest/" + conversationID + "/" + messagesSize, function (responseJson) {
+              //Select the unorderedList where I want to append new messages
               var $ul = $("#unorderedMessageList");
+              jsonSize = responseJson.length;
+              //Iterate through responseJson with new messages
               $.each(responseJson, function(index, message) {
+                  //Append them
                   $($ul).append("<li><strong>" + message.author + "</strong>" + ': ' + message.content + "</li>");
-                  newMessagesCounter++;
               });
+              //Update messagesSize to the pastSize + theSize of new added messages, at the end of ajaxRequest
+              messagesSize = +messagesSize + jsonSize;
           });
-          //Update messagesSize to the pastSize + theSize of new added messages
-          $("#messagesSize").text(newMessagesCounter + + messagesSize);
       });
+
   </script>
 
   <body>

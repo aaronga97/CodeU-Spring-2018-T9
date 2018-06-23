@@ -100,6 +100,9 @@ public class AjaxGetMessages extends HttpServlet{
 
         messageList = messageStore.getMessagesInConversation(conversationUUID);
 
+        System.out.println("lastSize: " + lastSize);
+        System.out.println("Datastore size: " + messageList.size());
+
         //If size is less than actual size of messages, send the missing messages
         while(lastSize < messageList.size()){
             newMessageList.add(messageList.get(lastSize));
