@@ -27,7 +27,7 @@ public class ConversationTest {
     UUID owner = UUID.randomUUID();
     String title = "Test_Title";
     Instant creation = Instant.now();
-    Boolean privateConversation = false;
+    boolean privateConversation = false;
 
     Conversation conversation = new Conversation(id, owner, title, creation, privateConversation);
 

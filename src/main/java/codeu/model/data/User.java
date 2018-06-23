@@ -138,7 +138,7 @@ public class User {
     /**
      * When a User is initialized, this method creates a private Conversation with every other User that already exists.
      */
-    private void createConversations() {
+    void createConversations() {
         /* get all Users from UserStore */
         UserStore userStore = UserStore.getInstance();
         List<User> users = userStore.getUsers();
@@ -152,7 +152,7 @@ public class User {
             String secondUser = u.getName();
 
             /* If the order of firstUser and secondUser isn't already in alphabetical order, swap the two users - firstUser and secondUser. */
-            if ((firstUser).compareTo(secondUser) > 0) {
+            if (firstUser.compareTo(secondUser) > 0) {
                 String temp = firstUser;
                 firstUser = secondUser;
                 secondUser = temp;

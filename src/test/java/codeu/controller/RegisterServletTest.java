@@ -17,14 +17,12 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-
-import codeu.model.data.Conversation;
-import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.Activity;
+import codeu.model.data.Activity.ActivityType;
 
-import codeu.model.store.basic.ConversationStore;
-import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.ActivityStore;
 
 public class RegisterServletTest {
 
@@ -33,8 +31,7 @@ public class RegisterServletTest {
   private HttpServletResponse mockResponse;
   private RequestDispatcher mockRequestDispatcher;
 
-	private ConversationStore mockConversationStore;
-  private MessageStore mockMessageStore;
+  private ActivityStore mockActivityStore;
 
   @Before
   public void setup() {
@@ -45,11 +42,8 @@ public class RegisterServletTest {
     Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/register.jsp"))
         .thenReturn(mockRequestDispatcher);
 
-		mockConversationStore = Mockito.mock(ConversationStore.class);
-    registerServlet.setConversationStore(mockConversationStore);
-
-    mockMessageStore = Mockito.mock(MessageStore.class);
-    registerServlet.setMessageStore(mockMessageStore);
+    mockActivityStore = Mockito.mock(ActivityStore.class);
+    registerServlet.setActivityStore(mockActivityStore);
   }
 
   @Test
@@ -68,6 +62,7 @@ public class RegisterServletTest {
 
     registerServlet.doPost(mockRequest, mockResponse);
 
+    Mockito.verify(mockActivityStore, Mockito.never()).addActivity(Mockito.any(Activity.class));
     Mockito.verify(mockRequest)
         .setAttribute("error", "Please enter only letters, numbers, and spaces.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
@@ -154,13 +149,6 @@ public class RegisterServletTest {
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(false);
     registerServlet.setUserStore(mockUserStore);
 
-				UUID fakeConversationId = UUID.randomUUID();
-    Conversation fakeConversation =
-        new Conversation(fakeConversationId, UUID.randomUUID(), "test_conversation", Instant.now(), false);
-    Mockito.when(mockConversationStore.getActFeedConversation())
-        .thenReturn(fakeConversation);
-
-
     registerServlet.doPost(mockRequest, mockResponse);
 
     ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -170,6 +158,9 @@ public class RegisterServletTest {
     Assert.assertThat(
         userArgumentCaptor.getValue().getPasswordHash(), CoreMatchers.containsString("$2a$10$"));
     Assert.assertEquals(60, userArgumentCaptor.getValue().getPasswordHash().length());
+
+    ArgumentCaptor<Activity> activityArgumentCaptor = ArgumentCaptor.forClass(Activity.class);
+    Mockito.verify(mockActivityStore).addActivity(activityArgumentCaptor.capture());
 
     Mockito.verify(mockResponse).sendRedirect("/login");
   }
@@ -186,6 +177,7 @@ public class RegisterServletTest {
     registerServlet.doPost(mockRequest, mockResponse);
 
     Mockito.verify(mockUserStore, Mockito.never()).addUser(Mockito.any(User.class));
+    Mockito.verify(mockActivityStore, Mockito.never()).addActivity(Mockito.any(Activity.class));
     Mockito.verify(mockRequest).setAttribute("error", "That username is already taken.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
