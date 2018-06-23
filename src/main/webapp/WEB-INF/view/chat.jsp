@@ -72,12 +72,6 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   </script>
 
   <body>
-  <!-- AJAX TEST ZONE -->
-  <h3>Ajax Test</h3>
-
-  <button id="refreshButton">Refresh with Ajax</button>
-
-  <!-- AJAX TEST ZONE -->
 
   <div id="container">
 
