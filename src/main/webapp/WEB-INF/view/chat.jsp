@@ -41,13 +41,15 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   <p hidden id="messagesSize"><%= messages.size() %></p>
 
   <script>
+      //Create interval in which each ajax call will be fired, 1000 = 1 second
+      var interval = 1000;
       //Get conversation ID
       var conversationID = $("#conversationID").text();
       //Get messages shown since the last refresh/get request
       var messagesSize = $("#messagesSize").text();
       var jsonSize = 0;
 
-      $(document).on("click", "#refreshButton", function () { //when refresh button is clicked call function
+      function getNewMessages() { //when refresh button is clicked call function
           //Make get request to ajaxTest servlet, and execute function with Ajax responseJson
           $.get("/ajaxTest/" + conversationID + "/" + messagesSize, function (responseJson) {
               //Select the unorderedList where I want to append new messages
@@ -61,8 +63,12 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
               //Update messagesSize to the pastSize + theSize of new added messages, at the end of ajaxRequest
               messagesSize = +messagesSize + jsonSize;
           });
-      });
+          //After finishing previous ajaxCall, schedule the next one
+          setTimeout(getNewMessages, interval);
+      };
 
+    //Initiate ajax call
+    setTimeout(getNewMessages, interval);
   </script>
 
   <body>
