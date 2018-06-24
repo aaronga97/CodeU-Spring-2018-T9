@@ -73,7 +73,6 @@ UserStore userStore = UserStore.getInstance();
               <a href="/chat/<%= conversationName %>"> View Conversation with <%= profileUser %> </a>
             <%
             } else {
-              System.out.println("Not friends yet");
               %>
 
               <% /** Gives current user a button to request this user as a pal */ %>
