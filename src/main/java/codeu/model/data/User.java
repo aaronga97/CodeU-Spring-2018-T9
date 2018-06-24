@@ -141,9 +141,11 @@ public class User {
         return pals;
     }
 
-    /** Adds a pal to the list of this User's pals. */
+    /** Adds a pal to the list of this User's pals as long as the pal is not this User. */
     public void addPal(String name) {
-        this.pals.add(name);
+        if (!name.equals(this.name)) {
+            this.pals.add(name);
+        }
     }
 
     /** Checks whether a given name is in this User's list of pals. */
