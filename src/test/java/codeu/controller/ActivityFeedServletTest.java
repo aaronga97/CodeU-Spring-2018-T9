@@ -3,10 +3,12 @@ package codeu.controller;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.Activity;
+import codeu.model.data.Activity.ActivityType;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
-
+import codeu.model.store.basic.ActivityStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -26,61 +28,43 @@ import org.mockito.Mockito;
 
 public class ActivityFeedServletTest {
 
-    private ActivityFeedServlet activityFeedServlet;
-    private HttpServletRequest mockRequest;
-    private HttpSession mockSession;
-    private HttpServletResponse mockResponse;
-    private RequestDispatcher mockRequestDispatcher;
-    private ConversationStore mockConversationStore;
-    private MessageStore mockMessageStore;
-    private UserStore mockUserStore;
+  private ActivityFeedServlet activityFeedServlet;
+  private HttpServletRequest mockRequest;
+  private HttpSession mockSession;
+  private HttpServletResponse mockResponse;
+  private RequestDispatcher mockRequestDispatcher;
+  private ActivityStore mockActivityStore;
 
-    @Before
-    public void setup() {
-        activityFeedServlet = new ActivityFeedServlet();
+  @Before
+  public void setup() {
+    activityFeedServlet = new ActivityFeedServlet();
 
-        mockRequest = Mockito.mock(HttpServletRequest.class);
-        mockSession = Mockito.mock(HttpSession.class);
-        Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
+    mockRequest = Mockito.mock(HttpServletRequest.class);
+    mockSession = Mockito.mock(HttpSession.class);
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
 
-        mockResponse = Mockito.mock(HttpServletResponse.class);
-        mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
-        Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/activityfeed.jsp"))
-                .thenReturn(mockRequestDispatcher);
+    mockResponse = Mockito.mock(HttpServletResponse.class);
+    mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
+    Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/activityfeed.jsp")).thenReturn(mockRequestDispatcher);
 
-        mockConversationStore = Mockito.mock(ConversationStore.class);
-        activityFeedServlet.setConversationStore(mockConversationStore);
+    mockActivityStore = Mockito.mock(ActivityStore.class);
+    activityFeedServlet.setActivityStore(mockActivityStore);
+  }
 
-        mockMessageStore = Mockito.mock(MessageStore.class);
-        activityFeedServlet.setMessageStore(mockMessageStore);
+  @Test
+  public void testDoGet() throws IOException, ServletException {
 
-        mockUserStore = Mockito.mock(UserStore.class);
-        activityFeedServlet.setUserStore(mockUserStore);
-    }
+    List<Activity> fakeActivityList = new ArrayList<>();
+    Activity fakeActivity =  new Activity(UUID.randomUUID(), 0, Instant.now(), "test_activity", UUID.randomUUID(), "test_username",
+      ActivityType.REGISTRATION, null, null);
+    fakeActivityList.add(fakeActivity);
 
-    @Test
-    public void testDoGet() throws IOException, ServletException {
+    Mockito.when(mockActivityStore.getActivities()).thenReturn(fakeActivityList);
 
-        UUID fakeConversationId = UUID.randomUUID();
-        Conversation fakeConversation =
-                new Conversation(fakeConversationId, UUID.randomUUID(), "test_conversation", Instant.now(), false);
-        Mockito.when(mockConversationStore.getActFeedConversation())
-                .thenReturn(fakeConversation);
+    activityFeedServlet.doGet(mockRequest, mockResponse);
 
-        List<Message> fakeMessageList = new ArrayList<>();
+    Mockito.verify(mockRequest).setAttribute("activities", fakeActivityList);
 
-        Message fakeMessage = new Message(UUID.randomUUID(), fakeConversationId,
-                UUID.randomUUID(), "test message", Instant.now());
-
-        fakeMessageList.add(fakeMessage);
-
-        Mockito.when(mockMessageStore.getMessagesInConversation(fakeConversationId))
-                .thenReturn(fakeMessageList);
-
-        activityFeedServlet.doGet(mockRequest, mockResponse);
-
-        Mockito.verify(mockRequest).setAttribute("conversation", fakeConversation);
-        Mockito.verify(mockRequest).setAttribute("messages", fakeMessageList);
-        Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
-    }
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
 }

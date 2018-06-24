@@ -27,7 +27,7 @@ UserStore userStore = UserStore.getInstance();
       String currentUser = (String) request.getSession().getAttribute("user");
       User currUser = userStore.getUser(currentUser);
       String profileUser = (String) request.getAttribute("profilePage");
-      User thisUser = userStore.getUser(profileUser);
+      User profUser = userStore.getUser(profileUser);
 
       if (profileUser.equals("")) { %>
         <h1>User does not exist.</h1>
@@ -56,12 +56,15 @@ UserStore userStore = UserStore.getInstance();
             <%
             } else {
               System.out.println("Not friends yet");
+              %>
+              <button onclick="requestPal()"> Request Pal </button>
+              <%
             }
             %>
 
         <% } %>
         <% /** Gets the bio of this user to display on their profile page */ %>
-            <% String profilePageBio = thisUser.getBio(); %>
+            <% String profilePageBio = profUser.getBio(); %>
             <h2 style="color:skyblue">About Me</h2>
             <a> <%= profilePageBio %> </a>
             <br/>
@@ -70,7 +73,7 @@ UserStore userStore = UserStore.getInstance();
             <% /** Gives current user a form that allows them to edit their own bio */ %>
                 <a> Edit your bio here! (only you can see this) </a>
                 <form action="/users/<%= currentUser %>" method="POST">
-                    <input type="text" name="bio" value="<%= thisUser.getBio() %>" >
+                    <input type="text" name="bio" value="<%= profUser.getBio() %>" >
                     <br/>
                 <button type="submit">Submit</button>
                 </form>
@@ -86,5 +89,20 @@ UserStore userStore = UserStore.getInstance();
 
     </div>
   </div>
+
+  <script>
+  function requestPal() {
+      document.write("Sent Pal Request!");
+
+      // NEED TO ADD JAVA CODE HERE :(
+
+      /** Adds profile user to list of outgoing requests of current user. */
+      currUser.addOutgoingRequest(profileUser);
+
+      /** Adds current user to list of incoming requests to profile user. */
+      profUser.addIncomingRequest(currentUser);
+  }
+  </script>
+
 </body>
 </html>

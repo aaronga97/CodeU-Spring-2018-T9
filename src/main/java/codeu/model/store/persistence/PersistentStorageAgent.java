@@ -131,9 +131,4 @@ public class PersistentStorageAgent {
   public void writeThrough(Activity activity) {
     persistentDataStore.writeThrough(activity);
   }
-
-	/** Write an activity feed Conversation object to the Datastore service. */
-	public void actFeedWriteThrough(Conversation conversation) {
-    persistentDataStore.actFeedWriteThrough(conversation);
-  }
 }

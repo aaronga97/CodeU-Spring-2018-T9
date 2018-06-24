@@ -17,13 +17,11 @@ package codeu.model.data;
 import codeu.model.store.basic.UserStore;
 import codeu.model.store.basic.ConversationStore;
 
-import java.lang.reflect.Array;
 import java.util.List;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
-import java.util.HashSet;
 import java.util.ArrayList;
 
 /**

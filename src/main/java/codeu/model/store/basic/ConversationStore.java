@@ -127,9 +127,4 @@ public class ConversationStore {
     return conversations.get(lastConversation);
   }
 
-	/** Sets the activity feed conversation stored by this ConversationStore. */
-	public void setActFeedConversation(Conversation actFeedConversation) {
-		this.actFeedConversation = actFeedConversation;
-	}
-
 }
