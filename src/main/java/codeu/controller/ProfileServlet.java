@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import java.util.UUID;
@@ -116,7 +117,7 @@ public class ProfileServlet extends HttpServlet {
         String requestUrl = request.getRequestURI();
         String profileUsername = requestUrl.substring("/users/".length());
 
-        // 2 forms: deal with updating bio or sends user pal request
+        // 3 forms: deal with updating bio, accept/decline pal request, or sending another user a pal request
         if (request.getParameter("bio") != null) {
             // gets user
             User user = userStore.getUser(profileUsername);
@@ -133,11 +134,50 @@ public class ProfileServlet extends HttpServlet {
             // updates UserStore to store the bio for next time program opens
             userStore.updateUser(user);
 
+        } else if (request.getParameter("accept") != null || request.getParameter("decline") != null) {
+            // gets the choice of Accept/Decline that user chose
+            String choiceAccept = request.getParameter("accept");
+            String choiceDecline = request.getParameter("decline");
+
+            // sets the requestee to be the name of the profile page
+            String requestee = profileUsername;
+            User requesteeUser = userStore.getUser(requestee);
+
+            // sets the requester to be the name of the user who sent the pal request
+            String requester = "";
+            User requesterUser = null;
+
+            if (choiceAccept != null) {
+                // sets the requester to be the name of the user who sent the pal request
+                requester = request.getParameter("accept");
+                requesterUser = userStore.getUser(requester);
+
+                // adds requester to list of this user/requestee's pals
+                requesteeUser.addPal(requester);
+
+                // adds this user/requestee to the requester's list of pals
+                requesterUser.addPal(requestee);
+
+            } else if (choiceDecline != null) {
+                // sets the requester to be the name of the user who sent the pal request
+                requester = request.getParameter("decline");
+            }
+
+            // removes requester from this user/requestee's incomingRequests
+            requesteeUser.deleteIncomingRequest(requester);
+
+            // removes this user/requestee from requester's outgoingRequests
+            requesterUser.deleteOutgoingRequest(requestee);
+
+            // updates both users in UserStore
+            userStore.updateUser(requesterUser);
+            userStore.updateUser(requesteeUser);
+
         } else if (request.getParameter("requestPal") != null) {
             System.out.println("sending pal request :D");
 
             // sets the requester to be the name of the user who sent the pal request
-            String requester = (String) request.getParameter("requestPal");
+            String requester = request.getParameter("requestPal");
             User requesterUser = userStore.getUser(requester);
 
             // sets the requestee to be the  name of the profile page
