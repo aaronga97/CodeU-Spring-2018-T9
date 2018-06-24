@@ -69,7 +69,7 @@ UserStore userStore = UserStore.getInstance();
               }
               conversationName = conversationName + firstUser + "-" +secondUser;
               %>
-              <a href="/chat/<%= conversationName %>"> View Conversation with <%= profileUser %> </a>
+              <a href="/chat/<%= conversationName %>"> Send a direct message to <%= profileUser %> </a>
             <%
             } else {
                 if (currUser.sentPalRequest(profileUser)) {
