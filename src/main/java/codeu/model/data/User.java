@@ -172,6 +172,11 @@ public class User {
         this.incomingRequests.remove(name);
     }
 
+    /** Checks whether this User has sent another user/name a pal request. */
+    public boolean sentPalRequest(String name) {
+        return this.outgoingRequests.contains(name);
+    }
+
     /**
      * Returns the incoming requests of this User.
      */
