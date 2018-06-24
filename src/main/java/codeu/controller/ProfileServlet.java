@@ -116,22 +116,46 @@ public class ProfileServlet extends HttpServlet {
         String requestUrl = request.getRequestURI();
         String profileUsername = requestUrl.substring("/users/".length());
 
-        // gets user
-        User user = userStore.getUser(profileUsername);
+        // 2 forms: deal with updating bio or sends user pal request
+        if (request.getParameter("bio") != null) {
+            // gets user
+            User user = userStore.getUser(profileUsername);
 
-        // gets bio from request
-        String bio = request.getParameter("bio");
+            // gets bio from request
+            String bio = request.getParameter("bio");
 
-        // cleans bio String by removing any HTML tags
-        String cleanedBio = Jsoup.clean(bio, Whitelist.none());
+            // cleans bio String by removing any HTML tags
+            String cleanedBio = Jsoup.clean(bio, Whitelist.none());
 
-        // sets bio as instance variable for user
-        user.setBio(cleanedBio);
+            // sets bio as instance variable for user
+            user.setBio(cleanedBio);
 
-        // updates UserStore to store the bio for next time program opens
-        userStore.updateUser(user);
+            // updates UserStore to store the bio for next time program opens
+            userStore.updateUser(user);
 
-        // redirects user back to their profile page as a GET request
+        } else if (request.getParameter("requestPal") != null) {
+            System.out.println("sending pal request :D");
+
+            // sets the requester to be the name of the user who sent the pal request
+            String requester = (String) request.getParameter("requestPal");
+            User requesterUser = userStore.getUser(requester);
+
+            // sets the requestee to be the  name of the profile page
+            String requestee = profileUsername;
+            User requesteeUser = userStore.getUser(requestee);
+
+            // for requester, adds name of requestee to the list of their outgoingRequests
+            requesterUser.addOutgoingRequest(requestee);
+
+            // for requestee, adds name of requester to the list of their incomingRequests
+            requesteeUser.addIncomingRequest(requester);
+
+            // updates both users in UserStore
+            userStore.updateUser(requesterUser);
+            userStore.updateUser(requesteeUser);
+        }
+
+        // redirects user back to the profile page they are viewing as a GET request
         response.sendRedirect("/users/" + profileUsername);
     }
 }
