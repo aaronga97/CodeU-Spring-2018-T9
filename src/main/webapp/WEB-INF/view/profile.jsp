@@ -73,15 +73,18 @@ UserStore userStore = UserStore.getInstance();
               <a href="/chat/<%= conversationName %>"> View Conversation with <%= profileUser %> </a>
             <%
             } else {
-              %>
-
-              <% /** Gives current user a button to request this user as a pal */ %>
-              <form action="/users/<%= profileUser %>" method="POST">
-                <button type="submit" name="requestPal" value="<%= currentUser %>"> Request Pal </button>
-                <br/>
-              </form>
-
-              <%
+                if (currUser.sentPalRequest(profileUser)) {
+                    /** States that the current user has already sent this profile user a pal request */ %>
+                    <p> Pal Request sent! </p>
+                    <%
+                } else {
+                    /** Gives current user a button to request this user as a pal */ %>
+                       <form action="/users/<%= profileUser %>" method="POST">
+                         <button type="submit" name="requestPal" value="<%= currentUser %>"> Request Pal </button>
+                         <br/>
+                       </form>
+                    <%
+                }
             }
             %>
 
