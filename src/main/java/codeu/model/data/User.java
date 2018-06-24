@@ -34,9 +34,9 @@ public class User {
     private final Instant creation;
     private String bio;
     private Boolean admin;
-    private ArrayList<String> pals;
-    private ArrayList<String> incomingRequests;
-    private ArrayList<String> outgoingRequests;
+    private List<String> pals;
+    private List<String> incomingRequests;
+    private List<String> outgoingRequests;
 
     /**
      * Constructs a new User with an empty bio.
@@ -129,13 +129,15 @@ public class User {
      * Sets the pals of this User.
      */
     public void setPals(ArrayList<String> pals) {
-        this.pals = pals;
+        if (pals != null) {
+            this.pals = pals;
+        }
     }
 
     /**
      * Returns the pals of this User.
      */
-    public ArrayList<String> getPals() {
+    public List<String> getPals() {
         return pals;
     }
 
@@ -153,7 +155,9 @@ public class User {
      * Sets the incoming requests of this User.
      */
     public void setIncomingRequests(ArrayList<String> incoming) {
-        this.incomingRequests = incoming;
+        if (incoming != null) {
+            this.incomingRequests = incoming;
+        }
     }
 
     /** Adds a new request to incoming requests when someone requests this User as a pal. */
@@ -169,7 +173,7 @@ public class User {
     /**
      * Returns the incoming requests of this User.
      */
-    public ArrayList<String> getIncomingRequests() {
+    public List<String> getIncomingRequests() {
         return incomingRequests;
     }
 
@@ -177,13 +181,15 @@ public class User {
      * Sets the outgoing requests of this User.
      */
     public void setOutgoingRequests(ArrayList<String> outgoing) {
-        this.outgoingRequests = outgoing;
+        if (outgoing != null) {
+            this.outgoingRequests = outgoing;
+        }
     }
 
     /**
      * Returns the outgoing requests of this User.
      */
-    public ArrayList<String> getOutgoingRequests() {
+    public List<String> getOutgoingRequests() {
         return outgoingRequests;
     }
 
