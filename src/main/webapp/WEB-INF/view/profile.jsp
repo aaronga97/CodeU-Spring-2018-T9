@@ -56,6 +56,15 @@ UserStore userStore = UserStore.getInstance();
             <%
             } else {
               System.out.println("Not friends yet");
+              %>
+
+              <% /** Gives current user a button to request this user as a pal */ %>
+              <form action="/users/<%= profileUser %>" method="POST">
+                <button type="submit" name="requestPal" value="<%= currentUser %>"> Request Pal </button>
+                <br/>
+              </form>
+
+              <%
             }
             %>
 
