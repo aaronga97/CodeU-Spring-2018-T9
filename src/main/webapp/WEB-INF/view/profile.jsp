@@ -4,6 +4,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.time.Instant" %>
+<%@ page import="java.util.ArrayList" %>
 <%
 /** Gets the UserStore instance to access all users. */
 UserStore userStore = UserStore.getInstance();
@@ -34,7 +35,24 @@ UserStore userStore = UserStore.getInstance();
 
       <% } else {
         if (currentUser != null && currentUser.equals(profileUser)) { %>
+            <% /** Iterates through any incoming pal requests for user to accept/decline */
+            List<String> incomingRequests = currUser.getIncomingRequests();
+            if (incomingRequests.size() > 0) { %>
+                <p> You have some notifications! </p>
+            <%
+            }
+            for (String requester: incomingRequests) {
+                 /** Gives current user a button to request this user as a pal */ %>
+                 <p> <%= requester %> has sent you a pal request: </p>
+                 <form action="/users/<%= profileUser %>" method="POST">
+                   <button type="submit" name="accept" value="<%= requester %>"> Accept </button>
+                   <br/>
+                   <button type="submit" name="decline" value="<%= requester %>"> Decline </button>
+                   <br/>
+                 </form>
+            <% } %>
             <h1 style="color:dodgerblue">Welcome to your page!</h1>
+
       <% } else if (currentUser != null) { %>
             <h1 style="color:dodgerblue">Welcome to <%= profileUser %>'s Page!</h1>
 
