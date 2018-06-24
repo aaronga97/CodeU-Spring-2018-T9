@@ -128,7 +128,7 @@ public class User {
     /**
      * Sets the pals of this User.
      */
-    public void setPals(ArrayList<String> pals) {
+    public void setPals(List<String> pals) {
         if (pals != null) {
             this.pals = pals;
         }
@@ -154,7 +154,7 @@ public class User {
     /**
      * Sets the incoming requests of this User.
      */
-    public void setIncomingRequests(ArrayList<String> incoming) {
+    public void setIncomingRequests(List<String> incoming) {
         if (incoming != null) {
             this.incomingRequests = incoming;
         }
@@ -180,7 +180,7 @@ public class User {
     /**
      * Sets the outgoing requests of this User.
      */
-    public void setOutgoingRequests(ArrayList<String> outgoing) {
+    public void setOutgoingRequests(List<String> outgoing) {
         if (outgoing != null) {
             this.outgoingRequests = outgoing;
         }

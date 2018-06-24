@@ -49,9 +49,9 @@ public class PersistentDataStoreTest {
     String bio1 = "test_bio1";
     User inputUserOne = new User(idOne, nameOne, passwordHashOne, creationOne, admin);
     inputUserOne.setBio(bio1);
-    ArrayList<String> pals1 = new ArrayList<>();
-    ArrayList<String> incomingReq1 = new ArrayList<>();
-    ArrayList<String> outgoingReq1 = new ArrayList<>();
+    List<String> pals1 = new ArrayList<>();
+    List<String> incomingReq1 = new ArrayList<>();
+    List<String> outgoingReq1 = new ArrayList<>();
 
     UUID idTwo = UUID.fromString("10000001-2222-3333-4444-555555555555");
     String nameTwo = "test_username_two";
@@ -60,9 +60,9 @@ public class PersistentDataStoreTest {
     String bio2 = "test_bio2";
     User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo, creationTwo, admin);
     inputUserTwo.setBio(bio2);
-    ArrayList<String> pals2 = new ArrayList<>();
-    ArrayList<String> incomingReq2 = new ArrayList<>();
-    ArrayList<String> outgoingReq2 = new ArrayList<>();
+    List<String> pals2 = new ArrayList<>();
+    List<String> incomingReq2 = new ArrayList<>();
+    List<String> outgoingReq2 = new ArrayList<>();
 
     pals1.add(nameTwo);
     pals2.add(nameOne);
