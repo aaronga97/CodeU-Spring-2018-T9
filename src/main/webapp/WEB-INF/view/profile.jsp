@@ -42,11 +42,10 @@ UserStore userStore = UserStore.getInstance();
             <%
             }
             for (String requester: incomingRequests) {
-                 /** Gives current user a button to request this user as a pal */ %>
+                 /** Lists the incoming requests for current user to accept or decline */ %>
                  <p> <%= requester %> has sent you a pal request: </p>
                  <form action="/users/<%= profileUser %>" method="POST">
                    <button type="submit" name="accept" value="<%= requester %>"> Accept </button>
-                   <br/>
                    <button type="submit" name="decline" value="<%= requester %>"> Decline </button>
                    <br/>
                  </form>
@@ -76,6 +75,15 @@ UserStore userStore = UserStore.getInstance();
                 if (currUser.sentPalRequest(profileUser)) {
                     /** States that the current user has already sent this profile user a pal request */ %>
                     <p> Pal Request sent! </p>
+                    <%
+                } else if (profUser.sentPalRequest(currentUser)) {
+                    /** Gives current user the option to accept or decline request on this user profile page */ %>
+                    <p> <%= profileUser %> has sent you a pal request: </p>
+                      <form action="/users/<%= profileUser %>" method="POST">
+                        <button type="submit" name="accept" value="<%= profileUser %>"> Accept </button>
+                        <button type="submit" name="decline" value="<%= profileUser %>"> Decline </button>
+                        <br/>
+                      </form>
                     <%
                 } else {
                     /** Gives current user a button to request this user as a pal */ %>
