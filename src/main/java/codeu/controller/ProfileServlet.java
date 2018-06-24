@@ -174,7 +174,6 @@ public class ProfileServlet extends HttpServlet {
             userStore.updateUser(requesteeUser);
 
         } else if (request.getParameter("requestPal") != null) {
-            System.out.println("sending pal request :D");
 
             // sets the requester to be the name of the user who sent the pal request
             String requester = request.getParameter("requestPal");
