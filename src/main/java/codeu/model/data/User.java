@@ -238,7 +238,7 @@ public class User {
             }
 
             /* Creates conversation link by concatenating the two user's names in alphabetical order. */
-            String conversationName = firstUser + "&" + secondUser;
+            String conversationName = firstUser + "-" + secondUser;
             Conversation c = new Conversation(UUID.randomUUID(), this.id, conversationName, Instant.now(), true);
 
             /* Adds new conversation to the ConversationStore */
