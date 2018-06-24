@@ -59,14 +59,13 @@ public class ConversationStore {
   /** The in-memory list of Conversations. */
   private List<Conversation> conversations;
 
-  /** The in-memory set of restricted conversation names reserved for private conversations. */
-  private final HashSet<String> restrictedConversationNames;
+  /** The in-memory activity feed conversation. */
+  private Conversation actFeedConversation;
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private ConversationStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
     conversations = new ArrayList<>();
-    restrictedConversationNames = new HashSet<>();
   }
 
 	/** Access the current set of conversations known to the application. */
@@ -74,25 +73,15 @@ public class ConversationStore {
     return conversations;
   }
 
-  /** Access the set of restricted conversation names. */
-  public HashSet<String> getRestrictedConversationNames() {
-      return restrictedConversationNames;
-  }
-
-  /** Checks if a name exists in the set of restricted conversation names. */
-  public boolean isRestrictedName(String name) {
-      return restrictedConversationNames.contains(name);
+	/** Access the activity feed conversation known to the application. */
+  public Conversation getActFeedConversation() {
+    return actFeedConversation;
   }
 
   /** Add a new conversation to the current set of conversations known to the application. */
   public void addConversation(Conversation conversation) {
     conversations.add(conversation);
     persistentStorageAgent.writeThrough(conversation);
-
-    /* Adds the name to the list of restrictedConversationNames if is a private conversation. */
-    if (conversation.getPrivate()) {
-        restrictedConversationNames.add(conversation.getTitle());
-    }
   }
 
   /** Check whether a Conversation title is already known to the application. */
