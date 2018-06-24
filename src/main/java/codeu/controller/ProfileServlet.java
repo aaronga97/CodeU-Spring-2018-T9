@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import java.util.UUID;
