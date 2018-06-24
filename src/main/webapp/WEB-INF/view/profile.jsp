@@ -56,9 +56,6 @@ UserStore userStore = UserStore.getInstance();
             <%
             } else {
               System.out.println("Not friends yet");
-              %>
-              <button onclick="requestPal()"> Request Pal </button>
-              <%
             }
             %>
 
@@ -89,20 +86,6 @@ UserStore userStore = UserStore.getInstance();
 
     </div>
   </div>
-
-  <script>
-  function requestPal() {
-      document.write("Sent Pal Request!");
-
-      // NEED TO ADD JAVA CODE HERE :(
-
-      /** Adds profile user to list of outgoing requests of current user. */
-      currUser.addOutgoingRequest(profileUser);
-
-      /** Adds current user to list of incoming requests to profile user. */
-      profUser.addIncomingRequest(currentUser);
-  }
-  </script>
 
 </body>
 </html>
