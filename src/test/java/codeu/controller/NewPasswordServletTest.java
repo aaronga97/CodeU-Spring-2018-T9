@@ -1,21 +1,16 @@
 package codeu.controller;
 
-import codeu.model.data.Conversation;
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mindrot.jbcrypt.BCrypt;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
@@ -83,6 +78,7 @@ public class NewPasswordServletTest {
         Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
         newPasswordServlet.setUserStore(mockUserStore);
 
+
         newPasswordServlet.doPost(mockRequest, mockResponse);
 
         Mockito.verify(mockRequest)
@@ -98,7 +94,9 @@ public class NewPasswordServletTest {
         Mockito.when(mockRequest.getParameter("reTypedNewPassword")).thenReturn("testpassword1");
 
         UserStore mockUserStore = Mockito.mock(UserStore.class);
+        //PasswordUtils mockPasswordUtils = Mockito.mock(PasswordUtils.class);
         Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(false);
+        //Mockito.when(mockPasswordUtils.isPasswordCorrect("testpassword1")).thenReturn(true);
         newPasswordServlet.setUserStore(mockUserStore);
 
         newPasswordServlet.doPost(mockRequest, mockResponse);
@@ -120,11 +118,13 @@ public class NewPasswordServletTest {
         UserStore mockUserStore = Mockito.mock(UserStore.class);
         Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
         Mockito.when(mockUserStore.getUser("test username")).thenReturn(user);
+
         newPasswordServlet.setUserStore(mockUserStore);
 
         Mockito.when(mockRequest.getParameter("usernameVerification")).thenReturn("test username");
         Mockito.when(mockRequest.getParameter("newPassword")).thenReturn("testpassword1");
         Mockito.when(mockRequest.getParameter("reTypedNewPassword")).thenReturn("testpassword1");
+        //Mockito.when(mockPasswordUtils.isPasswordCorrect("testpassword1")).thenReturn(true);
 
         newPasswordServlet.setUserStore(mockUserStore);
 
