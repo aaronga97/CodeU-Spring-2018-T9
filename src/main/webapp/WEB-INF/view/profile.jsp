@@ -25,8 +25,9 @@ UserStore userStore = UserStore.getInstance();
 
       <%
       String currentUser = (String) request.getSession().getAttribute("user");
+      User currUser = userStore.getUser(currentUser);
       String profileUser = (String) request.getAttribute("profilePage");
-      User thisUser = userStore.getUser(profileUser);
+      User profUser = userStore.getUser(profileUser);
 
       if (profileUser.equals("")) { %>
         <h1>User does not exist.</h1>
@@ -38,22 +39,29 @@ UserStore userStore = UserStore.getInstance();
             <h1 style="color:dodgerblue">Welcome to <%= profileUser %>'s Page!</h1>
 
             <%
-            String conversationName = "../chat/";
-            String firstUser = currentUser;
-            String secondUser = profileUser;
+            /** If the current user logged in is already pals with the profile user page they are viewing, then allow her/him to message and view their private conversation. Else, allow them to request this person as a pal. */
+            if (currUser.isPal(profileUser)) {
+              String conversationName = "../chat/";
+              String firstUser = currentUser;
+              String secondUser = profileUser;
 
-            if (firstUser.compareTo(secondUser) > 0) {
+              if (firstUser.compareTo(secondUser) > 0) {
                 String temp = firstUser;
                 firstUser = secondUser;
                 secondUser = temp;
+              }
+              conversationName = conversationName + firstUser + "-" +secondUser;
+              %>
+              <a href="/chat/<%= conversationName %>"> View Conversation with <%= profileUser %> </a>
+            <%
+            } else {
+              System.out.println("Not friends yet");
             }
-            conversationName = conversationName + firstUser + secondUser;
             %>
-            <a href="/chat/<%= conversationName %>"> View Conversation with <%= profileUser %> </a>
 
         <% } %>
         <% /** Gets the bio of this user to display on their profile page */ %>
-            <% String profilePageBio = thisUser.getBio(); %>
+            <% String profilePageBio = profUser.getBio(); %>
             <h2 style="color:skyblue">About Me</h2>
             <a> <%= profilePageBio %> </a>
             <br/>
@@ -62,7 +70,7 @@ UserStore userStore = UserStore.getInstance();
             <% /** Gives current user a form that allows them to edit their own bio */ %>
                 <a> Edit your bio here! (only you can see this) </a>
                 <form action="/users/<%= currentUser %>" method="POST">
-                    <input type="text" name="bio" value="<%= thisUser.getBio() %>" >
+                    <input type="text" name="bio" value="<%= profUser.getBio() %>" >
                     <br/>
                 <button type="submit">Submit</button>
                 </form>
@@ -78,5 +86,6 @@ UserStore userStore = UserStore.getInstance();
 
     </div>
   </div>
+
 </body>
 </html>

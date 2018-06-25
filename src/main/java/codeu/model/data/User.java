@@ -22,6 +22,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
+import java.util.ArrayList;
 
 /**
  * Class representing a registered user.
@@ -33,6 +34,9 @@ public class User {
     private final Instant creation;
     private String bio;
     private Boolean admin;
+    private List<String> pals;
+    private List<String> incomingRequests;
+    private List<String> outgoingRequests;
 
     /**
      * Constructs a new User with an empty bio.
@@ -51,6 +55,9 @@ public class User {
         this.creation = creation;
         setBio(name + " hasn't written a bio yet.");
         this.admin = admin;
+        this.pals = new ArrayList<>();
+        this.incomingRequests = new ArrayList<>();
+        this.outgoingRequests = new ArrayList<>();
         createConversations();
     }
 
@@ -119,6 +126,84 @@ public class User {
     }
 
     /**
+     * Sets the pals of this User.
+     */
+    public void setPals(List<String> pals) {
+        if (pals != null) {
+            this.pals = pals;
+        }
+    }
+
+    /**
+     * Returns the pals of this User.
+     */
+    public List<String> getPals() {
+        return pals;
+    }
+
+    /** Adds a pal to the list of this User's pals. */
+    public void addPal(String name) {
+        this.pals.add(name);
+    }
+
+    /** Checks whether a given name is in this User's list of pals. */
+    public boolean isPal(String name) {
+        return this.pals.contains(name);
+    }
+
+    /**
+     * Sets the incoming requests of this User.
+     */
+    public void setIncomingRequests(List<String> incoming) {
+        if (incoming != null) {
+            this.incomingRequests = incoming;
+        }
+    }
+
+    /** Adds a new request to incoming requests when someone requests this User as a pal. */
+    public void addIncomingRequest(String name) {
+        this.incomingRequests.add(name);
+    }
+
+    /** Removes a request from incoming requests when this User accepts/declines a pal. */
+    public void deleteIncomingRequest(String name) {
+        this.incomingRequests.remove(name);
+    }
+
+    /**
+     * Returns the incoming requests of this User.
+     */
+    public List<String> getIncomingRequests() {
+        return incomingRequests;
+    }
+
+    /**
+     * Sets the outgoing requests of this User.
+     */
+    public void setOutgoingRequests(List<String> outgoing) {
+        if (outgoing != null) {
+            this.outgoingRequests = outgoing;
+        }
+    }
+
+    /**
+     * Returns the outgoing requests of this User.
+     */
+    public List<String> getOutgoingRequests() {
+        return outgoingRequests;
+    }
+
+    /** Adds a new request to outgoing requests when this User requests another person as a pal. */
+    public void addOutgoingRequest(String name) {
+        this.outgoingRequests.add(name);
+    }
+
+    /** Removes a request from outgoing requests when the other person accepts/declines a request from this User. */
+    public void deleteOutgoingRequest(String name) {
+        this.outgoingRequests.remove(name);
+    }
+
+    /**
      * Returns the Instant into a String time format to display to users.
      */
     public String getTime() {
@@ -159,7 +244,7 @@ public class User {
             }
 
             /* Creates conversation link by concatenating the two user's names in alphabetical order. */
-            String conversationName = firstUser + secondUser;
+            String conversationName = firstUser + "-" + secondUser;
             Conversation c = new Conversation(UUID.randomUUID(), this.id, conversationName, Instant.now(), true);
 
             /* Adds new conversation to the ConversationStore */

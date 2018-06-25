@@ -19,13 +19,13 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.data.Activity;
 import codeu.model.data.Activity.ActivityType;
-import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,8 +72,14 @@ public class PersistentDataStore {
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String bio = (String) entity.getProperty("bio");
         Boolean admin = Boolean.parseBoolean((String) entity.getProperty("admin"));
+        ArrayList<String> pals = (ArrayList<String>) entity.getProperty("pals");
+        ArrayList<String> incomingRequests = (ArrayList<String>) entity.getProperty("incoming_requests");
+        ArrayList<String> outgoingRequests = (ArrayList<String>) entity.getProperty("outgoing_requests");
         User user = new User(uuid, userName, passwordHash, creationTime, admin);
         user.setBio(bio);
+        user.setPals(pals);
+        user.setIncomingRequests(incomingRequests);
+        user.setOutgoingRequests(outgoingRequests);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -122,27 +128,31 @@ public class PersistentDataStore {
   }
 
   /**
-   * Loads list of restricted conversation names from the Datastore service and returns them in a List, sorted in
-   * ascending order by creation time.
-   *
+   * Loads the activity feed's Conversation objects from the Datastore service and returns it
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
    */
-  public List<String> loadRestrictedConversationNames() throws PersistentDataStoreException {
 
-    List<String> restrictedConversationNames = new ArrayList<>();
+  public Conversation loadActFeedConversation() throws PersistentDataStoreException {
 
-    // Retrieve all conversations from the datastore.
-    Query query = new Query("chat-conversations").addSort("creation_time", SortDirection.ASCENDING);
+    // Retrieve all activity feed conversation from the datastore.
+    Query query = new Query("act-conversation");
     PreparedQuery results = datastore.prepare(query);
+
+    UUID uuid = null;
+    UUID ownerUuid = null;
+    String title = null;
+    Instant creationTime = null;
+    boolean privateConversation = false;
+    Conversation actFeedConversation = null;
 
     for (Entity entity : results.asIterable()) {
       try {
-        String title = (String) entity.getProperty("title");
-        boolean privateConversation = Boolean.parseBoolean((String) entity.getProperty("private_conversation"));
-        if (privateConversation) {
-          restrictedConversationNames.add(title);
-        }
+        uuid = UUID.fromString((String) entity.getProperty("uuid"));
+        ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
+        title = (String) entity.getProperty("title");
+        creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+        privateConversation = Boolean.parseBoolean((String) entity.getProperty("private_conversation"));
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
@@ -151,9 +161,9 @@ public class PersistentDataStore {
       }
     }
 
-    return restrictedConversationNames;
+    actFeedConversation = new Conversation(uuid, ownerUuid, title, creationTime, privateConversation);
+    return actFeedConversation;
   }
-
 
   /**
    * Loads all Message objects from the Datastore service and returns them in a List, sorted in
@@ -242,6 +252,9 @@ public class PersistentDataStore {
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     userEntity.setProperty("bio", user.getBio());
     userEntity.setProperty("admin", Boolean.toString(user.isAdmin()));
+    userEntity.setUnindexedProperty("pals", user.getPals());
+    userEntity.setUnindexedProperty("incoming_requests", user.getIncomingRequests());
+    userEntity.setUnindexedProperty("outgoing_requests", user.getOutgoingRequests());
     datastore.put(userEntity);
   }
 
