@@ -34,15 +34,56 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
   <%@include file= "navbar.jsp"%>
 
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+  <!-- Check for nulls, etc when it works -->
+  <p hidden id="conversationID"><%= conversation.getId() %></p>
+  <p hidden id="messagesSize"><%= messages.size() %></p>
+
+  <script>
+      //Create interval in which each ajax call will be fired, 1000 = 1 second
+      var interval = 1000;
+      //Get conversation ID
+      var conversationID = $("#conversationID").text();
+      //Get messages shown since the last refresh/get request
+      var messagesSize = $("#messagesSize").text();
+      var jsonSize = 0;
+
+      function getNewMessages() { //when refresh button is clicked call function
+          //Make get request to ajaxTest servlet, and execute function with Ajax responseJson
+          $.get("/ajaxTest/" + conversationID + "/" + messagesSize, function (responseJson) {
+              //Select the unorderedList where I want to append new messages
+              var $ul = $("#unorderedMessageList");
+              jsonSize = responseJson.length;
+              //Iterate through responseJson with new messages
+              $.each(responseJson, function(index, message) {
+                  //Append them
+                  $($ul).append("<li><strong>" + message.author + "</strong>" + ': ' + message.content + "</li>");
+              });
+              //Update messagesSize to the pastSize + theSize of new added messages, at the end of ajaxRequest
+              messagesSize = +messagesSize + jsonSize;
+          });
+          //After finishing previous ajaxCall, schedule the next one
+          setTimeout(getNewMessages, interval);
+      };
+
+    //Initiate ajax call
+    setTimeout(getNewMessages, interval);
+  </script>
+
+  <body>
+
   <div id="container">
 
     <h1><%= conversation.getTitle() %>
+
       <a href="" style="float: right">&#8635;</a></h1>
 
     <hr/>
 
     <div id="chat">
-      <ul>
+
+      <ul id="unorderedMessageList">
 
     <%
       for (Message message : messages) {
@@ -57,6 +98,9 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <%
       }
      %>
+
+        <!-- Insert here new array with messages from ajax and add the ones not added yet -->
+
 
       </ul>
     </div>
