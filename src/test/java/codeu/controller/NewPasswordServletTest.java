@@ -1,7 +1,10 @@
 package codeu.controller;
 
+import codeu.model.data.PasswordUtils;
+import codeu.model.data.Conversation;
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -99,9 +102,8 @@ public class NewPasswordServletTest {
         Mockito.when(mockRequest.getParameter("reTypedNewPassword")).thenReturn("testpassword1");
 
         UserStore mockUserStore = Mockito.mock(UserStore.class);
-        //PasswordUtils mockPasswordUtils = Mockito.mock(PasswordUtils.class);
+        PasswordUtils mockPasswordUtils = Mockito.mock(PasswordUtils.class);
         Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(false);
-        //Mockito.when(mockPasswordUtils.isPasswordCorrect("testpassword1")).thenReturn(true);
         newPasswordServlet.setUserStore(mockUserStore);
 
         newPasswordServlet.doPost(mockRequest, mockResponse);
@@ -121,7 +123,7 @@ public class NewPasswordServletTest {
 
 
         UserStore mockUserStore = Mockito.mock(UserStore.class);
-        //PasswordUtils mockPasswordUtils = Mockito.mock(PasswordUtils.class);
+        PasswordUtils mockPasswordUtils = Mockito.mock(PasswordUtils.class);
         Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
         //Mockito.when(mockPasswordUtils.isPasswordCorrect("testpassword1")).thenReturn(true);
         Mockito.when(mockUserStore.getUser("test username")).thenReturn(user);

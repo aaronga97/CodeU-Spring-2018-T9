@@ -7,7 +7,7 @@ public class PasswordUtils {
     }
 
     public static boolean isPasswordCorrect(String password){
-        if (password.equals(null)){
+        if (password == null) {
             return false;
         }
 
