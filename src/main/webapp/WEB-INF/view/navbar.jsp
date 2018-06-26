@@ -21,4 +21,7 @@ once they are logged in and adds a link to the site's activity feed --%>
 	<% if(user != null && user.isAdmin()) {%>
 		<a href="/admin" > Admin Page</a>
 	<% } %>
+	<% if(user != null) {%>
+    		<a href="/logout" > Logout</a>
+    	<% } %>
 </nav>

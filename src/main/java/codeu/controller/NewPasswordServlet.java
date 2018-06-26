@@ -43,7 +43,7 @@ public class NewPasswordServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        PasswordUtils passwordUtils = new PasswordUtils();
+
         String newPassword = request.getParameter("newPassword");
         String reTypedNewPassword = request.getParameter("reTypedNewPassword");
         reTypedNewPassword = Jsoup.clean(reTypedNewPassword, Whitelist.none());
@@ -62,17 +62,11 @@ public class NewPasswordServlet extends HttpServlet {
             return;
         }
 
-        if(!passwordUtils.isPasswordCorrect(newPassword)){
+        if(!PasswordUtils.isPasswordCorrect(newPassword)){
             request.setAttribute("error", "Password must be between 5 and 13 characters and contain both letters and numbers.");
             request.getRequestDispatcher("/WEB-INF/view/newPassword.jsp").forward(request, response);
             return;
         }
-
-//        if(newPassword.length()<5||newPassword.length()>13 || !newPassword.matches("(.*[a-z].*)")|| !newPassword.matches( "(.*[0-9].*)")){
-//            request.setAttribute("error", "Password must be between 5 and 13 characters and contain both letters and numbers.");
-//            request.getRequestDispatcher("/WEB-INF/view/newPassword.jsp").forward(request, response);
-//            return;
-//        }
 
         String hashedPassword = BCrypt.hashpw(reTypedNewPassword, BCrypt.gensalt());
         User user = userStore.getUser(request.getParameter("usernameVerification"));

@@ -5,12 +5,15 @@ import codeu.model.store.basic.UserStore;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mindrot.jbcrypt.BCrypt;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
@@ -75,7 +78,9 @@ public class NewPasswordServletTest {
         Mockito.when(mockRequest.getParameter("newPassword")).thenReturn("badPassword12345");
         Mockito.when(mockRequest.getParameter("reTypedNewPassword")).thenReturn("badPassword12345");
         UserStore mockUserStore = Mockito.mock(UserStore.class);
+       // PasswordUtils mockPasswordUtils = Mockito.mock(PasswordUtils.class);
         Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
+        //Mockito.when(mockPasswordUtils.isPasswordCorrect("badPassword12345")).thenReturn(false);
         newPasswordServlet.setUserStore(mockUserStore);
 
 
@@ -116,7 +121,9 @@ public class NewPasswordServletTest {
 
 
         UserStore mockUserStore = Mockito.mock(UserStore.class);
+        //PasswordUtils mockPasswordUtils = Mockito.mock(PasswordUtils.class);
         Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
+        //Mockito.when(mockPasswordUtils.isPasswordCorrect("testpassword1")).thenReturn(true);
         Mockito.when(mockUserStore.getUser("test username")).thenReturn(user);
 
         newPasswordServlet.setUserStore(mockUserStore);

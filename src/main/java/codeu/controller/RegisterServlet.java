@@ -55,7 +55,6 @@ public class RegisterServlet extends HttpServlet {
     this.activityStore = activityStore;
   }
 
-  PasswordUtils passwordUtils = new PasswordUtils();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -76,7 +75,7 @@ public class RegisterServlet extends HttpServlet {
         return;
     }
 
-    if(!passwordUtils.isPasswordCorrect(password)){
+    if(!PasswordUtils.isPasswordCorrect(password)){
         request.setAttribute("error", "Password must be between 5 and 13 characters and contain both letters and numbers.");
         request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
           return;
