@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import codeu.model.data.PasswordUtils;
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
 
@@ -54,6 +55,7 @@ public class RegisterServlet extends HttpServlet {
     this.activityStore = activityStore;
   }
 
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
@@ -65,6 +67,20 @@ public class RegisterServlet extends HttpServlet {
       throws IOException, ServletException {
 
     String username = request.getParameter("username");
+    String password = request.getParameter("password");
+
+    if(username.length()<3 || username.length()>14){
+        request.setAttribute("error", "username must be between 3 and 14 characters");
+        request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+        return;
+    }
+
+    if(!PasswordUtils.isPasswordCorrect(password)){
+        request.setAttribute("error", "Password must be between 5 and 13 characters and contain both letters and numbers.");
+        request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+          return;
+    }
+
 
     if (!username.matches("[\\w*\\s*]*")) {
       request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
@@ -78,7 +94,6 @@ public class RegisterServlet extends HttpServlet {
       return;
     }
 
-    String password = request.getParameter("password");
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
     User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), false);
