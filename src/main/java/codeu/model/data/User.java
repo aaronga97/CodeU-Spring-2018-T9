@@ -143,7 +143,9 @@ public class User {
 
     /** Adds a pal to the list of this User's pals as long as the pal is not this User. */
     public void addPal(String name) {
-        if (!name.equals(this.name)) {
+        /* Validate user input & only add the pal if he/she isn't this User and is not already a pal. */
+        UserStore userStore = UserStore.getInstance();
+        if (name.matches("[\\w*\\s*]*") && userStore.isUserRegistered(name) && !name.equals(this.name) && !isPal(name)) {
             this.pals.add(name);
         }
     }
