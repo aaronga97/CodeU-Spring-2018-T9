@@ -4,7 +4,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.time.Instant" %>
-<%@ page import="java.util.ArrayList" %>
 <%
 /** Gets the UserStore instance to access all users. */
 UserStore userStore = UserStore.getInstance();
