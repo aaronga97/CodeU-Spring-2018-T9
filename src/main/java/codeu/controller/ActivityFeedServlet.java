@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 
 /** Servlet class responsible for the activity feed page. */
 
@@ -52,6 +55,20 @@ public class ActivityFeedServlet extends HttpServlet {
     request.getRequestDispatcher("/WEB-INF/view/activityfeed.jsp").forward(request, response);
 
 
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+    String username = request.getParameter("searchQuery");
+
+    String cleanedUsername = Jsoup.clean(username, Whitelist.none());
+
+    List<Activity> activities = activityStore.getUserActivities(cleanedUsername);
+
+    request.setAttribute("activities", activities);
+
+    request.getRequestDispatcher("/WEB-INF/view/activityfeed.jsp").forward(request, response);
   }
 
 }

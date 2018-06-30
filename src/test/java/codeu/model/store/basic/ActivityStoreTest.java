@@ -16,8 +16,11 @@ public class ActivityStoreTest {
   private ActivityStore activityStore;
   private PersistentStorageAgent mockPersistentStorageAgent;
   private UUID activityId = UUID.randomUUID();
+  private UUID activityId2 = UUID.randomUUID();
 
-  private final Activity ACTIVITY_ONE = new Activity(activityId, 8, Instant.ofEpochMilli(1000), "activity_one", UUID.randomUUID(), "test_user1", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name");
+  private final Activity ACTIVITY_ONE = new Activity(activityId, 1, Instant.ofEpochMilli(1000), "activity_one", UUID.randomUUID(), "test_user1", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name");
+  private final Activity ACTIVITY_TWO = new Activity(activityId2, 2, Instant.ofEpochMilli(2000), "activity_two", UUID.randomUUID(), "test_user1", ActivityType.REGISTRATION, null, null);
+  private final Activity ACTIVITY_THREE = new Activity(UUID.randomUUID(), 3, Instant.ofEpochMilli(3000), "activity_three", UUID.randomUUID(), "test_user2", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name2");
 
   @Before
   public void setup() {
@@ -26,6 +29,8 @@ public class ActivityStoreTest {
 
     final List<Activity> activityList = new ArrayList<>();
     activityList.add(ACTIVITY_ONE);
+    activityList.add(ACTIVITY_TWO);
+    activityList.add(ACTIVITY_THREE);
     activityStore.setActivities(activityList);
   }
 
@@ -41,6 +46,22 @@ public class ActivityStoreTest {
     Activity resultActivity = activityStore.getActivityWithId(UUID.randomUUID());
 
     Assert.assertNull(resultActivity);
+  }
+
+  @Test
+  public void testGetUserActivities_found() {
+    List<Activity> userActivities = activityStore.getUserActivities("test_user1");
+
+    Assert.assertEquals(2, userActivities.size());
+    assertEquals(userActivities.get(0), activityStore.getActivityWithId(activityId));
+    assertEquals(userActivities.get(1), activityStore.getActivityWithId(activityId2));
+  }
+
+  @Test
+  public void testGetUserActivities_notFound() {
+    List<Activity> userActivities = activityStore.getUserActivities("user_not_found");
+
+    Assert.assertEquals(0, userActivities.size());
   }
 
   @Test

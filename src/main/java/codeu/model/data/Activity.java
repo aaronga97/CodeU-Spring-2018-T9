@@ -15,7 +15,7 @@ public class Activity {
    * by which one can determine what action the activity object is associated with.
    */
 
-  public enum ActivityType {CONVERSATION, REGISTRATION};
+  public enum ActivityType {CONVERSATION, REGISTRATION}
 
   private final UUID activityId;
 
