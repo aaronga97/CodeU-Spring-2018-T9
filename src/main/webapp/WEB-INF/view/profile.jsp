@@ -112,13 +112,26 @@ UserStore userStore = UserStore.getInstance();
                     <br/>
                 <button type="submit">Submit</button>
                 </form>
-         <% } %>
-         <h2 style="color:skyblue"> <%= profileUser %>'s Sent Messages </h2>
-         <% List<Message> userMessages = (List) request.getAttribute("messages");
+        <% } %>
+        </br>
+        <h2 style="color:skyblue"> <%= profileUser %>'s Sent Messages </h2>
+        <% List<Message> userMessages = (List) request.getAttribute("messages");
             for (Message m: userMessages) { %>
                 <a> <strong> <%= m.getTime() %> </strong> : <%= m.getContent() %> </a>
                 <br/>
             <% } %>
+
+        </br>
+        <h2 style="color:skyblue"> <%= profileUser %>'s Pals </h2>
+        <% List<String> pals = (List) request.getAttribute("pals");
+            for (String pal: pals) {
+                String url = "../users/" + pal;
+                %>
+                <li> <a href=<%= url %> > <%= pal %></a> </li>
+                <%
+            }
+
+        %>
       <% } %>
 
 
