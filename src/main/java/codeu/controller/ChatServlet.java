@@ -89,10 +89,23 @@ public class ChatServlet extends HttpServlet {
 
     Conversation conversation = conversationStore.getConversationWithTitle(conversationTitle);
     if (conversation == null) {
-      // couldn't find conversation, redirect to conversation list
-      System.out.println("Conversation was null: " + conversationTitle);
-      response.sendRedirect("/conversations");
-      return;
+      // check if this conversationTitle was a private conversation and if it doesn't exist, reason is because
+      // this was an old User before private conversations were made, so call createConversations() for both Users
+      if (conversationTitle.contains("-")) {
+        int dashPos = conversationTitle.indexOf("-");
+        String name1 = conversationTitle.substring(0, dashPos);
+        String name2 = conversationTitle.substring(dashPos + 1, conversationTitle.length());
+        User user1 = UserStore.getInstance().getUser(name1);
+        User user2 = UserStore.getInstance().getUser(name2);
+        user1.createConversations();
+        user2.createConversations();
+        conversation = conversationStore.getConversationWithTitle(conversationTitle);
+      } else {
+        // couldn't find conversation, redirect to conversation list
+        System.out.println("Conversation was null: " + conversationTitle);
+        response.sendRedirect("/conversations");
+        return;
+      }
     }
 
     UUID conversationId = conversation.getId();

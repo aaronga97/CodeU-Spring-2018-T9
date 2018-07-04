@@ -232,7 +232,7 @@ public class User {
     /**
      * When a User is initialized, this method creates a private Conversation with every other User that already exists.
      */
-    void createConversations() {
+    public void createConversations() {
         /* get all Users from UserStore */
         UserStore userStore = UserStore.getInstance();
         List<User> users = userStore.getUsers();
