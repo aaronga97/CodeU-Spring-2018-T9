@@ -108,13 +108,26 @@ public class ChatServlet extends HttpServlet {
       }
     }
 
-    UUID conversationId = conversation.getId();
+    if (conversation.getPrivate()) {
+      // if conversation is private conversation, make sure user is logged in and is one of the two users in this conversation
+      String username = (String) request.getSession().getAttribute("user");
+      int dashPos = conversationTitle.indexOf("-");
+      String name1 = conversationTitle.substring(0, dashPos);
+      String name2 = conversationTitle.substring(dashPos + 1, conversationTitle.length());
+      if (username == null || (!username.equals(name1) && !username.equals(name2))) {
+        System.out.println("Sorry, you cannot view this private conversation.");
+        response.sendRedirect("/conversations");
+        return;
+      }
+    }
+      // otherwise, user logged in is one of the users in private conversation OR conversation is public and anyone can view
+      UUID conversationId = conversation.getId();
 
-    List<Message> messages = messageStore.getMessagesInConversation(conversationId);
+      List<Message> messages = messageStore.getMessagesInConversation(conversationId);
 
-    request.setAttribute("conversation", conversation);
-    request.setAttribute("messages", messages);
-    request.getRequestDispatcher("/WEB-INF/view/chat.jsp").forward(request, response);
+      request.setAttribute("conversation", conversation);
+      request.setAttribute("messages", messages);
+      request.getRequestDispatcher("/WEB-INF/view/chat.jsp").forward(request, response);
   }
 
   /**
