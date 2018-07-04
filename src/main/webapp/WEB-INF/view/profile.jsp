@@ -41,8 +41,10 @@ UserStore userStore = UserStore.getInstance();
             <%
             }
             for (String requester: incomingRequests) {
-                 /** Lists the incoming requests for current user to accept or decline */ %>
-                 <p> <%= requester %> has sent you a pal request: </p>
+                 /** Lists the incoming requests for current user to accept or decline */
+                 String url = "../users/" + requester;
+                 %>
+                 <p> <a href=<%= url %> > <%= requester %></a> has sent you a pal request: </p>
                  <form action="/users/<%= profileUser %>" method="POST">
                    <button type="submit" name="accept" value="<%= requester %>"> Accept </button>
                    <button type="submit" name="decline" value="<%= requester %>"> Decline </button>
