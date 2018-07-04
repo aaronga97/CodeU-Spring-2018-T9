@@ -34,6 +34,7 @@ UserStore userStore = UserStore.getInstance();
 
       <% } else {
         if (currentUser != null && currentUser.equals(profileUser)) { %>
+            <h1 style="color:dodgerblue">Welcome to your page!</h1>
             <% /** Iterates through any incoming pal requests for user to accept/decline */
             List<String> incomingRequests = currUser.getIncomingRequests();
             if (incomingRequests.size() > 0) { %>
@@ -51,8 +52,21 @@ UserStore userStore = UserStore.getInstance();
                    <br/>
                  </form>
             <% } %>
-            <h1 style="color:dodgerblue">Welcome to your page!</h1>
 
+            <% /** Iterates through any outgoing pal requests for user to view */
+            List<String> outgoingRequests = currUser.getOutgoingRequests();
+            if (outgoingRequests.size() == 0) { %>
+                <p> No outgoing requests to view. </p>
+            <%
+            } else { %>
+                <p> My outgoing pal requests: </p>
+                <% for (String requestee: outgoingRequests) {
+                 /** Lists the outgoing requests for current user to view */
+                 String url = "../users/" + requestee;
+                 %>
+                 <li> <a href=<%= url %> > <%= requestee %></a> </li>
+             <% }
+              } %>
       <% } else if (currentUser != null) { %>
             <h1 style="color:dodgerblue">Welcome to <%= profileUser %>'s Page!</h1>
 
@@ -130,10 +144,12 @@ UserStore userStore = UserStore.getInstance();
                 <li> <a href=<%= url %> > <%= pal %></a> </li>
                 <%
             }
-
         %>
       <% } %>
 
+    </br>
+    </br>
+    </br>
 
     </div>
   </div>
