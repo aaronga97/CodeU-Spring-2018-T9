@@ -34,7 +34,23 @@ UserStore userStore = UserStore.getInstance();
 
       <% } else {
         if (currentUser != null && currentUser.equals(profileUser)) { %>
+            <% /** Iterates through any incoming pal requests for user to accept/decline */
+            List<String> incomingRequests = currUser.getIncomingRequests();
+            if (incomingRequests.size() > 0) { %>
+                <p> You have some notifications! </p>
+            <%
+            }
+            for (String requester: incomingRequests) {
+                 /** Lists the incoming requests for current user to accept or decline */ %>
+                 <p> <%= requester %> has sent you a pal request: </p>
+                 <form action="/users/<%= profileUser %>" method="POST">
+                   <button type="submit" name="accept" value="<%= requester %>"> Accept </button>
+                   <button type="submit" name="decline" value="<%= requester %>"> Decline </button>
+                   <br/>
+                 </form>
+            <% } %>
             <h1 style="color:dodgerblue">Welcome to your page!</h1>
+
       <% } else if (currentUser != null) { %>
             <h1 style="color:dodgerblue">Welcome to <%= profileUser %>'s Page!</h1>
 
@@ -52,10 +68,30 @@ UserStore userStore = UserStore.getInstance();
               }
               conversationName = conversationName + firstUser + "-" +secondUser;
               %>
-              <a href="/chat/<%= conversationName %>"> View Conversation with <%= profileUser %> </a>
+              <a href="/chat/<%= conversationName %>"> Send a direct message to <%= profileUser %> </a>
             <%
             } else {
-              System.out.println("Not friends yet");
+                if (currUser.sentPalRequest(profileUser)) {
+                    /** States that the current user has already sent this profile user a pal request */ %>
+                    <p> Pal Request sent! </p>
+                    <%
+                } else if (profUser.sentPalRequest(currentUser)) {
+                    /** Gives current user the option to accept or decline request on this user profile page */ %>
+                    <p> <%= profileUser %> has sent you a pal request: </p>
+                      <form action="/users/<%= profileUser %>" method="POST">
+                        <button type="submit" name="accept" value="<%= profileUser %>"> Accept </button>
+                        <button type="submit" name="decline" value="<%= profileUser %>"> Decline </button>
+                        <br/>
+                      </form>
+                    <%
+                } else {
+                    /** Gives current user a button to request this user as a pal */ %>
+                       <form action="/users/<%= profileUser %>" method="POST">
+                         <button type="submit" name="requestPal" value="<%= currentUser %>"> Request Pal </button>
+                         <br/>
+                       </form>
+                    <%
+                }
             }
             %>
 

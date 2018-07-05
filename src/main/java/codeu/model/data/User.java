@@ -141,9 +141,13 @@ public class User {
         return pals;
     }
 
-    /** Adds a pal to the list of this User's pals. */
+    /** Adds a pal to the list of this User's pals as long as the pal is not this User. */
     public void addPal(String name) {
-        this.pals.add(name);
+        /* Validate user input & only add the pal if he/she isn't this User and is not already a pal. */
+        UserStore userStore = UserStore.getInstance();
+        if (name.matches("[\\w*\\s*]*") && userStore.isUserRegistered(name) && !name.equals(this.name) && !isPal(name)) {
+            this.pals.add(name);
+        }
     }
 
     /** Checks whether a given name is in this User's list of pals. */
@@ -168,6 +172,11 @@ public class User {
     /** Removes a request from incoming requests when this User accepts/declines a pal. */
     public void deleteIncomingRequest(String name) {
         this.incomingRequests.remove(name);
+    }
+
+    /** Checks whether this User has sent another user/name a pal request. */
+    public boolean sentPalRequest(String name) {
+        return this.outgoingRequests.contains(name);
     }
 
     /**
