@@ -1,6 +1,7 @@
 <%@ page import="codeu.model.store.basic.UserStore" %>
 <%@ page import="codeu.model.data.User" %>
 <%@ page import="codeu.model.data.Message" %>
+<%@ page import="codeu.model.data.Utils" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.time.Instant" %>
@@ -38,7 +39,7 @@ UserStore userStore = UserStore.getInstance();
             <% /** Iterates through any incoming pal requests for user to accept/decline */
             List<String> incomingRequests = currUser.getIncomingRequests();
             if (incomingRequests.size() > 0) { %>
-                <p> You have some notifications! </p>
+                <h3> You have some notifications! </h3>
             <%
             }
             for (String requester: incomingRequests) {
@@ -59,7 +60,7 @@ UserStore userStore = UserStore.getInstance();
                 <p> No outgoing requests to view. </p>
             <%
             } else { %>
-                <p> My outgoing pal requests: </p>
+                <h3> My outgoing pal requests: </h3>
                 <% for (String requestee: outgoingRequests) {
                  /** Lists the outgoing requests for current user to view */
                  String url = "../users/" + requestee;
@@ -67,9 +68,10 @@ UserStore userStore = UserStore.getInstance();
                  <li> <a href=<%= url %> > <%= requestee %></a> </li>
              <% }
               } %>
+             </br>
       <% } else if (currentUser != null) { %>
             <h1 style="color:dodgerblue">Welcome to <%= profileUser %>'s Page!</h1>
-
+            </br>
             <%
             /** If the current user logged in is already pals with the profile user page they are viewing, then allow her/him to message and view their private conversation. Else, allow them to request this person as a pal. */
             if (currUser.isPal(profileUser)) {
@@ -85,11 +87,14 @@ UserStore userStore = UserStore.getInstance();
               conversationName = conversationName + firstUser + "-" +secondUser;
               %>
               <a href="/chat/<%= conversationName %>"> Send a direct message to <%= profileUser %> </a>
+              </br>
+              </br>
             <%
             } else {
                 if (currUser.sentPalRequest(profileUser)) {
                     /** States that the current user has already sent this profile user a pal request */ %>
                     <p> Pal Request sent! </p>
+                    </br>
                     <%
                 } else if (profUser.sentPalRequest(currentUser)) {
                     /** Gives current user the option to accept or decline request on this user profile page */ %>
@@ -106,6 +111,7 @@ UserStore userStore = UserStore.getInstance();
                          <button type="submit" name="requestPal" value="<%= currentUser %>"> Request Pal </button>
                          <br/>
                        </form>
+                       </br>
                     <%
                 }
             }
@@ -126,12 +132,12 @@ UserStore userStore = UserStore.getInstance();
                     <br/>
                 <button type="submit">Submit</button>
                 </form>
+                <br/>
         <% } %>
-        </br>
         <h2 style="color:skyblue"> <%= profileUser %>'s Sent Messages </h2>
         <% List<Message> userMessages = (List) request.getAttribute("messages");
             for (Message m: userMessages) { %>
-                <a> <strong> <%= m.getTime() %> </strong> : <%= m.getContent() %> </a>
+                <a> <strong> <%= Utils.getTime(m.getCreationTime()) %> </strong> : <%= m.getContent() %> </a>
                 <br/>
             <% } %>
 
