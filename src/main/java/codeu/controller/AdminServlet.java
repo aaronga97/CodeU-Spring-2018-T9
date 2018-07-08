@@ -127,7 +127,7 @@ public class AdminServlet extends HttpServlet {
     } else {
       //else set name and time of creation
       String lastUserName = lastUser.getName();
-      String lastUserTime = lastUser.getTime();
+      String lastUserTime = Utils.getTime(lastUser.getCreationTime());
 
       map.put("lastUserName", lastUserName);
       map.put("lastUserTime", lastUserTime);
