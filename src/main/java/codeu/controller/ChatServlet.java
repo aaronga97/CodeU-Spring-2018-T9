@@ -120,14 +120,15 @@ public class ChatServlet extends HttpServlet {
         return;
       }
     }
-      // otherwise, user logged in is one of the users in private conversation OR conversation is public and anyone can view
-      UUID conversationId = conversation.getId();
 
-      List<Message> messages = messageStore.getMessagesInConversation(conversationId);
+    // otherwise, user logged in is one of the users in private conversation OR conversation is public and anyone can view
+    UUID conversationId = conversation.getId();
 
-      request.setAttribute("conversation", conversation);
-      request.setAttribute("messages", messages);
-      request.getRequestDispatcher("/WEB-INF/view/chat.jsp").forward(request, response);
+    List<Message> messages = messageStore.getMessagesInConversation(conversationId);
+
+    request.setAttribute("conversation", conversation);
+    request.setAttribute("messages", messages);
+    request.getRequestDispatcher("/WEB-INF/view/chat.jsp").forward(request, response);
   }
 
   /**
