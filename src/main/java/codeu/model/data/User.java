@@ -144,8 +144,7 @@ public class User {
     /** Adds a pal to the list of this User's pals as long as the pal is not this User. */
     public void addPal(String name) {
         /* Validate user input & only add the pal if he/she isn't this User and is not already a pal. */
-        UserStore userStore = UserStore.getInstance();
-        if (name.matches("[\\w*\\s*]*") && userStore.isUserRegistered(name) && !name.equals(this.name) && !isPal(name)) {
+        if (name.matches("[\\w*\\s*]*") && !name.equals(this.name) && !isPal(name)) {
             this.pals.add(name);
         }
     }
@@ -166,7 +165,9 @@ public class User {
 
     /** Adds a new request to incoming requests when someone requests this User as a pal. */
     public void addIncomingRequest(String name) {
-        this.incomingRequests.add(name);
+        if (!name.equals(this.name)) {
+            this.incomingRequests.add(name);
+        }
     }
 
     /** Removes a request from incoming requests when this User accepts/declines a pal. */
@@ -204,7 +205,9 @@ public class User {
 
     /** Adds a new request to outgoing requests when this User requests another person as a pal. */
     public void addOutgoingRequest(String name) {
-        this.outgoingRequests.add(name);
+        if (!name.equals(this.name)) {
+            this.outgoingRequests.add(name);
+        }
     }
 
     /** Removes a request from outgoing requests when the other person accepts/declines a request from this User. */
