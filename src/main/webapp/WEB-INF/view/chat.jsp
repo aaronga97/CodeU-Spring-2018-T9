@@ -58,7 +58,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
               //Iterate through responseJson with new messages
               $.each(responseJson, function(index, message) {
                   //Append them
-                  $($ul).append("<li><strong><a href=/users/" + message.author + " >" + message.author + "</a>" + ': ' + "</strong>" + message.content + "</li>");
+                  $($ul).append("<li><strong><a href=/users/" + message.author + " >" + message.author + "</a>" + ': ' + "</strong>" + message.content + "<small><sub> " + message.creation + "</sub></small>" + "</li>");
               });
               //Update messagesSize to the pastSize + theSize of new added messages, at the end of ajaxRequest
               messagesSize = +messagesSize + jsonSize;
@@ -91,9 +91,12 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
         String url = "/users/";
         url += author;
+
+        String messageHour = message.getTime();
+        messageHour = messageHour.substring(messageHour.length()-8);
     %>
 
-        <li><strong> <a href=<%= url %> > <%= author%></a>: </strong> <%= message.getContent() %></li>
+        <li><strong> <a href=<%= url %> > <%= author%></a>: </strong> <%= message.getContent() %> <small><sub> <%= messageHour %></sub></small></li>
 
     <%
       }

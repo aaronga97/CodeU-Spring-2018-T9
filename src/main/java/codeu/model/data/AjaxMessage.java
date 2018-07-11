@@ -32,7 +32,7 @@ public class AjaxMessage {
   private UUID conversation;
   private String author;
   private String content;
-  private Instant creation;
+  private String creation;
 
   /**
    * Constructs a new Message.
@@ -56,12 +56,16 @@ public class AjaxMessage {
     if(msg == null) return null;
 
     AjaxMessage ajaxMessage = new AjaxMessage();
+    String creationTime;
 
     ajaxMessage.id = msg.getId();
     ajaxMessage.conversation = msg.getConversationId();
+    //Replace author id with name
     ajaxMessage.author = UserStore.getInstance().getUser(msg.getAuthorId()).getName();
     ajaxMessage.content = msg.getContent();
-    ajaxMessage.creation = msg.getCreationTime();
+    //Get the hour when message was created
+    creationTime = msg.getTime();
+    ajaxMessage.creation = creationTime.substring(creationTime.length()-8);
 
     System.out.println("AjaxMessage created, author: " + ajaxMessage.author);
 
