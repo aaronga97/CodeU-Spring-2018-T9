@@ -58,7 +58,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
               //Iterate through responseJson with new messages
               $.each(responseJson, function(index, message) {
                   //Append them
-                  $($ul).append("<li><strong>" + message.author + "</strong>" + ': ' + message.content + "</li>");
+                  $($ul).append("<li><strong><a href=/users/" + message.author + " >" + message.author + "</a>" + ': ' + "</strong>" + message.content + "</li>");
               });
               //Update messagesSize to the pastSize + theSize of new added messages, at the end of ajaxRequest
               messagesSize = +messagesSize + jsonSize;
