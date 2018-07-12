@@ -86,7 +86,7 @@
 
   <form action="/activityfeed" method= "POST">
 		<input type="text" name="searchQuery">
-
+		<input type="hidden" name="checked" value=<%= checked%> >
 		<button type = "submit">Search User</button>
 	</form>
 
