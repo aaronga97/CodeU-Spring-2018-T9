@@ -34,29 +34,12 @@ public class AjaxMessage {
   private String content;
   private String creation;
 
-  /**
-   * Constructs a new Message.
-   *
-   * @param id the ID of this Message
-   * @param conversation the ID of the Conversation this Message belongs to
-   * @param author the ID of the User who sent this Message
-   * @param content the text content of this Message
-   * @param creation the creation time of this Message
-   */
-  public AjaxMessage() {
-    this.id = null;
-    this.conversation = null;
-    this.author = null;
-    this.content = null;
-    this.creation = null;
-  }
-
   //Create an ajaxMessage out of a message received
   public static AjaxMessage toAjaxMessage(Message msg){
     if(msg == null) return null;
 
     AjaxMessage ajaxMessage = new AjaxMessage();
-    String creationTime;
+    String creationTime = msg.getTime();
 
     ajaxMessage.id = msg.getId();
     ajaxMessage.conversation = msg.getConversationId();
@@ -64,7 +47,6 @@ public class AjaxMessage {
     ajaxMessage.author = UserStore.getInstance().getUser(msg.getAuthorId()).getName();
     ajaxMessage.content = msg.getContent();
     //Get the hour when message was created
-    creationTime = msg.getTime();
     ajaxMessage.creation = creationTime.substring(creationTime.length()-8);
 
     System.out.println("AjaxMessage created, author: " + ajaxMessage.author);
