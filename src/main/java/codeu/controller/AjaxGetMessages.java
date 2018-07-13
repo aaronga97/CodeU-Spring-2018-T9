@@ -17,6 +17,7 @@ package codeu.controller;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.AjaxMessage;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
@@ -87,6 +88,7 @@ public class AjaxGetMessages extends HttpServlet{
 
         List<Message> messageList = new ArrayList<>();
         List<Message> newMessageList = new ArrayList<>();
+        List<AjaxMessage> ajaxMessageList = new ArrayList<>();
 
         String requestUrl = request.getRequestURI();
 
@@ -109,11 +111,19 @@ public class AjaxGetMessages extends HttpServlet{
             lastSize++;
         }
 
-        String messagesJson = new Gson().toJson(newMessageList);
+        //Convert each message into an ajaxMessage and itt to ajaxMessageList
+        for(int i = 0; i < newMessageList.size(); ++i){
+          Message actualMessage = newMessageList.get(i);
+          AjaxMessage convertedMessage = AjaxMessage.toAjaxMessage(actualMessage);
+
+          ajaxMessageList.add(convertedMessage);
+        }
+
+        //Convert ajaxMessages into a json
+        String messagesJson = new Gson().toJson(ajaxMessageList);
         System.out.println(messagesJson);
 
-        //Add name parameter instead of UUID to each message
-
+        //Send json with new messages to front end
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(messagesJson);
