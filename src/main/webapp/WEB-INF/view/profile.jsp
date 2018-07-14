@@ -136,10 +136,14 @@ UserStore userStore = UserStore.getInstance();
         <% } %>
         <h2 style="color:skyblue"> <%= profileUser %>'s Sent Messages </h2>
         <% List<Message> userMessages = (List) request.getAttribute("messages");
-            for (Message m: userMessages) { %>
+            for (Message m: userMessages) {
+                if (!m.isPrivate()) {
+            %>
                 <a> <strong> <%= Utils.getTime(m.getCreationTime()) %> </strong> : <%= m.getContent() %> </a>
                 <br/>
-            <% } %>
+            <%
+            }
+             } %>
 
         </br>
         <h2 style="color:skyblue"> <%= profileUser %>'s Pals </h2>
