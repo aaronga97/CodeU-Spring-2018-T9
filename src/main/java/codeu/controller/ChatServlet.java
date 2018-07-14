@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** Servlet class responsible for the chat page. */
 public class ChatServlet extends HttpServlet {
@@ -89,12 +91,70 @@ public class ChatServlet extends HttpServlet {
 
     Conversation conversation = conversationStore.getConversationWithTitle(conversationTitle);
     if (conversation == null) {
-      // couldn't find conversation, redirect to conversation list
-      System.out.println("Conversation was null: " + conversationTitle);
-      response.sendRedirect("/conversations");
-      return;
+      // check if this conversationTitle was a private conversation and if it doesn't exist, reason is because
+      // this was an old User before private conversations were made, so call createConversations() for both Users
+      String pattern = "([^-])+[-]([^-])+";
+
+      if (conversationTitle.matches(pattern)) {
+        String namePattern1 = "(.*)-";
+        Pattern p1 = Pattern.compile(namePattern1);
+        Matcher m1 = p1.matcher(conversationTitle);
+        String name1 = "";
+        String name2 = "";
+        if (m1.find()) {
+          name1 = m1.group(1);
+        }
+        String namePattern2 = "-(.*)";
+        Pattern p2 = Pattern.compile(namePattern2);
+        Matcher m2 = p2.matcher(conversationTitle);
+        if (m2.find()) {
+          name2 = m2.group(1);
+        }
+        User user1 = UserStore.getInstance().getUser(name1);
+        User user2 = UserStore.getInstance().getUser(name2);
+        if (user1 != null && user2 != null) {
+          user1.createConversations();
+          user2.createConversations();
+          conversation = conversationStore.getConversationWithTitle(conversationTitle);
+        } else {
+          // usernames in conversationTitle do not exist, so redirect to conversation list
+          System.out.println("User does not exist " + conversationTitle);
+          response.sendRedirect("/conversations");
+          return;
+        }
+      } else {
+        // couldn't find conversation, redirect to conversation list
+        System.out.println("Conversation was null: " + conversationTitle);
+        response.sendRedirect("/conversations");
+        return;
+      }
     }
 
+    if (conversation.getPrivate()) {
+      // if conversation is private conversation, make sure user is logged in and is one of the two users in this conversation
+      String username = (String) request.getSession().getAttribute("user");
+      String namePattern1 = "(.*)-";
+      Pattern p1 = Pattern.compile(namePattern1);
+      Matcher m1 = p1.matcher(conversationTitle);
+      String name1 = "";
+      String name2 = "";
+      if (m1.find()) {
+        name1 = m1.group(1);
+      }
+      String namePattern2 = "-(.*)";
+      Pattern p2 = Pattern.compile(namePattern2);
+      Matcher m2 = p2.matcher(conversationTitle);
+      if (m2.find()) {
+        name2 = m2.group(1);
+      }
+      if (username == null || (!username.equals(name1) && !username.equals(name2))) {
+        System.out.println("Sorry, you cannot view this private conversation.");
+        response.sendRedirect("/conversations");
+        return;
+      }
+    }
+
+    // otherwise, user logged in is one of the users in private conversation OR conversation is public and anyone can view
     UUID conversationId = conversation.getId();
 
     List<Message> messages = messageStore.getMessagesInConversation(conversationId);
