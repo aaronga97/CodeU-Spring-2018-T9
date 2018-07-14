@@ -96,22 +96,23 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
       <ul id="unorderedMessageList">
 
-    <%
+   <%
       for (Message message : messages) {
         String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
-
-        String url = "/users/";
-        url += author;
-
         String messageHour = message.getTime();
+        String url = "/users/";
+        String seenCheckmarks = "";
+
+        url += author;
         messageHour = messageHour.substring(messageHour.length()-8);
-    %>
 
-        <li><strong> <a href=<%= url %> > <%= author%></a>: </strong> <%= message.getContent() %> <small><sub> <%= messageHour %></sub></small></li>
+        if(author.equals(username)){
+          seenCheckmarks = "&#10003;&#10003;";
+        }
+  %>
+        <li><strong> <a href=<%= url %> > <%= author%></a>: </strong> <%= message.getContent() %> <small><sub> <%= messageHour %> <span style="font-size:0.6em"> <%= seenCheckmarks %> </span></sub></small></li>
 
-    <%
-      }
-     %>
+  <% } %>
 
         <!-- Insert here new array with messages from ajax and add the ones not added yet -->
 
