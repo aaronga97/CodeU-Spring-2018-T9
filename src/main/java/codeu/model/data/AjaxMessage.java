@@ -39,7 +39,7 @@ public class AjaxMessage {
     if(msg == null) return null;
 
     AjaxMessage ajaxMessage = new AjaxMessage();
-    String creationTime = msg.getTime();
+    String creationTime = Utils.getTime(msg.getCreationTime());
 
     ajaxMessage.id = msg.getId();
     ajaxMessage.conversation = msg.getConversationId();
