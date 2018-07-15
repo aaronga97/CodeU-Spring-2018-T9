@@ -2,6 +2,7 @@
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.data.Activity" %>
+<%@ page import="codeu.model.data.Activity.ActivityType" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
 <%
 List<Activity> activities = (List<Activity>) request.getAttribute("activities");
@@ -29,16 +30,32 @@ List<Activity> activities = (List<Activity>) request.getAttribute("activities");
 		<ul>
 	<%
 		for (Activity activity : activities) {
-		String author = activity.getUsername();
+			String author = activity.getUsername();
 
-		String url = "/users/";
-		url += author;
+			String authorUrl = "/users/";
+			authorUrl += author;
+
+			if (activity.getActivityType() == ActivityType.REGISTRATION) {
+
+
 	%>
 
-		<li><strong> <a href=<%= url %> > <%= author%></a>: </strong><%= activity.getMessage() %></li>
+				<li><strong> <a href=<%= authorUrl %> > <%= author%></a>: </strong><%= activity.getMessage() %></li>
+
+	<%
+			} else if (activity.getActivityType() == ActivityType.CONVERSATION) {
+				String conversation = activity.getConversationName();
+
+				String conversationUrl = "/chat/";
+				conversationUrl += conversation;
+
+	%>
+
+				<li><strong> <a href=<%= authorUrl %> > <%= author%></a>: </strong><%= activity.getMessage() %> <strong> <a href=<%= conversationUrl %> > conversation </a> </strong>! </li>
 
 	<%
 		}
+	}
 	%>
 
 		</ul>
