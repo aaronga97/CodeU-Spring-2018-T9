@@ -203,10 +203,7 @@ public class ChatServlet extends HttpServlet {
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
 
-    boolean privateMessage = false;
-    if (conversation.getPrivate()) {
-      privateMessage = true;
-    }
+    boolean privateMessage = conversation.getPrivate();
 
     Message message =
         new Message(
