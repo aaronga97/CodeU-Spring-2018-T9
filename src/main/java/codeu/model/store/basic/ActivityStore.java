@@ -88,6 +88,22 @@ public class ActivityStore {
     return activities;
   }
 
+  /** Find and return activity associated with a conversationName */
+  public Activity getActivityWithConversationName(String conversationName) {
+
+    for (Activity activity: this.activities) {
+      if (activity.getActivityType() != ActivityType.REGISTRATION && activity.getConversationName().equals(conversationName)) {
+        return activity;
+      }
+    }
+    return null;
+  }
+
+  /** Update an existing Activity. */
+  public void updateActivity(Activity activity) {
+    persistentStorageAgent.writeThrough(activity);
+  }
+
   /** Sets the List of Activities stored by this ActivityStore. */
   public void setActivities(List<Activity> activities) {
     this.activities = activities;

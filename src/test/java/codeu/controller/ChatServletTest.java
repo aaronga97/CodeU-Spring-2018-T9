@@ -17,9 +17,12 @@ package codeu.controller;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.Activity;
+import codeu.model.data.Activity.ActivityType;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.ActivityStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -46,6 +49,7 @@ public class ChatServletTest {
   private ConversationStore mockConversationStore;
   private MessageStore mockMessageStore;
   private UserStore mockUserStore;
+  private ActivityStore mockActivityStore;
 
   @Before
   public void setup() {
@@ -68,6 +72,9 @@ public class ChatServletTest {
 
     mockUserStore = Mockito.mock(UserStore.class);
     chatServlet.setUserStore(mockUserStore);
+
+    mockActivityStore = Mockito.mock(ActivityStore.class);
+    chatServlet.setActivityStore(mockActivityStore);
   }
 
   @Test
@@ -167,6 +174,9 @@ public class ChatServletTest {
             false);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
+    Activity fakeActivity = new Activity(UUID.randomUUID(), 1, Instant.ofEpochMilli(1000), "test_activity", UUID.randomUUID(), "test_user", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name");
+    Mockito.when(mockActivityStore.getActivityWithConversationName("test_conversation")).thenReturn(fakeActivity);
+
     Conversation fakeConversation =
         new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now(), false);
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
@@ -196,6 +206,9 @@ public class ChatServletTest {
             Instant.now(),
             false);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Activity fakeActivity = new Activity(UUID.randomUUID(), 1, Instant.ofEpochMilli(1000), "test_activity", UUID.randomUUID(), "test_user", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name");
+    Mockito.when(mockActivityStore.getActivityWithConversationName("test_conversation")).thenReturn(fakeActivity);
 
     Conversation fakeConversation =
         new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now(), false);
