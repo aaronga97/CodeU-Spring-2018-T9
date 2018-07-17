@@ -97,9 +97,13 @@ public class ProfileServlet extends HttpServlet {
             UUID author = user.getId();
             MessageStore m = MessageStore.getInstance();
             List<Message> sentMessages = m.getMessagesOfUser(author);
+            List<String> pals = user.getPals();
 
             // set messages attribute of request to be sentMessages
             request.setAttribute("messages", sentMessages);
+
+            // set pals attribute to be list of user's pals
+            request.setAttribute("pals", pals);
 
         }
         // forward request to profile.jsp

@@ -155,16 +155,18 @@ public class PersistentDataStoreTest {
     UUID authorOne = UUID.fromString("10000002-2222-3333-4444-555555555555");
     String contentOne = "test content one";
     Instant creationOne = Instant.ofEpochMilli(1000);
+    boolean privateMessageOne = false;
     Message inputMessageOne =
-        new Message(idOne, conversationOne, authorOne, contentOne, creationOne);
+        new Message(idOne, conversationOne, authorOne, contentOne, creationOne, privateMessageOne);
 
     UUID idTwo = UUID.fromString("10000003-2222-3333-4444-555555555555");
     UUID conversationTwo = UUID.fromString("10000004-2222-3333-4444-555555555555");
     UUID authorTwo = UUID.fromString("10000005-2222-3333-4444-555555555555");
     String contentTwo = "test content one";
     Instant creationTwo = Instant.ofEpochMilli(2000);
+    boolean privateMessageTwo = true;
     Message inputMessageTwo =
-        new Message(idTwo, conversationTwo, authorTwo, contentTwo, creationTwo);
+        new Message(idTwo, conversationTwo, authorTwo, contentTwo, creationTwo, privateMessageTwo);
 
         // save
     persistentDataStore.writeThrough(inputMessageOne);
@@ -180,6 +182,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(authorOne, resultMessageOne.getAuthorId());
     Assert.assertEquals(contentOne, resultMessageOne.getContent());
     Assert.assertEquals(creationOne, resultMessageOne.getCreationTime());
+    Assert.assertEquals(privateMessageOne, resultMessageOne.isPrivate());
 
     Message resultMessageTwo = resultMessages.get(1);
     Assert.assertEquals(idTwo, resultMessageTwo.getId());
@@ -187,6 +190,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(authorTwo, resultMessageTwo.getAuthorId());
     Assert.assertEquals(contentTwo, resultMessageTwo.getContent());
     Assert.assertEquals(creationTwo, resultMessageTwo.getCreationTime());
+    Assert.assertEquals(privateMessageTwo, resultMessageTwo.isPrivate());
   }
 
   @Test

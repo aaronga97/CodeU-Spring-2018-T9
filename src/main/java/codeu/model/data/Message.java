@@ -28,6 +28,7 @@ public class Message {
   private final UUID author;
   private final String content;
   private final Instant creation;
+  private final boolean privateMessage;
 
   /**
    * Constructs a new Message.
@@ -38,12 +39,13 @@ public class Message {
    * @param content the text content of this Message
    * @param creation the creation time of this Message
    */
-  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation) {
+  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation, boolean privateMessage) {
     this.id = id;
     this.conversation = conversation;
     this.author = author;
     this.content = content;
     this.creation = creation;
+    this.privateMessage = privateMessage;
   }
 
   /** Returns the ID of this Message. */
@@ -71,18 +73,9 @@ public class Message {
     return creation;
   }
 
-  /** Returns the Instant into a String time format to display to users. */
-  public String getTime() {
-    LocalDateTime localDate = LocalDateTime.ofInstant(creation, ZoneId.systemDefault());
-    int hour = localDate.getHour();
-    String timeAMPM = "";
-    if (hour > 12) {
-      hour = hour % 12;
-      timeAMPM = "PM";
-    } else {
-      timeAMPM = "AM";
-    }
-    String date = localDate.getMonth().toString() + " " + localDate.getDayOfMonth() + ", " + localDate.getYear() + " - " + hour + ":" + localDate.getMinute() + " " + timeAMPM;
-    return date;
+  /** Returns whether or not this message is part of a private conversation. */
+  public boolean isPrivate() {
+    return privateMessage;
   }
+
 }

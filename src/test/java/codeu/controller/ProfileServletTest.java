@@ -73,7 +73,7 @@ public class ProfileServletTest {
     }
 
     @Test
-    public void testDoPost() throws IOException, ServletException {
+    public void testDoPostEditBio() throws IOException, ServletException {
         User userCandace = new User(
                 UUID.randomUUID(), "Candace", "candacepassword", Instant.now(), false);
         UserStore mockUserStore = Mockito.mock(UserStore.class);
@@ -91,6 +91,23 @@ public class ProfileServletTest {
     }
 
     @Test
+    public void testEditBio() throws IOException, ServletException {
+        User userCandace = new User(
+                UUID.randomUUID(), "Candace", "candacepassword", Instant.now(), false);
+        UserStore mockUserStore = Mockito.mock(UserStore.class);
+
+        Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/candace");
+        Mockito.when(mockUserStore.getUser("candace")).thenReturn(userCandace);
+
+        Mockito.when(mockRequest.getParameter("bio")).thenReturn("This is Candace's bio.");
+
+        profileServlet.setUserStore(mockUserStore);
+        profileServlet.updateBio(mockRequest);
+
+        Assert.assertEquals("This is Candace's bio.", userCandace.getBio());
+    }
+
+    @Test
     public void testDoPostUncleanedBio() throws IOException, ServletException {
         User userCandace = new User(
                 UUID.randomUUID(), "Candace", "candacepassword", Instant.now(), false);
@@ -102,9 +119,109 @@ public class ProfileServletTest {
         Mockito.when(mockRequest.getParameter("bio")).thenReturn("<h1> This is Candace's bio. <h1>");
 
         profileServlet.setUserStore(mockUserStore);
-        profileServlet.doPost(mockRequest, mockResponse);
-
+        profileServlet.updateBio(mockRequest);
         Assert.assertEquals("This is Candace's bio.", userCandace.getBio());
-        Mockito.verify(mockResponse).sendRedirect("/users/candace");
+    }
+
+    @Test
+    public void testSendPalRequest() throws IOException, ServletException {
+        User userBob = new User(
+                UUID.randomUUID(), "Bob", "bobpassword", Instant.now(), false);
+        User userHelen = new User(
+                UUID.randomUUID(), "Helen", "helenpassword", Instant.now(), false);
+
+        UserStore mockUserStore = Mockito.mock(UserStore.class);
+        Mockito.when(mockUserStore.getUser("Bob")).thenReturn(userBob);
+        Mockito.when(mockUserStore.getUser("Helen")).thenReturn(userHelen);
+
+        Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/Helen");
+        Mockito.when(mockRequest.getParameter("requestPal")).thenReturn("Bob");
+
+        Assert.assertEquals(0, userBob.getOutgoingRequests().size());
+        Assert.assertEquals(0, userHelen.getIncomingRequests().size());
+
+        profileServlet.setUserStore(mockUserStore);
+        profileServlet.sendPalRequest(mockRequest);
+
+        Assert.assertEquals(1, userBob.getOutgoingRequests().size());
+        Assert.assertEquals(1, userHelen.getIncomingRequests().size());
+    }
+
+    @Test
+    public void testAcceptPal() throws IOException, ServletException {
+        User userBob = new User(
+                UUID.randomUUID(), "Bob", "bobpassword", Instant.now(), false);
+        User userHelen = new User(
+                UUID.randomUUID(), "Helen", "helenpassword", Instant.now(), false);
+
+        UserStore mockUserStore = Mockito.mock(UserStore.class);
+        Mockito.when(mockUserStore.getUser("Bob")).thenReturn(userBob);
+        Mockito.when(mockUserStore.getUser("Helen")).thenReturn(userHelen);
+
+        Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/Helen");
+        Mockito.when(mockRequest.getParameter("requestPal")).thenReturn("Bob");
+
+        Assert.assertEquals(0, userBob.getOutgoingRequests().size());
+        Assert.assertEquals(0, userHelen.getIncomingRequests().size());
+
+        profileServlet.setUserStore(mockUserStore);
+        profileServlet.sendPalRequest(mockRequest);
+
+        Assert.assertEquals(1, userBob.getOutgoingRequests().size());
+        Assert.assertEquals(1, userHelen.getIncomingRequests().size());
+
+        // Bob has sent Helen a pal request
+
+        Assert.assertEquals(0, userBob.getPals().size());
+        Assert.assertEquals(0, userHelen.getPals().size());
+
+        Mockito.when(mockRequest.getParameter("accept")).thenReturn("Bob");
+
+        profileServlet.acceptPal(mockRequest);
+
+        Assert.assertEquals(1, userBob.getPals().size());
+        Assert.assertEquals(1, userHelen.getPals().size());
+
+        Assert.assertEquals(0, userBob.getOutgoingRequests().size());
+        Assert.assertEquals(0, userHelen.getIncomingRequests().size());
+    }
+
+    @Test
+    public void testDeclinePal() throws IOException, ServletException {
+        User userBob = new User(
+                UUID.randomUUID(), "Bob", "bobpassword", Instant.now(), false);
+        User userHelen = new User(
+                UUID.randomUUID(), "Helen", "helenpassword", Instant.now(), false);
+
+        UserStore mockUserStore = Mockito.mock(UserStore.class);
+        Mockito.when(mockUserStore.getUser("Bob")).thenReturn(userBob);
+        Mockito.when(mockUserStore.getUser("Helen")).thenReturn(userHelen);
+
+        Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/Helen");
+        Mockito.when(mockRequest.getParameter("requestPal")).thenReturn("Bob");
+
+        Assert.assertEquals(0, userBob.getOutgoingRequests().size());
+        Assert.assertEquals(0, userHelen.getIncomingRequests().size());
+
+        profileServlet.setUserStore(mockUserStore);
+        profileServlet.sendPalRequest(mockRequest);
+
+        Assert.assertEquals(1, userBob.getOutgoingRequests().size());
+        Assert.assertEquals(1, userHelen.getIncomingRequests().size());
+
+        // Bob has sent Helen a pal request
+
+        Assert.assertEquals(0, userBob.getPals().size());
+        Assert.assertEquals(0, userHelen.getPals().size());
+
+        Mockito.when(mockRequest.getParameter("decline")).thenReturn("Bob");
+
+        profileServlet.declinePal(mockRequest);
+
+        Assert.assertEquals(0, userBob.getPals().size());
+        Assert.assertEquals(0, userHelen.getPals().size());
+
+        Assert.assertEquals(0, userBob.getOutgoingRequests().size());
+        Assert.assertEquals(0, userHelen.getIncomingRequests().size());
     }
 }
