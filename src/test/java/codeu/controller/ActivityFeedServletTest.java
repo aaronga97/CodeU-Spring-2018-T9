@@ -78,6 +78,10 @@ public class ActivityFeedServletTest {
     Mockito.when(mockRequest.getParameter("searchQuery")).thenReturn("test_activity");
     Mockito.when(mockActivityStore.getUserActivities("test_activity")).thenReturn(fakeActivityList);
 
+    Mockito.when(mockRequest.getParameter("checked")).thenReturn("undefined");
+    Mockito.when(mockRequest.getParameter("sortingStyle")).thenReturn("undefined");
+
+
     activityFeedServlet.doPost(mockRequest, mockResponse);
 
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
@@ -93,11 +97,15 @@ public class ActivityFeedServletTest {
 
     Mockito.when(mockRequest.getParameter("searchQuery")).thenReturn("<h1> test_activity <h1>");
     Mockito.when(mockActivityStore.getUserActivities("test_activity")).thenReturn(fakeActivityList);
+    Mockito.when(mockRequest.getParameter("checked")).thenReturn("recent");
+
+    Mockito.when(mockRequest.getParameter("checked")).thenReturn("undefined");
+    Mockito.when(mockRequest.getParameter("sortingStyle")).thenReturn("undefined");
 
     activityFeedServlet.doPost(mockRequest, mockResponse);
 
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
 
   }
-  
+
 }
