@@ -3,8 +3,10 @@
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.data.Activity" %>
+<%@ page import="codeu.model.data.Utils" %>
 <%@ page import="codeu.model.data.Activity.ActivityType" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
+
 <%
 	List<Activity> activities = (List<Activity>) request.getAttribute("activities");
 	request.getSession().setAttribute("activities", activities );
@@ -57,12 +59,15 @@
 			String authorUrl = "/users/";
 			authorUrl += author;
 
+			String activityHour = Utils.getTime(activity.getCreationTime());
+			activityHour = activityHour.substring(activityHour.length()-8);
+
 			if (activity.getActivityType() == ActivityType.REGISTRATION) {
 
 
 	%>
 
-				<li><strong> <a href=<%= authorUrl %> > <%= author%></a>: </strong><%= activity.getMessage() %></li>
+				<li><strong> <a href=<%= authorUrl %> > <%= author%></a>: </strong><%= activity.getMessage() %> <small><sub> <%= activityHour %></sub></small> </li>
 
 	<%
 			} else if (activity.getActivityType() == ActivityType.CONVERSATION) {
@@ -70,10 +75,11 @@
 
 				String conversationUrl = "/chat/";
 				conversationUrl += conversation;
-
+				String conversationName = activity.getConversationName();
+				String messageCount = "" + (activity.getAllTimeCount() - 1);
 	%>
 
-				<li><strong> <a href=<%= authorUrl %> > <%= author%></a>: </strong><%= activity.getMessage() %> <strong> <a href=<%= conversationUrl %> > conversation </a> </strong>! </li>
+				<li><strong> <a href=<%= authorUrl %> > <%= author%></a>: </strong><%= activity.getMessage() %> <strong> <a href=<%= conversationUrl %> >conversation</a></strong>(<%= conversationName%>)<small><sub> <%= activityHour %> | message count: <%= messageCount %></sub></small> </li>
 
 	<%
 		}
