@@ -42,8 +42,8 @@
 
 		<div>
 			<form id="sortingForm" action="/activityfeed" method= "POST">
-					<input type="radio" id="recencySort" name="sortingStyle" onclick="callServlet('POST')" value="recent" <%= checked.equals("recent")? "checked":""%> > Recent
-					<input type="radio" id="popularitySort" name="sortingStyle" onclick="callServlet('POST')" value="popular" <%= checked.equals("popular")? "checked":""%> > Popular
+					<input type="radio" id="recencySort" name="sortingStyle" onclick="callServlet('POST')" value="recent" <%= checked != null && checked.equals("recent")? "checked":""%> > Recent
+					<input type="radio" id="popularitySort" name="sortingStyle" onclick="callServlet('POST')" value="popular" <%= checked != null && checked.equals("popular")? "checked":""%> > Popular
 			</form>
 
 		</div>

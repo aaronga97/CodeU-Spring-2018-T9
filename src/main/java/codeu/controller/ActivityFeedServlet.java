@@ -53,12 +53,7 @@ public class ActivityFeedServlet extends HttpServlet {
 
     List<Activity> activities = activityStore.getActivities();
 
-    /*Sorts activities by creationTime field*/
-    Collections.sort(activities, new Comparator<Activity>() {
-      public int compare(Activity one, Activity other) {
-        return other.getCreationTime().compareTo(one.getCreationTime());
-      }
-    });
+    sortByRecency(activities);
 
     request.setAttribute("activities", activities);
     request.setAttribute("checked", "recent");
@@ -73,16 +68,20 @@ public class ActivityFeedServlet extends HttpServlet {
     List<Activity> activities = (List<Activity>) request.getSession().getAttribute("activities");
     String toggle = "Undefined";
     String sortingStyle = request.getParameter("sortingStyle") == null? "Undefined":request.getParameter("sortingStyle");
+
     /*If the user posts a search request that isn't an empty string, reassembles the list of activities */
-    if (request.getParameter("searchQuery") != null && !request.getParameter("searchQuery").equals("")) {
-      String username = request.getParameter("searchQuery");
 
-      String cleanedUsername = Jsoup.clean(username, Whitelist.none());
+    if (request.getParameter("searchQuery") != null) {
+      if (!request.getParameter("searchQuery").equals("")) {
+        String username = request.getParameter("searchQuery");
 
-      activities = activityStore.getUserActivities(cleanedUsername);
-      request.setAttribute("searchQuery", cleanedUsername);
+        String cleanedUsername = Jsoup.clean(username, Whitelist.none());
 
-      toggle = request.getParameter("checked");
+        activities = activityStore.getUserActivities(cleanedUsername);
+        request.setAttribute("searchQuery", cleanedUsername);
+      }
+
+        toggle = request.getParameter("checked");
 
       if (toggle.equals("popular")) {
         request.setAttribute("checked", "popular");
@@ -92,41 +91,33 @@ public class ActivityFeedServlet extends HttpServlet {
 
     }
 
-    /* If one of the sorting radio buttons are been toggled, sorts the list of activities*/
 
-    //if (request.getParameter("sortingStyle") != null) {
+    if(sortingStyle.equals("popular") || toggle.equals("popular")) {
 
+      sortByPopularity(activities);
+      request.setAttribute("checked", "popular");
 
+    } else if (sortingStyle.equals("recent") || toggle.equals("recent")) {
 
-      if(sortingStyle.equals("popular") || toggle.equals("popular")) {
+      sortByRecency(activities);
+      request.setAttribute("checked", "recent");
 
-        /*Sorts activities by allTimeCount field*/
-        Collections.sort(activities, new Comparator<Activity>() {
-          public int compare(Activity one, Activity other) {
-            return other.getAllTimeCount() - one.getAllTimeCount();
-          }
-        });
-
-        request.setAttribute("checked", "popular");
-
-      } else if (sortingStyle.equals("recent") || toggle.equals("recent")) {
-
-        /*Sorts activities by creationTime field*/
-        Collections.sort(activities, new Comparator<Activity>() {
-          public int compare(Activity one, Activity other) {
-            return other.getCreationTime().compareTo(one.getCreationTime());
-          }
-        });
-
-        request.setAttribute("checked", "recent");
-
-      }
-
-
-    //}
+    }
 
     request.setAttribute("activities", activities);
 
     request.getRequestDispatcher("/WEB-INF/view/activityfeed.jsp").forward(request, response);
   }
+
+  /*Sorts activities by allTimeCount field*/
+  void sortByPopularity(List<Activity> activities) {
+    Collections.sort(activities, (one, other) -> other.getAllTimeCount() - one.getAllTimeCount());
+  }
+
+  /*Sorts activities by creationTime field*/
+  void sortByRecency(List<Activity> activities) {
+    Collections.sort(activities, (one, other) -> other.getCreationTime().compareTo(one.getCreationTime()));
+
+  }
+
 }
