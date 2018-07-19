@@ -85,12 +85,12 @@ private ActivityStore activityStore;
   }
 
   /**
- * Sets the ConversationStore used by this servlet. This function provides a common setup method
- * for use by the test framework or the servlet's init() function.
- */
-void setActivityStore(ActivityStore activityStore) {
-  this.activityStore = activityStore;
-}
+  * Sets the ConversationStore used by this servlet. This function provides a common setup method
+  * for use by the test framework or the servlet's init() function.
+  */
+  void setActivityStore(ActivityStore activityStore) {
+    this.activityStore = activityStore;
+  }
 
   /**
    * This function fires when a user navigates to the chat page. It gets the conversation title from
