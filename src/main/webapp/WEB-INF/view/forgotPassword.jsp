@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Register</title>
+  <title>ForgotPassword</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -24,32 +24,19 @@
   <%@include file= "navbar.jsp"%>
 
   <div id="container">
-    <h1>Register</h1>
+    <h1>ForgotPassword</h1>
 
     <% if(request.getAttribute("error") != null){ %>
         <h2 style="color:red"><%= request.getAttribute("error") %></h2>
     <% } %>
 
-    <form action="/register" method="POST">
-      <label for="username">Username: </label>
+    <form action="/forgotPassword" method="POST">
+      <label for="emailPrompt">Please enter email: </label>
       <br/>
-      <input type="text" name="username" id="username">
-      <br/>
-      <label for="password">Password: </label>
-      <br/>
-      <input type="password" name="password" id="password">
-      <br/>
-      <label for="email">Email: </label>
-      <br/>
-      <input type="email" name="email" id="email">
+      <input type="emailPrompt" name="emailPrompt" id="emailPrompt">
       <br/><br/>
-      <button type="submit">Submit</button>
+      <button type="recoverPassword">Recover Password!</button>
     </form>
   </div>
 </body>
-
-<script>
-    document.getElementById("username").focus();
-</script>
-
 </html>

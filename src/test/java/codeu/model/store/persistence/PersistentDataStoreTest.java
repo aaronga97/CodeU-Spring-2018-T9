@@ -44,10 +44,11 @@ public class PersistentDataStoreTest {
     UUID idOne = UUID.fromString("10000000-2222-3333-4444-555555555555");
     String nameOne = "test_username_one";
     String passwordHashOne = "$2a$10$BNte6sC.qoL4AVjO3Rk8ouY6uFaMnsW8B9NjtHWaDNe8GlQRPRT1S";
+    String email = "team9chatapp@gmail.com";
     Instant creationOne = Instant.ofEpochMilli(1000);
     Boolean admin = false;
     String bio1 = "test_bio1";
-    User inputUserOne = new User(idOne, nameOne, passwordHashOne, creationOne, admin);
+    User inputUserOne = new User(idOne, nameOne, passwordHashOne, email, creationOne, admin);
     inputUserOne.setBio(bio1);
     List<String> pals1 = new ArrayList<>();
     List<String> incomingReq1 = new ArrayList<>();
@@ -56,9 +57,10 @@ public class PersistentDataStoreTest {
     UUID idTwo = UUID.fromString("10000001-2222-3333-4444-555555555555");
     String nameTwo = "test_username_two";
     String passwordHashTwo = "$2a$10$ttaMOMMGLKxBBuTN06VPvu.jVKif.IczxZcXfLcqEcFi1lq.sLb6i";
+    String email2 = "fakeEmail@gmail.com";
     Instant creationTwo = Instant.ofEpochMilli(2000);
     String bio2 = "test_bio2";
-    User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo, creationTwo, admin);
+    User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo,email2, creationTwo, admin);
     inputUserTwo.setBio(bio2);
     List<String> pals2 = new ArrayList<>();
     List<String> incomingReq2 = new ArrayList<>();
@@ -92,6 +94,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(idOne, resultUserOne.getId());
     Assert.assertEquals(nameOne, resultUserOne.getName());
     Assert.assertEquals(passwordHashOne, resultUserOne.getPasswordHash());
+    Assert.assertEquals(email, resultUserOne.getEmail());
     Assert.assertEquals(creationOne, resultUserOne.getCreationTime());
     Assert.assertEquals(bio1, resultUserOne.getBio());
     Assert.assertEquals(pals1, resultUserOne.getPals());
@@ -102,6 +105,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(idTwo, resultUserTwo.getId());
     Assert.assertEquals(nameTwo, resultUserTwo.getName());
     Assert.assertEquals(passwordHashTwo, resultUserTwo.getPasswordHash());
+    Assert.assertEquals(email2, resultUserTwo.getEmail());
     Assert.assertEquals(creationTwo, resultUserTwo.getCreationTime());
     Assert.assertEquals(bio2, resultUserTwo.getBio());
     Assert.assertEquals(pals2, resultUserTwo.getPals());

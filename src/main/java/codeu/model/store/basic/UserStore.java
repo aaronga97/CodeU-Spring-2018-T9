@@ -119,6 +119,16 @@ public class UserStore {
     return false;
   }
 
+  /** Return true if the given email is known to the application. */
+  public boolean isEmailRegistered(String userEmail) {
+    for (User user : users) {
+      if (user.getEmail().equals(userEmail)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /** Accesses the users stored
    *  @return the size of the users
    */

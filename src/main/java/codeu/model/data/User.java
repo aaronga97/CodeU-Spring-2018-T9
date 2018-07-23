@@ -31,6 +31,7 @@ public class User {
     private final UUID id;
     private final String name;
     private String passwordHash;
+    private String email;
     private final Instant creation;
     private String bio;
     private Boolean admin;
@@ -45,13 +46,15 @@ public class User {
      * @param id           the ID of this User
      * @param name         the username of this User
      * @param passwordHash the password hash of this User
+     * @param email        the email of this User
      * @param creation     the creation time of this User
      * @param admin        states whether this User is an admin
      */
-    public User(UUID id, String name, String passwordHash, Instant creation, Boolean admin) {
+    public User(UUID id, String name, String passwordHash, String email, Instant creation, Boolean admin) {
         this.id = id;
         this.name = name;
         this.passwordHash = passwordHash;
+        this.email = email;
         this.creation = creation;
         setBio(name + " hasn't written a bio yet.");
         this.admin = admin;
@@ -80,6 +83,13 @@ public class User {
      */
     public String getPasswordHash() {
         return passwordHash;
+    }
+
+    /**
+     * Returns the email of this User.
+     */
+    public String getEmail() {
+        return email;
     }
 
     /**

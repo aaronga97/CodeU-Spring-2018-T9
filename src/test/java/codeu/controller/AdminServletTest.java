@@ -108,7 +108,7 @@ public class AdminServletTest {
         new User(
             UUID.randomUUID(),
             "admin_username",
-            "admin_password",
+            "admin_password", "team9chatapp@gmail.com",
             Instant.now(),
             true);
 
@@ -191,7 +191,7 @@ public class AdminServletTest {
         new User(
             UUID.randomUUID(),
             "not_admin_username",
-            "not_admin_password",
+            "not_admin_password", "team9chatapp@gmail.com",
             Instant.now(),
             false);
 
@@ -226,7 +226,7 @@ public class AdminServletTest {
         new User(
             UUID.randomUUID(),
             "admin_username",
-            "admin_password",
+            "admin_password", "team9chatapp@gmail.com",
             Instant.now(),
             true);
 
@@ -250,7 +250,7 @@ public class AdminServletTest {
         new User(
             UUID.randomUUID(),
             "soon_admin_username",
-            "soon_admin_password",
+            "soon_admin_password", "team9chatapp@gmail.com",
             Instant.now(),
             false);
 

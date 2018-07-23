@@ -49,7 +49,7 @@ public class ProfileServletTest {
     @Test
     public void testDoGet_ValidUser() throws IOException, ServletException {
         User userCandace = new User(
-                        UUID.randomUUID(), "Candace", "candacepassword", Instant.now(), false);
+                        UUID.randomUUID(), "Candace", "candacepassword", "team9chatapp@gmail.com", Instant.now(), false);
         UserStore mockUserStore = Mockito.mock(UserStore.class);
 
         Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/candace");
@@ -75,7 +75,7 @@ public class ProfileServletTest {
     @Test
     public void testDoPostEditBio() throws IOException, ServletException {
         User userCandace = new User(
-                UUID.randomUUID(), "Candace", "candacepassword", Instant.now(), false);
+                UUID.randomUUID(), "Candace", "candacepassword", "team9chatapp@gmail.com", Instant.now(), false);
         UserStore mockUserStore = Mockito.mock(UserStore.class);
 
         Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/candace");
@@ -93,7 +93,7 @@ public class ProfileServletTest {
     @Test
     public void testEditBio() throws IOException, ServletException {
         User userCandace = new User(
-                UUID.randomUUID(), "Candace", "candacepassword", Instant.now(), false);
+                UUID.randomUUID(), "Candace", "candacepassword","team9ChatApp@gmail.com", Instant.now(), false);
         UserStore mockUserStore = Mockito.mock(UserStore.class);
 
         Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/candace");
@@ -110,7 +110,7 @@ public class ProfileServletTest {
     @Test
     public void testDoPostUncleanedBio() throws IOException, ServletException {
         User userCandace = new User(
-                UUID.randomUUID(), "Candace", "candacepassword", Instant.now(), false);
+                UUID.randomUUID(), "Candace", "candacepassword", "team9ChatApp@gmail.com", Instant.now(), false);
         UserStore mockUserStore = Mockito.mock(UserStore.class);
 
         Mockito.when(mockRequest.getRequestURI()).thenReturn("/users/candace");
@@ -126,9 +126,9 @@ public class ProfileServletTest {
     @Test
     public void testSendPalRequest() throws IOException, ServletException {
         User userBob = new User(
-                UUID.randomUUID(), "Bob", "bobpassword", Instant.now(), false);
+                UUID.randomUUID(), "Bob", "bobpassword","team9ChatApp@gmail.com", Instant.now(), false);
         User userHelen = new User(
-                UUID.randomUUID(), "Helen", "helenpassword", Instant.now(), false);
+                UUID.randomUUID(), "Helen", "helenpassword","team9ChatApp@gmail.com", Instant.now(), false);
 
         UserStore mockUserStore = Mockito.mock(UserStore.class);
         Mockito.when(mockUserStore.getUser("Bob")).thenReturn(userBob);
@@ -150,9 +150,9 @@ public class ProfileServletTest {
     @Test
     public void testAcceptPal() throws IOException, ServletException {
         User userBob = new User(
-                UUID.randomUUID(), "Bob", "bobpassword", Instant.now(), false);
+                UUID.randomUUID(), "Bob", "bobpassword", "team9Chatapp@gmail.com", Instant.now(), false);
         User userHelen = new User(
-                UUID.randomUUID(), "Helen", "helenpassword", Instant.now(), false);
+                UUID.randomUUID(), "Helen", "helenpassword", "team9Chatapp@gmail.com", Instant.now(), false);
 
         UserStore mockUserStore = Mockito.mock(UserStore.class);
         Mockito.when(mockUserStore.getUser("Bob")).thenReturn(userBob);
@@ -189,9 +189,9 @@ public class ProfileServletTest {
     @Test
     public void testDeclinePal() throws IOException, ServletException {
         User userBob = new User(
-                UUID.randomUUID(), "Bob", "bobpassword", Instant.now(), false);
+                UUID.randomUUID(), "Bob", "bobpassword", "team9ChatApp@gmail.com", Instant.now(), false);
         User userHelen = new User(
-                UUID.randomUUID(), "Helen", "helenpassword", Instant.now(), false);
+                UUID.randomUUID(), "Helen", "helenpassword", "team9ChatApp@gmail.com", Instant.now(), false);
 
         UserStore mockUserStore = Mockito.mock(UserStore.class);
         Mockito.when(mockUserStore.getUser("Bob")).thenReturn(userBob);

@@ -68,6 +68,7 @@ public class RegisterServlet extends HttpServlet {
 
     String username = request.getParameter("username");
     String password = request.getParameter("password");
+    String email = request.getParameter("email");
 
     if(username.length()<3 || username.length()>14){
         request.setAttribute("error", "username must be between 3 and 14 characters");
@@ -94,9 +95,17 @@ public class RegisterServlet extends HttpServlet {
       return;
     }
 
+    if (userStore.isEmailRegistered(email)) {
+      request.setAttribute("error", "That email is already linked to an account");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
+
+
+
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-    User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), false);
+    User user = new User(UUID.randomUUID(), username, hashedPassword, email, Instant.now(), false);
     userStore.addUser(user);
 
     Activity activity = new Activity(UUID.randomUUID(), 0, Instant.now(), "joined the site!", user.getId(), user.getName(), ActivityType.REGISTRATION, null, null);

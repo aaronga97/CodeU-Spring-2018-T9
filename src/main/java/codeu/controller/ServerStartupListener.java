@@ -43,8 +43,9 @@ public class ServerStartupListener implements ServletContextListener {
       /** Check if admin exists, if not create it */
       if(!userStore.isUserRegistered(username)){
         String password = "admin";
+        String email = "team9chatapp@gmail.com";
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-        User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), true);
+        User user = new User(UUID.randomUUID(), username, hashedPassword, email, Instant.now(), true);
         userStore.addUser(user);
       }
 

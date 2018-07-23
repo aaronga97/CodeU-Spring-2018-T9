@@ -120,7 +120,7 @@ public class ConversationServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6", "team9chatapp@gmail.com",
             Instant.now(),
             false);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
@@ -144,7 +144,7 @@ public class ConversationServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6", "team9chatapp@gmail.com",
             Instant.now(),
             false);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
@@ -169,7 +169,7 @@ public class ConversationServletTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6", "team9chatapp@gmail.com",
             Instant.now(),
             false);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);

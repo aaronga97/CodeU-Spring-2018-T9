@@ -144,6 +144,7 @@ public class RegisterServletTest {
   public void testDoPost_NewUser() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("testpassword1");
+    Mockito.when(mockRequest.getParameter("email")).thenReturn("team9ChatApp@gmail.com");
 
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(false);
@@ -158,6 +159,7 @@ public class RegisterServletTest {
     Assert.assertThat(
         userArgumentCaptor.getValue().getPasswordHash(), CoreMatchers.containsString("$2a$10$"));
     Assert.assertEquals(60, userArgumentCaptor.getValue().getPasswordHash().length());
+    Assert.assertEquals("team9ChatApp@gmail.com",userArgumentCaptor.getValue().getEmail());
 
     ArgumentCaptor<Activity> activityArgumentCaptor = ArgumentCaptor.forClass(Activity.class);
     Mockito.verify(mockActivityStore).addActivity(activityArgumentCaptor.capture());
@@ -179,6 +181,25 @@ public class RegisterServletTest {
     Mockito.verify(mockUserStore, Mockito.never()).addUser(Mockito.any(User.class));
     Mockito.verify(mockActivityStore, Mockito.never()).addActivity(Mockito.any(Activity.class));
     Mockito.verify(mockRequest).setAttribute("error", "That username is already taken.");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
+
+  @Test
+  public void testDoPost_AlreadyUsedEmail() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
+    Mockito.when(mockRequest.getParameter("password")).thenReturn("testpassword1");
+    Mockito.when(mockRequest.getParameter("email")).thenReturn("team9ChatApp@gmail.com");
+
+
+    UserStore mockUserStore = Mockito.mock(UserStore.class);
+    Mockito.when(mockUserStore.isEmailRegistered("team9ChatApp@gmail.com")).thenReturn(true);
+    registerServlet.setUserStore(mockUserStore);
+
+    registerServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockUserStore, Mockito.never()).addUser(Mockito.any(User.class));
+    Mockito.verify(mockActivityStore, Mockito.never()).addActivity(Mockito.any(Activity.class));
+    Mockito.verify(mockRequest).setAttribute("error", "That email is already linked to an account");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 }

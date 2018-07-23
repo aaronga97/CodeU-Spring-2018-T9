@@ -10,18 +10,22 @@ once they are logged in and adds a link to the site's activity feed --%>
 	User user = UserStore.getInstance().getUser(username);
 	%>
 	<a id="navTitle" href="/">CodeU Chat App</a>
-	<a href="/conversations">Conversations</a>
-	<% if(username != null) { %>
-		<a href="/users/<%= username %>" > <%= username %>'s Profile</a>
-	<% } else { %>
-		<a href="/login">Login</a>
-	<% } %>
+	<% if(user != null) {%>
+        <a href="/conversations">Conversations</a>
+    <% } %>
 	<a href="/about.jsp">About</a>
-	<a href="/activityfeed">ActivityFeed</a>
+	<% if(username != null) { %>
+    		<a href="/users/<%= username %>" > <%= username %>'s Profile</a>
+    	<% } else { %>
+    		<a href="/login">Login</a>
+    	<% } %>
+	<% if(user != null) {%>
+	    <a href="/activityfeed">ActivityFeed</a>
+	<% } %>
 	<% if(user != null && user.isAdmin()) {%>
 		<a href="/admin" > Admin Page</a>
 	<% } %>
 	<% if(user != null) {%>
-    		<a href="/logout" > Logout</a>
+        <a href="/logout" > Logout</a>
     	<% } %>
 </nav>
