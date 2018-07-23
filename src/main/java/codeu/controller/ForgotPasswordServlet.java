@@ -60,7 +60,7 @@ public class ForgotPasswordServlet extends HttpServlet {
 //            return;
 //        }
         Mail.sendEmail(recipientEmail);
-        response.getOutputStream().println("Email sent successfully");
+        response.getOutputStream().println("Email has been sent successfully");
     }
 
 }
