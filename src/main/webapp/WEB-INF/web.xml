@@ -117,6 +117,16 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>ForgotPasswordServlet</servlet-name>
+    <servlet-class>codeu.controller.ForgotPasswordServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ForgotPasswordServlet</servlet-name>
+    <url-pattern>/forgotPassword</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>AjaxGetMessages</servlet-name>
     <servlet-class>codeu.controller.AjaxGetMessages</servlet-class>
   </servlet>

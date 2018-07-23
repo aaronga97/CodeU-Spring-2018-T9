@@ -32,6 +32,42 @@
   </properties>
 
   <dependencies>
+<!--//-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+    <!--<dependency>-->
+      <!--<groupId>javax.mail</groupId>-->
+      <!--<artifactId>javax.mail-api</artifactId>-->
+      <!--<version>1.6.1</version>-->
+      <!--<scope>provided</scope>-->
+    <!--</dependency>-->
+
+
+      <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+      <dependency>
+          <groupId>javax.mail</groupId>
+          <artifactId>javax.mail-api</artifactId>
+          <version>1.6.1</version>
+      </dependency>
+
+
+
+      <!-- https://mvnrepository.com/artifact/javax.mail/mailapi -->
+      <dependency>
+          <groupId>javax.mail</groupId>
+          <artifactId>mailapi</artifactId>
+          <version>1.4.3</version>
+      </dependency>
+
+
+
+      <!-- https://mvnrepository.com/artifact/javax.activation/activation -->
+      <dependency>
+          <groupId>javax.activation</groupId>
+          <artifactId>activation</artifactId>
+          <version>1.1.1</version>
+      </dependency>
+
+
+      <!--//-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
 
     <dependency>
       <groupId>javax.servlet</groupId>

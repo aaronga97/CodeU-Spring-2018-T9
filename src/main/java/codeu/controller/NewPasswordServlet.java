@@ -34,8 +34,6 @@ public class NewPasswordServlet extends HttpServlet {
         this.userStore = userStore;
     }
 
-    //void setPasswordUtils(PasswordUtils passwordUtils) {this.passwordUtils = passwordUtils;}
-
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.getRequestDispatcher("/WEB-INF/view/newPassword.jsp").forward(request, response);

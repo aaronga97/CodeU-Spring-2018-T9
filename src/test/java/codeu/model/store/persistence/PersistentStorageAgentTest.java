@@ -58,7 +58,7 @@ public class PersistentStorageAgentTest {
         new User(
             UUID.randomUUID(),
             "test_username",
-            "$2a$10$5GNCbSPS1sqqM9.hdiE2hexn1w.vnNoR.CaHIztFEhdAD7h82tqX.",
+            "$2a$10$5GNCbSPS1sqqM9.hdiE2hexn1w.vnNoR.CaHIztFEhdAD7h82tqX.", "team9chatapp@gmail.com",
             Instant.now(),
             false);
     persistentStorageAgent.writeThrough(user);

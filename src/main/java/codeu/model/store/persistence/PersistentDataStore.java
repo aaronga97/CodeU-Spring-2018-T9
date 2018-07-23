@@ -69,13 +69,14 @@ public class PersistentDataStore {
         UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
         String userName = (String) entity.getProperty("username");
         String passwordHash = (String) entity.getProperty("password_hash");
+        String email = (String) entity.getProperty("email");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String bio = (String) entity.getProperty("bio");
         Boolean admin = Boolean.parseBoolean((String) entity.getProperty("admin"));
         ArrayList<String> pals = (ArrayList<String>) entity.getProperty("pals");
         ArrayList<String> incomingRequests = (ArrayList<String>) entity.getProperty("incoming_requests");
         ArrayList<String> outgoingRequests = (ArrayList<String>) entity.getProperty("outgoing_requests");
-        User user = new User(uuid, userName, passwordHash, creationTime, admin);
+        User user = new User(uuid, userName, passwordHash, email, creationTime, admin);
         user.setBio(bio);
         user.setPals(pals);
         user.setIncomingRequests(incomingRequests);
@@ -249,6 +250,7 @@ public class PersistentDataStore {
     userEntity.setProperty("uuid", user.getId().toString());
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("password_hash", user.getPasswordHash());
+    userEntity.setProperty("email", user.getEmail());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     userEntity.setProperty("bio", user.getBio());
     userEntity.setProperty("admin", Boolean.toString(user.isAdmin()));
