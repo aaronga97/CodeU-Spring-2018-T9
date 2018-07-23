@@ -45,22 +45,22 @@ public class ForgotPasswordServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String recipientEmail = request.getParameter("emailPrompt");
 
-//        if (recipientEmail.equals("")) {
-//            request.setAttribute("error", "Please enter your email address");
-//            request.getRequestDispatcher("/WEB-INF/view/forgotPassword.jsp").forward(request, response);
-//            return;
-//        }
-        if (userStore.isEmailRegistered(recipientEmail)) {
-            Mail.sendEmail(recipientEmail);
-            response.getOutputStream().println("Email sent successfully");
-        }
-        else {
-            request.setAttribute("error", "That email is  linked to an account");
+        if (recipientEmail.equals("")) {
+            request.setAttribute("error", "Please enter your email address");
             request.getRequestDispatcher("/WEB-INF/view/forgotPassword.jsp").forward(request, response);
             return;
         }
+//        if (userStore.isEmailRegistered(recipientEmail)) {
 
-       
+//
+//        }
+//        else {
+//            request.setAttribute("error", "That email is  linked to an account");
+//            request.getRequestDispatcher("/WEB-INF/view/forgotPassword.jsp").forward(request, response);
+//            return;
+//        }
+        Mail.sendEmail(recipientEmail);
+        response.getOutputStream().println("Email sent successfully");
     }
 
 }
