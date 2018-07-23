@@ -150,9 +150,9 @@ public class ProfileServletTest {
     @Test
     public void testAcceptPal() throws IOException, ServletException {
         User userBob = new User(
-                UUID.randomUUID(), "Bob", "bobpassword", "team9ChatApp@gmail.com", Instant.now(), false);
+                UUID.randomUUID(), "Bob", "bobpassword", "team9Chatapp@gmail.com", Instant.now(), false);
         User userHelen = new User(
-                UUID.randomUUID(), "Helen", "helenpassword", "team9ChatApp@gmail.com", Instant.now(), false);
+                UUID.randomUUID(), "Helen", "helenpassword", "team9Chatapp@gmail.com", Instant.now(), false);
 
         UserStore mockUserStore = Mockito.mock(UserStore.class);
         Mockito.when(mockUserStore.getUser("Bob")).thenReturn(userBob);
