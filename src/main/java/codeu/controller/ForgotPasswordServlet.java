@@ -52,13 +52,15 @@ public class ForgotPasswordServlet extends HttpServlet {
 //        }
         if (userStore.isEmailRegistered(recipientEmail)) {
             Mail.sendEmail(recipientEmail);
-
+            response.getOutputStream().println("Email sent successfully");
         }
         else {
             request.setAttribute("error", "That email is  linked to an account");
             request.getRequestDispatcher("/WEB-INF/view/forgotPassword.jsp").forward(request, response);
             return;
         }
+
+       
     }
 
 }
