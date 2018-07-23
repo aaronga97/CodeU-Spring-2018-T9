@@ -17,6 +17,7 @@
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="codeu.model.data.Utils" %>
 <%
 Conversation conversation = (Conversation) request.getAttribute("conversation");
 List<Message> messages = (List<Message>) request.getAttribute("messages");
@@ -57,8 +58,19 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
               jsonSize = responseJson.length;
               //Iterate through responseJson with new messages
               $.each(responseJson, function(index, message) {
+
+                  var result = "<li><strong><a href=/users/";
+                  result += message.author;
+                  result += " >";
+                  result += message.author;
+                  result += "</a>: </strong>";
+                  result += message.content;
+                  result += "<small><sub> ";
+                  result += message.creation;
+                  result += "</sub></small></li>";
+
                   //Append them
-                  $($ul).append("<li><strong>" + message.author + "</strong>" + ': ' + message.content + "</li>");
+                  $($ul).append(result);
               });
               //Update messagesSize to the pastSize + theSize of new added messages, at the end of ajaxRequest
               messagesSize = +messagesSize + jsonSize;
@@ -91,9 +103,12 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
         String url = "/users/";
         url += author;
+
+        String messageHour = Utils.getTime(message.getCreationTime());
+        messageHour = messageHour.substring(messageHour.length()-8);
     %>
 
-        <li><strong> <a href=<%= url %> > <%= author%></a>: </strong> <%= message.getContent() %></li>
+        <li><strong> <a href=<%= url %> > <%= author%></a>: </strong> <%= message.getContent() %> <small><sub> <%= messageHour %></sub></small></li>
 
     <%
       }

@@ -2,13 +2,14 @@ package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
+import java.io.Serializable;
 
 /** Class representing an activity, which is used to log/track
  * significant/trending data and present this information on the
  * activity feed.
  */
 
-public class Activity {
+public class Activity implements Serializable {
 
   /**
    * Enum used to give a "type" to an activity object,

@@ -127,7 +127,8 @@ public class AdminServletTest {
                     fakeConversationId,
                     UUID.randomUUID(),
                     "test message",
-                    Instant.now()));
+                    Instant.now(),
+                    false));
 
     fakeConversationList.add(
             new Conversation(

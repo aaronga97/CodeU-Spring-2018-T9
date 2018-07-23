@@ -17,6 +17,7 @@ package codeu.controller;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.Utils;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
@@ -87,7 +88,7 @@ public class AdminServlet extends HttpServlet {
     } else {
       //else set body and time of creation
       String lastMessageContent = lastMessage.getContent();
-      String lastMessageTime = lastMessage.getTime();
+      String lastMessageTime = Utils.getTime(lastMessage.getCreationTime());
       String lastMessageUser = userStore.getUser(lastMessage.getAuthorId()).getName();
 
       map.put("lastMessageContent", lastMessageContent);
@@ -108,7 +109,7 @@ public class AdminServlet extends HttpServlet {
     } else {
       //else set body and time of creation
       String lastConversationTitle= lastConversation.getTitle();
-      String lastConversationTime = lastConversation.getTime();
+      String lastConversationTime = Utils.getTime(lastConversation.getCreationTime());
 
       map.put("lastConversationName", lastConversationTitle);
       map.put("lastConversationTime", lastConversationTime);
@@ -126,7 +127,7 @@ public class AdminServlet extends HttpServlet {
     } else {
       //else set name and time of creation
       String lastUserName = lastUser.getName();
-      String lastUserTime = lastUser.getTime();
+      String lastUserTime = Utils.getTime(lastUser.getCreationTime());
 
       map.put("lastUserName", lastUserName);
       map.put("lastUserTime", lastUserTime);
