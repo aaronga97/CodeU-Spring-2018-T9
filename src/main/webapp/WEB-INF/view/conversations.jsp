@@ -33,16 +33,19 @@ UserStore userStore = UserStore.getInstance();
   <%@include file= "navbar.jsp"%>
 
   <div id="container">
+    <div id="inside-container">
 
     <% if(request.getAttribute("error") != null){ %>
         <h2 style="color:red"><%= request.getAttribute("error") %></h2>
     <% } %>
 
+    <h1>Conversations</h1>
+
     <%
     String currentUser = (String) request.getSession().getAttribute("user");
     User currUser = userStore.getUser(currentUser);
     if (currUser != null) { %>
-      <h1>New Conversation</h1>
+      <h2>Create a new conversation</h2>
       <form action="/conversations" method="POST">
           <div class="form-group">
             <label class="form-control-label">Title:</label>
@@ -65,7 +68,7 @@ UserStore userStore = UserStore.getInstance();
     else{
       // displays private conversations for user logged in
       %>
-          <h1>Direct Messages</h1>
+          <h2>Direct Messages</h2>
       <%
       List<String> pals = currUser.getPals();
       for (String pal: pals) {
@@ -78,7 +81,7 @@ UserStore userStore = UserStore.getInstance();
 
       // displays public conversations for everyone
       %>
-          <h1>Public Conversations</h1>
+          <h2>Public Conversations</h2>
       <%
       for(Conversation conversation : conversations){
         // only display conversations that are not private
@@ -95,6 +98,8 @@ UserStore userStore = UserStore.getInstance();
     }
     %>
     <hr/>
+    <br></br>
+  </div>
   </div>
 </body>
 
