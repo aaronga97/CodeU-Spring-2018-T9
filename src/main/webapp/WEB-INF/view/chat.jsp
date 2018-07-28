@@ -133,7 +133,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <% } %>
 
     <hr/>
-
+    <br></br>
   </div>
 
 </body>
