@@ -235,21 +235,14 @@ public class User {
 
         ConversationStore conversationStore = ConversationStore.getInstance();
 
+        String firstUser = this.name;
+
         /* For each existing User, create a new Conversation with this User and set to private */
         for (User u : users) {
             /* Sets the order of user's names by alphabetical order. By default, sets this User as firstUser and existing User as secondUser. */
-            String firstUser = this.name;
             String secondUser = u.getName();
 
-            /* If the order of firstUser and secondUser isn't already in alphabetical order, swap the two users - firstUser and secondUser. */
-            if (firstUser.compareTo(secondUser) > 0) {
-                String temp = firstUser;
-                firstUser = secondUser;
-                secondUser = temp;
-            }
-
-            /* Creates conversation link by concatenating the two user's names in alphabetical order. */
-            String conversationName = firstUser + "-" + secondUser;
+            String conversationName = Utils.getPrivateConversationURL(firstUser, secondUser);
             Conversation c = new Conversation(UUID.randomUUID(), this.id, conversationName, Instant.now(), true);
 
             /* Adds new conversation to the ConversationStore */
