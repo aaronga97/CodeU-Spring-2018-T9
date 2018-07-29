@@ -28,4 +28,18 @@ public class Utils {
         String date = localDate.getMonth().toString() + " " + localDate.getDayOfMonth() + ", " + localDate.getYear() + " - " + hour + ":" + strMinute + " " + timeAMPM;
         return date;
     }
+
+    /** Returns the conversation URL between 2 users in alphabetical order. */
+    public static String getPrivateConversationURL(String firstUser, String secondUser) {
+        String conversationName = "";
+        if (firstUser.compareTo(secondUser) > 0) {
+            String temp = firstUser;
+            firstUser = secondUser;
+            secondUser = temp;
+        }
+
+        /* Creates conversation link by concatenating the two user's names in alphabetical order. */
+        conversationName = firstUser + "-" + secondUser;
+        return conversationName;
+    }
 }

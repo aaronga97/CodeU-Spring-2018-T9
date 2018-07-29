@@ -13,30 +13,38 @@
  * limitations under the License.
  */
 
+@import url("https://fonts.googleapis.com/css?family=Archivo+Narrow");
+
 body {
   margin: 0;
-  font-family: sans-serif;
+  font-family: "Archivo Narrow";
   line-height: 1.6;
-  font-size: 18px;
+  font-size: 24px;
   line-height: 1.6;
   color: #444;
-  background-color: #eeeeee;
+  background-color: #F5F5F5;
 }
 
 nav {
-  background-color: #1E90FF;
+  background-color: #98dafc;
+  overflow: auto;
 }
 
 nav a {
-  color: white;
+  color: #daad86;
   display: inline-block;
-  font-size: 24px;
+  float: left;
+  font-size: 32px;
   margin: 15px;
   text-decoration: none;
 }
 
-#navTitle {
-  font-size: 36px;
+nav a:hover {
+  color: white;
+}
+
+a:visited, a:link {
+  color: #daad86;
 }
 
 #container {
@@ -45,12 +53,23 @@ nav a {
   width: 800px;
 }
 
+#inside-container {
+   width:75%;
+   margin-left:auto;
+   margin-right:auto;
+   margin-top: 50px;"
+}
+
 h1 {
+  color: #3399FF;
+}
+
+h2 {
   color: #00BFFF;
 }
 
 h3 {
-  color: #8000FF;
+  color: #808080;
 }
 
 input {
@@ -58,5 +77,16 @@ input {
 }
 
 button {
+  background-color: #98dafc;
+  font-family: "Archivo Narrow";
   font-size: 18px;
+  font-color: #daad86;
+}
+
+button:hover {
+  font-color: white;
+}
+
+.right-nav {
+  float: right;
 }

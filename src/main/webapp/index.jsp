@@ -31,7 +31,7 @@
       
       <h2>Welcome to Team LAAPH's Chat App!</h2>
 
-      <p> We are LAAPH: Lee-Roy, Aaron, Anita, Padraic, and Henry of Team 9! </p>
+      <h3> We are LAAPH: Lee-Roy, Aaron, Anita, Padraic, and Henry of Team 9! </h3>
 
       <ul>
         <li><a href="/login">Login</a> to get started.</li>
