@@ -9,23 +9,25 @@ once they are logged in and adds a link to the site's activity feed --%>
 	String username = (String) request.getSession().getAttribute("user");
 	User user = UserStore.getInstance().getUser(username);
 	%>
-	<a id="navTitle" href="/">CodeU Chat App</a>
-	<% if(user != null) {%>
+	<a href="/">CodeU Chat App</a>
+
+	<% /** If user is logged in, can view profile page, About, Conversations, Activity Feed, Admin (if admin), Logout */ %>
+	<% if (user != null) { %>
+	    <a href="/users/<%= username %>" >Hello <%= username %>!</a>
+	    <a href="/about.jsp">About</a>
         <a href="/conversations">Conversations</a>
+        <a href="/activityfeed">Activity Feed</a>
+        <div class="right-nav">
+             <% /** If user is admin, can view Admin page */ %>
+                <% if (user.isAdmin()) { %>
+                    <a href="/admin">Admin</a>
+            	<% } %>
+            <a href="/logout">Logout</a>
+        </div>
+    <% }
+    /** Else, can only view Login, About */
+    else { %>
+        <a href="/login">Login</a>
+	    <a href="/about.jsp">About</a>
     <% } %>
-	<a href="/about.jsp">About</a>
-	<% if(username != null) { %>
-    		<a href="/users/<%= username %>" > <%= username %>'s Profile</a>
-    	<% } else { %>
-    		<a href="/login">Login</a>
-    	<% } %>
-	<% if(user != null) {%>
-	    <a href="/activityfeed">ActivityFeed</a>
-	<% } %>
-	<% if(user != null && user.isAdmin()) {%>
-		<a href="/admin" > Admin Page</a>
-	<% } %>
-	<% if(user != null) {%>
-        <a href="/logout" > Logout</a>
-    	<% } %>
 </nav>

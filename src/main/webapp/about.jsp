@@ -64,43 +64,61 @@
 
       <h1>Meet the Team</h1>
       <p>
-        <strong>Lee-Roy Gaseller:</strong> A soon to be sophomore at Xavier University in New Orleans, Louisiana. Lee-Roy enjoys producing beats and creating music.
+        <a href="../users/DatBoiLeeRoy"><strong>Lee-Roy Gaseller</strong></a>
+
+        : A soon to be sophomore at Xavier University in New Orleans, Louisiana. Lee-Roy enjoys producing beats and creating music.
 
       </p>
 
 	<p>
-		<i>Interesting Fact:<i/> "I was born in Zimbabwe!"
+		<i><center>Interesting Fact: "I was born in Zimbabwe!"</center></i>
 	</p>
+
+	<br>
 
 
 	<p>
-		<strong>Aaron Garcia:</strong> A sophomore at Tec de Monterrey in Monterrey, Nuevo Le&oacute;n, Mexico. Aaron's hobbies include filming and editing videos.
+	    <a href="../users/aaron"><strong>Aaron Garcia</strong></a>
+
+		: A sophomore at Tec de Monterrey in Monterrey, Nuevo Le&oacute;n, Mexico. Aaron's hobbies include filming and editing videos.
 	</p>
 
 	<p>
-		<i>Interesting Fact:<i/> "I have a mining rig!"
+		<i><center>Interesting Fact: "I have a mining rig!"</center></i>
 	</p>
 
+    <br>
 
 	<p>
-		<strong>Anita Cu:</strong> A sophomore at UC Berkeley from the Bay Area in California. Anita's hobbies are playing violin, playing piano, and learning the guitar.
+	    <a href="../users/Anita"><strong>Anita Cu</strong></a>
+
+		: A sophomore at UC Berkeley born and raised in the Bay Area, California. Anita loves listening to music and enjoys playing the violin and piano. This summer, she is currently learning the guitar.
 	</p>
 	<p>
-		<i>Interesting Fact:<i/> "I enjoy teaching!"
+		<i><center>Interesting Fact: "I enjoy teaching!"</center></i>
 	</p>
 
-	<p>
-		<strong>Padraic Bonds:</strong> A rising sophomore at Tennessee State University in Nashville, Tennessee. Padraic likes to read and write fantasy.
-	</p>
-	<p>
-		<i>Interesting Fact:<i/> "I'm a red belt in Tae Kwon Doe!"
-	</p>
+	<br>
 
 	<p>
-		<strong>Henry Deist, Google Project Advisor:</strong>
+	    <a href="../users/pbonds"><strong>Padraic Bonds</strong></a>
+
+		: A rising sophomore at Tennessee State University in Nashville, Tennessee. Padraic likes to read and write fantasy.
+	</p>
+	<p>
+		<i><center>Interesting Fact: "I'm a red belt in Tae Kwon Doe!"</center></i>
+	</p>
+
+    <br>
+
+	<p>
+	    <a href="../users/tucosh"><strong>Henry Deist</strong></a>
+
+
+		: Google Project Advisor
 	</p>
   <p>
-		<i>Interesting Fact:<i/> "Trying to learn to play piano.."</i>
+		<i><center>Interesting Fact: "Trying to learn to play piano.."</center></i>
     <br>
     <img src="<%=request.getContextPath()%>/images/playing-piano-in-a-band.jpg" alt="The Pulpit Rock" width="300" height="200">
 	</p>

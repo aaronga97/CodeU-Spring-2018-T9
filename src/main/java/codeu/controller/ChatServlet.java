@@ -230,10 +230,12 @@ private ActivityStore activityStore;
 
     messageStore.addMessage(message);
 
-    Activity conversationActivity = activityStore.getActivityWithConversationName(conversationTitle);
-    conversationActivity.increaseAllTimeCount();
-    activityStore.updateActivity(conversationActivity);
-
+    if (!conversation.getPrivate()) {
+      Activity conversationActivity = activityStore.getActivityWithConversationName(conversationTitle);
+      conversationActivity.increaseAllTimeCount();
+      activityStore.updateActivity(conversationActivity);
+    }
+    
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
   }
