@@ -20,14 +20,13 @@ public class ForgotPasswordServlet extends HttpServlet {
     private UserStore userStore;
 
     /** Class that enforces password restrictions. */
-    // private PasswordUtils passwordUtils;
 
-//    @Override
-//    public void init() throws ServletException {
-//        super.init();
-//        setUserStore(UserStore.getInstance());
-//    }
 
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        setUserStore(UserStore.getInstance());
+    }
     /**
      * Sets the UserStore used by this servlet. This function provides a common setup method for use
      * by the test framework or the servlet's init() function.
@@ -43,24 +42,32 @@ public class ForgotPasswordServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String recipientEmail = request.getParameter("emailPrompt");
+        String recipientEmail = request.getParameter("email");
+        Random random = new Random();
+        int randomPass = random.nextInt(9000) + 1000;
+        String numConvertedToString = Integer.toString(randomPass);
+        String tempPass = "temporarypass"+numConvertedToString;
 
         if (recipientEmail.equals("")) {
             request.setAttribute("error", "Please enter your email address");
             request.getRequestDispatcher("/WEB-INF/view/forgotPassword.jsp").forward(request, response);
             return;
         }
-//        if (userStore.isEmailRegistered(recipientEmail)) {
 
-//
-//        }
-//        else {
-//            request.setAttribute("error", "That email is  linked to an account");
-//            request.getRequestDispatcher("/WEB-INF/view/forgotPassword.jsp").forward(request, response);
-//            return;
-//        }
-        Mail.sendEmail(recipientEmail);
-        response.getOutputStream().println("Email has been sent successfully");
+
+        if (userStore.isEmailRegistered(recipientEmail)) {
+            Mail.sendEmail(recipientEmail, tempPass);
+            String hashedPassword = BCrypt.hashpw(tempPass, BCrypt.gensalt());
+            User user = userStore.getUserByEmail(request.getParameter("email"));
+            user.setPasswordHash(hashedPassword);
+            request.setAttribute("success", "Email sent successfully");
+            request.getRequestDispatcher("/WEB-INF/view/forgotPassword.jsp").forward(request, response);
+        }
+        else {
+            request.setAttribute("error", "That email is not linked to an account");
+            request.getRequestDispatcher("/WEB-INF/view/forgotPassword.jsp").forward(request, response);
+        }
+
     }
 
 }

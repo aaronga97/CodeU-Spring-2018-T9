@@ -36,6 +36,11 @@ public class NewPasswordServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String username = (String) request.getSession().getAttribute("user");
+        User user = UserStore.getInstance().getUser(username);
+        if(user==null){
+            request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+        }
         request.getRequestDispatcher("/WEB-INF/view/newPassword.jsp").forward(request, response);
     }
 
@@ -45,14 +50,8 @@ public class NewPasswordServlet extends HttpServlet {
         String newPassword = request.getParameter("newPassword");
         String reTypedNewPassword = request.getParameter("reTypedNewPassword");
         reTypedNewPassword = Jsoup.clean(reTypedNewPassword, Whitelist.none());
-        String username =request.getParameter("usernameVerification");
 
 
-        if (!userStore.isUserRegistered(username)) {
-            request.setAttribute("error", "That username was not found.");
-            request.getRequestDispatcher("/WEB-INF/view/newPassword.jsp").forward(request, response);
-            return;
-        }
 
         if (!newPassword.equals(reTypedNewPassword)) {
             request.setAttribute("error", "Passwords must match.");
@@ -67,10 +66,13 @@ public class NewPasswordServlet extends HttpServlet {
         }
 
         String hashedPassword = BCrypt.hashpw(reTypedNewPassword, BCrypt.gensalt());
-        User user = userStore.getUser(request.getParameter("usernameVerification"));
+        String username = (String) request.getSession().getAttribute("user");
+        User user = userStore.getUser(username);
         user.setPasswordHash(hashedPassword);
-
+        request.getSession().invalidate();
+        user.setPasswordHash(hashedPassword);
         response.sendRedirect("/login");
+
     }
 
 }

@@ -79,6 +79,16 @@ public class UserStore {
     return null;
   }
 
+  public User getUserByEmail(String email) {
+    // This approach will be pretty slow if we have many users.
+    for (User user : users) {
+      if (user.getEmail().equals(email)) {
+        return user;
+      }
+    }
+    return null;
+  }
+
   /**
    * Access the User object with the given UUID.
    *
