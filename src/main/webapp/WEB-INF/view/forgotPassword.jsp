@@ -24,16 +24,20 @@
   <%@include file= "navbar.jsp"%>
 
   <div id="container">
-    <h1>ForgotPassword</h1>
+    <h1>Forgot Password</h1>
 
     <% if(request.getAttribute("error") != null){ %>
         <h2 style="color:red"><%= request.getAttribute("error") %></h2>
     <% } %>
 
+     <% if(request.getAttribute("success") != null){ %>
+        <h2 style="color:blue"><%= request.getAttribute("success") %></h2>
+     <% } %>
+
     <form action="/forgotPassword" method="POST">
-      <label for="emailPrompt">Please enter email: </label>
+      <label for="email">Please enter email: </label>
       <br/>
-      <input type="emailPrompt" name="emailPrompt" id="emailPrompt">
+      <input type="email" name="email" id="email">
       <br/><br/>
       <button type="recoverPassword">Recover Password!</button>
     </form>

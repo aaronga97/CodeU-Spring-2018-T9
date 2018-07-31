@@ -20,7 +20,7 @@ public class Mail {
     }
 
 
-    public static void sendEmail(String recipient) {
+    public static void sendEmail(String recipient, String temporaryPassword) {
 
 
         Properties prop = new Properties();
@@ -31,7 +31,7 @@ public class Mail {
             msg.setFrom(new InternetAddress("lgaselle@codeustudents.com","Team9ChatApp"));
             msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
             msg.setSubject("Password Reset");
-            msg.setText("https://t9-laaph.appspot.com/newPassword");
+            msg.setText("Hi, your temporary Password is " + temporaryPassword + " once entered this will bring you to a page where you can create a new permanent Password!");
 
             Transport.send(msg);
             //System.out.println("Successfull Delivery.");

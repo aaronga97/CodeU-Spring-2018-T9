@@ -83,6 +83,12 @@ public class LoginServlet extends HttpServlet {
       return;
     }
 
+    if(password.contains("temporary")){
+      request.getSession().setAttribute("user", username);
+      response.sendRedirect("/newPassword");
+      return;
+    }
+
     request.getSession().setAttribute("user", username);
     response.sendRedirect("/conversations");
   }
