@@ -53,6 +53,7 @@ public class ActivityFeedServletTest {
 
   @Test
   public void testDoGet() throws IOException, ServletException {
+      Mockito.when(mockSession.getAttribute("user")).thenReturn("testusername");
 
     List<Activity> fakeActivityList = new ArrayList<>();
     Activity fakeActivity =  new Activity(UUID.randomUUID(), 0, Instant.now(), "test_activity", UUID.randomUUID(), "test_username",
