@@ -39,6 +39,10 @@
       <br/>
       <input type="password" name="password" id="password">
       <br/>
+      <label for="reTypedPassword">Re-type password: </label>
+      <br/>
+      <input type="password" name="reTypedPassword" id="reTypedPassword">
+      <br/>
       <label for="email">Email: </label>
       <br/>
       <input type="email" name="email" id="email">

@@ -68,6 +68,7 @@ public class RegisterServlet extends HttpServlet {
 
     String username = request.getParameter("username");
     String password = request.getParameter("password");
+    String reTypedPassword = request.getParameter("reTypedPassword");
     String email = request.getParameter("email");
 
     if(username.length()<3 || username.length()>14){
@@ -80,6 +81,12 @@ public class RegisterServlet extends HttpServlet {
         request.setAttribute("error", "Password must be between 5 and 13 characters and contain both letters and numbers.");
         request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
           return;
+    }
+
+    if (!password.equals(reTypedPassword)) {
+      request.setAttribute("error", "Passwords must match.");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
     }
 
 
@@ -96,7 +103,7 @@ public class RegisterServlet extends HttpServlet {
     }
 
     if (userStore.isEmailRegistered(email)) {
-      request.setAttribute("error", "That email is already linked to an account");
+      request.setAttribute("error", "That email is already linked to an account.");
       request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
       return;
     }
