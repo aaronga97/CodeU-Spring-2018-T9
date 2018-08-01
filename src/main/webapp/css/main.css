@@ -19,7 +19,7 @@ body {
   margin: 0;
   font-family: "Archivo Narrow";
   line-height: 1.6;
-  font-size: 24px;
+  font-size: 18px;
   line-height: 1.6;
   color: #444;
   background-color: #F5F5F5;
@@ -34,7 +34,7 @@ nav a {
   color: #daad86;
   display: inline-block;
   float: left;
-  font-size: 32px;
+  font-size: 24px;
   margin: 15px;
   text-decoration: none;
 }
