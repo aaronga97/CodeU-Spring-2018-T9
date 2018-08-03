@@ -5,6 +5,7 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.data.Activity;
 import codeu.model.data.Activity.ActivityType;
+import codeu.model.data.ServerStartupTimes;
 import java.time.Instant;
 import java.util.UUID;
 import org.junit.Before;
@@ -53,6 +54,12 @@ public class PersistentStorageAgentTest {
   }
 
   @Test
+  public void testLoadServerStartupTimes() throws PersistentDataStoreException {
+    persistentStorageAgent.loadServerStartupTimes();
+    Mockito.verify(mockPersistentDataStore).loadServerStartupTimes();
+  }
+
+  @Test
   public void testWriteThroughUser() {
     User user =
         new User(
@@ -88,6 +95,13 @@ public class PersistentStorageAgentTest {
       new Activity(UUID.randomUUID(), 0, Instant.now(), "test_message", UUID.randomUUID(), "test_username", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name");
     persistentStorageAgent.writeThrough(activity);
     Mockito.verify(mockPersistentDataStore).writeThrough(activity);
+  }
+
+  @Test
+  public void testWriteThroughServerStartupTimes() {
+    ServerStartupTimes serverStartupTimes = new ServerStartupTimes(UUID.randomUUID(), Instant.now(), Instant.now());
+    persistentStorageAgent.writeThrough(serverStartupTimes);
+    Mockito.verify(mockPersistentDataStore).writeThrough(serverStartupTimes);
   }
 
 }

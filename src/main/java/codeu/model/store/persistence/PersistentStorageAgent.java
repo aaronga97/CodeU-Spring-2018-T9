@@ -19,6 +19,7 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.data.Activity;
 import codeu.model.data.Activity.ActivityType;
+import codeu.model.data.ServerStartupTimes;
 import codeu.model.store.persistence.PersistentDataStore;
 import java.util.List;
 
@@ -82,15 +83,16 @@ public class PersistentStorageAgent {
   }
 
 	/**
-	 * Retrieve the Activity Feed's conversation object from the Datastore service.
+	 * Retrieve the ServerStartupTimes object from the Datastore service.
 	 *
 	 *@throws PersistentDataStoreException if an error was detected during the load from the
 	 *	Datastore service
    */
 
-	public Conversation loadActFeedConversation() throws PersistentDataStoreException {
-		return persistentDataStore.loadActFeedConversation();
+	public ServerStartupTimes loadServerStartupTimes() throws PersistentDataStoreException {
+		return persistentDataStore.loadServerStartupTimes();
 	}
+
   /**
 	 * Retrieve all Activity Feed objects from the Datastore service. The returned list may be empty.
 	 *
@@ -130,5 +132,10 @@ public class PersistentStorageAgent {
   /** Write an Activity object to the Datastore service. */
   public void writeThrough(Activity activity) {
     persistentDataStore.writeThrough(activity);
+  }
+
+  /** Write a ServerStartupTimes object to the Datastore service. */
+  public void writeThrough(ServerStartupTimes serverStartupTimes) {
+    persistentDataStore.writeThrough(serverStartupTimes);
   }
 }

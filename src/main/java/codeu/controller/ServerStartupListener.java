@@ -4,10 +4,12 @@ import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.data.Activity;
+import codeu.model.data.ServerStartupTimes;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import codeu.model.store.basic.ActivityStore;
+import codeu.model.store.basic.ServerStartupTimesStore;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.List;
@@ -25,17 +27,56 @@ import java.util.UUID;
  */
 public class ServerStartupListener implements ServletContextListener {
 
+  private ServerStartupTimesStore serverStartupTimesStore = ServerStartupTimesStore.getInstance();
+
   /** Loads data from Datastore. */
   @Override
   public void contextInitialized(ServletContextEvent sce) {
     try {
+
+      /** Get the time for when the server first started up */
+      Instant currentServerStartupTime = Instant.now();
+
       List<User> users = PersistentStorageAgent.getInstance().loadUsers();
       UserStore.getInstance().setUsers(users);
 
       List<Conversation> conversations = PersistentStorageAgent.getInstance().loadConversations();
       ConversationStore.getInstance().setConversations(conversations);
 
-      List<Activity> activities = PersistentStorageAgent.getInstance().loadActivities();
+      ServerStartupTimes serverStartupTimes = PersistentStorageAgent.getInstance().loadServerStartupTimes();
+      serverStartupTimesStore.setServerStartupTimes(serverStartupTimes);
+
+      UUID serverStartupTimesId = serverStartupTimesStore.getServerStartupTimes().getServerStartupTimesId();
+
+      /** If the ServerStartupTimes in ServerStartupTimes Store hasn't been initialized,
+        * this will initialize it. Should only ever happen once.
+        */
+      if (serverStartupTimesId == null) {
+        ServerStartupTimes initServerStartupTimes = new ServerStartupTimes(UUID.randomUUID(), currentServerStartupTime, currentServerStartupTime);
+        serverStartupTimesStore.setServerStartupTimes(initServerStartupTimes);
+        PersistentStorageAgent.getInstance().writeThrough(initServerStartupTimes);
+      }
+
+
+      /** Check to see if at least a 'day' has passed, if it has load Activities in a special
+       * way that shifts the weekly popularity variables and reevalutes every item's trending
+       * count.
+       */
+        List<Activity> activities;
+       ServerStartupTimes originalServerStartupTimes = serverStartupTimesStore.getServerStartupTimes();
+
+      if (originalServerStartupTimes.compareStartupTimes24()) {
+        activities = PersistentStorageAgent.getInstance().loadActivities();
+        UUID originalId = originalServerStartupTimes.getServerStartupTimesId();
+        ServerStartupTimes newServerStartupTimes = new ServerStartupTimes(originalId, currentServerStartupTime, currentServerStartupTime);
+        serverStartupTimesStore.setServerStartupTimes(newServerStartupTimes);
+        PersistentStorageAgent.getInstance().writeThrough(newServerStartupTimes);
+
+      } else {
+        activities = PersistentStorageAgent.getInstance().loadActivities();
+      }
+
+
       ActivityStore.getInstance().setActivities(activities);
 
       UserStore userStore = UserStore.getInstance();

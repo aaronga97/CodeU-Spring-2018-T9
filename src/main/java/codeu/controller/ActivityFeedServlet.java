@@ -89,7 +89,7 @@ public class ActivityFeedServlet extends HttpServlet {
         request.setAttribute("checked", "recent");
       }
 
-    }
+      }
 
 
     if(sortingStyle.equals("popular") || toggle.equals("popular")) {

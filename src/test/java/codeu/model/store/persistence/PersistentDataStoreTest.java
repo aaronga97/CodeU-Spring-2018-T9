@@ -5,6 +5,7 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.data.Activity;
 import codeu.model.data.Activity.ActivityType;
+import codeu.model.data.ServerStartupTimes;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.time.Instant;
@@ -150,6 +151,28 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(titleTwo, resultConversationTwo.getTitle());
     Assert.assertEquals(creationTwo, resultConversationTwo.getCreationTime());
     Assert.assertEquals(privateConversationTwo, resultConversationOne.getPrivate());
+  }
+
+  @Test
+  public void testSaveAndLoadServerStartupTimes() throws PersistentDataStoreException {
+    UUID serverStartupTimesId = UUID.fromString("10000000-2222-3333-4444-555555555555");
+    Instant referenceServerStartupTime = Instant.ofEpochMilli(1000);
+    Instant currentServerStartupTime = Instant.ofEpochMilli(2000);
+
+    ServerStartupTimes inputServerStartupTimes = new ServerStartupTimes(serverStartupTimesId, referenceServerStartupTime, currentServerStartupTime);
+
+    // save
+    persistentDataStore.writeThrough(inputServerStartupTimes);
+
+
+    // load
+    ServerStartupTimes resultServerStartupTimes = persistentDataStore.loadServerStartupTimes();
+
+    // confirm that what we saved matches what we loaded
+    Assert.assertEquals(serverStartupTimesId, resultServerStartupTimes.getServerStartupTimesId());
+    Assert.assertEquals(referenceServerStartupTime, resultServerStartupTimes.getReferenceServerStartupTime());
+    Assert.assertEquals(currentServerStartupTime, resultServerStartupTimes.getCurrentServerStartupTime());
+
   }
 
   @Test

@@ -69,7 +69,7 @@ public class ActivityFeedServletTest {
   }
 
   @Test
-  public void testDoPost() throws IOException, ServletException {
+  public void testDoPostSearch() throws IOException, ServletException {
     List<Activity> fakeActivityList = new ArrayList<>();
     Activity fakeActivity =  new Activity(UUID.randomUUID(), 0, Instant.now(), "test_activity", UUID.randomUUID(), "test_username",
       ActivityType.REGISTRATION, null, null);
