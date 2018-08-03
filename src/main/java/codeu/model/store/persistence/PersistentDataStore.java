@@ -251,15 +251,15 @@ public class PersistentDataStore {
         }
         activities.add(activity);
 
-      } catch (Exception e) {
-        // In a production environment, errors should be very rare. Errors which may
-        // occur include network errors, Datastore service errors, authorization errors,
-        // database entity definition mismatches, or service mismatches.
-        throw new PersistentDataStoreException(e);
+        } catch (Exception e) {
+          // In a production environment, errors should be very rare. Errors which may
+          // occur include network errors, Datastore service errors, authorization errors,
+          // database entity definition mismatches, or service mismatches.
+          throw new PersistentDataStoreException(e);
+        }
       }
-    }
 
-    return activities;
+      return activities;
   }
 
   /** Write a User object to the Datastore service. */

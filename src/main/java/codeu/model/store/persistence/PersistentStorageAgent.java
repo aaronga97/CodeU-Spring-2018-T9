@@ -82,22 +82,22 @@ public class PersistentStorageAgent {
     return persistentDataStore.loadConversations();
   }
 
-	/**
-	 * Retrieve the ServerStartupTimes object from the Datastore service.
-	 *
-	 *@throws PersistentDataStoreException if an error was detected during the load from the
-	 *	Datastore service
+ /**
+   * Retrieve the ServerStartupTimes object from the Datastore service.
+   *
+   *@throws PersistentDataStoreException if an error was detected during the load from the
+   *	Datastore service
    */
 
-	public ServerStartupTimes loadServerStartupTimes() throws PersistentDataStoreException {
-		return persistentDataStore.loadServerStartupTimes();
-	}
+  public ServerStartupTimes loadServerStartupTimes() throws PersistentDataStoreException {
+    return persistentDataStore.loadServerStartupTimes();
+  }
 
-  /**
-	 * Retrieve all Activity Feed objects from the Datastore service. The returned list may be empty.
-	 *
-	 *@throws PersistentDataStoreException if an error was detected during the load from the
-	 *	Datastore service
+ /**
+   * Retrieve all Activity Feed objects from the Datastore service. The returned list may be empty.
+   *
+   *@throws PersistentDataStoreException if an error was detected during the load from the
+   *	Datastore service
    */
 
   public List<Activity> loadActivities(boolean newDay) throws PersistentDataStoreException {
