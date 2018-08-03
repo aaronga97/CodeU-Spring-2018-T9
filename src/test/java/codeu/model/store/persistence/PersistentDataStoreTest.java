@@ -5,9 +5,11 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.data.Activity;
 import codeu.model.data.Activity.ActivityType;
+import codeu.model.data.ServerStartupTimes;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -153,6 +155,28 @@ public class PersistentDataStoreTest {
   }
 
   @Test
+  public void testSaveAndLoadServerStartupTimes() throws PersistentDataStoreException {
+    UUID serverStartupTimesId = UUID.fromString("10000000-2222-3333-4444-555555555555");
+    Instant referenceServerStartupTime = Instant.ofEpochMilli(1000);
+    Instant currentServerStartupTime = Instant.ofEpochMilli(2000);
+
+    ServerStartupTimes inputServerStartupTimes = new ServerStartupTimes(serverStartupTimesId, referenceServerStartupTime, currentServerStartupTime);
+
+    // save
+    persistentDataStore.writeThrough(inputServerStartupTimes);
+
+
+    // load
+    ServerStartupTimes resultServerStartupTimes = persistentDataStore.loadServerStartupTimes();
+
+    // confirm that what we saved matches what we loaded
+    Assert.assertEquals(serverStartupTimesId, resultServerStartupTimes.getServerStartupTimesId());
+    Assert.assertEquals(referenceServerStartupTime, resultServerStartupTimes.getReferenceServerStartupTime());
+    Assert.assertEquals(currentServerStartupTime, resultServerStartupTimes.getCurrentServerStartupTime());
+
+  }
+
+  @Test
   public void testSaveAndLoadMessages() throws PersistentDataStoreException {
     UUID idOne = UUID.fromString("10000000-2222-3333-4444-555555555555");
     UUID conversationOne = UUID.fromString("10000001-2222-3333-4444-555555555555");
@@ -208,7 +232,9 @@ public class PersistentDataStoreTest {
     ActivityType typeOne = ActivityType.CONVERSATION;
     UUID conversationIdOne = UUID.fromString("10000002-2222-3333-4444-555555555555");
     String conversationNameOne = "test conversation name one";
-    Activity inputActivityOne = new Activity(activityIdOne, allTimeCountOne, creationOne, messageOne, userUuidOne, usernameOne, typeOne, conversationIdOne, conversationNameOne);
+    double[] dailyPopularityOne = {1, 2, 3, 4};
+    double zScoreOne = -1;
+    Activity inputActivityOne = new Activity(activityIdOne, allTimeCountOne, creationOne, messageOne, userUuidOne, usernameOne, typeOne, conversationIdOne, conversationNameOne, dailyPopularityOne, zScoreOne);
 
     UUID activityIdTwo = UUID.fromString("10000003-2222-3333-4444-555555555555");
     int allTimeCountTwo = 5;
@@ -219,14 +245,17 @@ public class PersistentDataStoreTest {
     ActivityType typeTwo = ActivityType.REGISTRATION;
     UUID conversationIdTwo = null;
     String conversationNameTwo = null;
-    Activity inputActivityTwo = new Activity(activityIdTwo, allTimeCountTwo, creationTwo, messageTwo, userUuidTwo, usernameTwo, typeTwo, conversationIdTwo, conversationNameTwo);
+    double[] dailyPopularityTwo = {0, 0, 0, 0};
+    double zScoreTwo = 0;
+
+    Activity inputActivityTwo = new Activity(activityIdTwo, allTimeCountTwo, creationTwo, messageTwo, userUuidTwo, usernameTwo, typeTwo, conversationIdTwo, conversationNameTwo, dailyPopularityTwo, zScoreTwo);
 
     // save
     persistentDataStore.writeThrough(inputActivityOne);
     persistentDataStore.writeThrough(inputActivityTwo);
 
     // load
-    List<Activity> resultActivities = persistentDataStore.loadActivities();
+    List<Activity> resultActivities = persistentDataStore.loadActivities(false);
 
     // confirm that what we saved matches what we loaded
     Activity resultActivityOne = resultActivities.get(0);
@@ -239,6 +268,8 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(typeOne, resultActivityOne.getActivityType());
     Assert.assertEquals(conversationIdOne, resultActivityOne.getConversationId());
     Assert.assertEquals(conversationNameOne, resultActivityOne.getConversationName());
+    Assert.assertTrue(Arrays.equals(dailyPopularityOne, resultActivityOne.getDailyPopularity()));
+    Assert.assertEquals(zScoreOne, resultActivityOne.getZScore(), 0.0001);
 
     Activity resultActivityTwo = resultActivities.get(1);
     Assert.assertEquals(activityIdTwo, resultActivityTwo.getActivityId());
@@ -250,7 +281,21 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(typeTwo, resultActivityTwo.getActivityType());
     Assert.assertEquals(conversationIdTwo, resultActivityTwo.getConversationId());
     Assert.assertEquals(conversationNameTwo, resultActivityTwo.getConversationName());
+    Assert.assertTrue(Arrays.equals(dailyPopularityTwo, resultActivityTwo.getDailyPopularity()));
+    Assert.assertEquals(zScoreTwo, resultActivityTwo.getZScore(), 0.0001);
 
+    /** Test second method of loading activities, which should activate if a day has passed */
+    resultActivities = persistentDataStore.loadActivities(true);
+
+    resultActivityOne = resultActivities.get(0);
+    double[] checkArrayOne = {2, 3, 4, 0};
+    Assert.assertTrue(Arrays.equals(checkArrayOne, resultActivityOne.getDailyPopularity()));
+    Assert.assertEquals(-1.52128, resultActivityOne.getZScore(), 0.0001);
+
+    double[] checkArrayTwo = {0, 0, 0, 0};
+    resultActivityTwo = resultActivities.get(1);
+    Assert.assertTrue(Arrays.equals(checkArrayTwo, resultActivityTwo.getDailyPopularity()));
+    Assert.assertEquals(0, resultActivityTwo.getZScore(), 0.0001);
 
   }
 }

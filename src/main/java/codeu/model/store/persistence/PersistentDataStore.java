@@ -19,6 +19,7 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.data.Activity;
 import codeu.model.data.Activity.ActivityType;
+import codeu.model.data.ServerStartupTimes;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -129,31 +130,26 @@ public class PersistentDataStore {
   }
 
   /**
-   * Loads the activity feed's Conversation objects from the Datastore service and returns it
+   * Loads the ServerStartupTimes object from the Datastore service and returns it
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
    */
 
-  public Conversation loadActFeedConversation() throws PersistentDataStoreException {
+  public ServerStartupTimes loadServerStartupTimes() throws PersistentDataStoreException {
 
-    // Retrieve all activity feed conversation from the datastore.
-    Query query = new Query("act-conversation");
+    // Retrieve the ServerStartupTime.
+    Query query = new Query("serverStartupTimes");
     PreparedQuery results = datastore.prepare(query);
 
     UUID uuid = null;
-    UUID ownerUuid = null;
-    String title = null;
-    Instant creationTime = null;
-    boolean privateConversation = false;
-    Conversation actFeedConversation = null;
+    Instant referenceServerStartupTime = null;
+    Instant currentServerStartupTime = null;
 
     for (Entity entity : results.asIterable()) {
       try {
         uuid = UUID.fromString((String) entity.getProperty("uuid"));
-        ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
-        title = (String) entity.getProperty("title");
-        creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        privateConversation = Boolean.parseBoolean((String) entity.getProperty("private_conversation"));
+        referenceServerStartupTime = Instant.parse((String) entity.getProperty("referenceServerStartupTime"));
+        currentServerStartupTime = Instant.parse((String) entity.getProperty("currentServerStartupTime"));
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
@@ -162,8 +158,8 @@ public class PersistentDataStore {
       }
     }
 
-    actFeedConversation = new Conversation(uuid, ownerUuid, title, creationTime, privateConversation);
-    return actFeedConversation;
+    ServerStartupTimes serverStartupTimes = new ServerStartupTimes(uuid, referenceServerStartupTime, currentServerStartupTime);
+    return serverStartupTimes;
   }
 
   /**
@@ -209,7 +205,7 @@ public class PersistentDataStore {
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
    */
-  public List<Activity> loadActivities() throws PersistentDataStoreException {
+  public List<Activity> loadActivities(boolean newDay) throws PersistentDataStoreException {
 
     List<Activity> activities = new ArrayList<>();
 
@@ -232,17 +228,38 @@ public class PersistentDataStore {
         }
         String conversationName = (String) entity.getProperty("conversation_name");
 
-        Activity activity = new Activity(activityUuid, allTimeCount, creationTime, message, userUuid, username, type, conversationId, conversationName);
-        activities.add(activity);
-      } catch (Exception e) {
-        // In a production environment, errors should be very rare. Errors which may
-        // occur include network errors, Datastore service errors, authorization errors,
-        // database entity definition mismatches, or service mismatches.
-        throw new PersistentDataStoreException(e);
-      }
-    }
+        double[] dailyPopularity = new double[4];
 
-    return activities;
+        double zScore = Double.parseDouble((String) entity.getProperty("zScore"));
+
+        if (newDay && type == ActivityType.CONVERSATION) {
+          dailyPopularity[0] = Double.parseDouble((String) entity.getProperty("dailyPopularity[1]"));
+          dailyPopularity[1] = Double.parseDouble((String) entity.getProperty("dailyPopularity[2]"));
+          dailyPopularity[2] = Double.parseDouble((String) entity.getProperty("dailyPopularity[3]"));
+          dailyPopularity[3] = 0;
+        } else {
+          dailyPopularity[0] = Double.parseDouble((String) entity.getProperty("dailyPopularity[0]"));
+          dailyPopularity[1] = Double.parseDouble((String) entity.getProperty("dailyPopularity[1]"));
+          dailyPopularity[2] = Double.parseDouble((String) entity.getProperty("dailyPopularity[2]"));
+          dailyPopularity[3] = Double.parseDouble((String) entity.getProperty("dailyPopularity[3]"));
+        }
+
+        Activity activity = new Activity(activityUuid, allTimeCount, creationTime, message, userUuid, username, type, conversationId, conversationName, dailyPopularity, zScore);
+        if(newDay && type == ActivityType.CONVERSATION) {
+          activity.setZScore();
+          this.writeThrough(activity);
+        }
+        activities.add(activity);
+
+        } catch (Exception e) {
+          // In a production environment, errors should be very rare. Errors which may
+          // occur include network errors, Datastore service errors, authorization errors,
+          // database entity definition mismatches, or service mismatches.
+          throw new PersistentDataStoreException(e);
+        }
+      }
+
+      return activities;
   }
 
   /** Write a User object to the Datastore service. */
@@ -300,7 +317,26 @@ public class PersistentDataStore {
       activityEntity.setProperty("conversation_uuid", activity.getConversationId().toString());
     }
     activityEntity.setProperty("conversation_name", activity.getConversationName());
+
+    /** Write each member of dailyPopularity array seperately */
+    activityEntity.setProperty("dailyPopularity[0]", Double.toString(activity.getDailyPopularity()[0]));
+    activityEntity.setProperty("dailyPopularity[1]", Double.toString(activity.getDailyPopularity()[1]));
+    activityEntity.setProperty("dailyPopularity[2]", Double.toString(activity.getDailyPopularity()[2]));
+    activityEntity.setProperty("dailyPopularity[3]", Double.toString(activity.getDailyPopularity()[3]));
+
+    activityEntity.setProperty("zScore", Double.toString(activity.getZScore()));
+
     datastore.put(activityEntity);
+  }
+
+  /** Write a ServerStartupTimes object to the Datastore service. */
+  public void writeThrough(ServerStartupTimes serverStartupTimes) {
+    Entity serverStartupTimesEntity = new Entity("serverStartupTimes", serverStartupTimes.getServerStartupTimesId().toString());
+    serverStartupTimesEntity.setProperty("uuid", serverStartupTimes.getServerStartupTimesId().toString());
+    serverStartupTimesEntity.setProperty("referenceServerStartupTime", serverStartupTimes.getReferenceServerStartupTime().toString());
+    serverStartupTimesEntity.setProperty("currentServerStartupTime", serverStartupTimes.getCurrentServerStartupTime().toString());
+
+    datastore.put(serverStartupTimesEntity);
   }
 
 }

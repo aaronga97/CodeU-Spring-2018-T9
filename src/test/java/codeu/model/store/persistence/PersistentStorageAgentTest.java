@@ -5,6 +5,7 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.data.Activity;
 import codeu.model.data.Activity.ActivityType;
+import codeu.model.data.ServerStartupTimes;
 import java.time.Instant;
 import java.util.UUID;
 import org.junit.Before;
@@ -47,9 +48,21 @@ public class PersistentStorageAgentTest {
   }
 
   @Test
-  public void testLoadActivities() throws PersistentDataStoreException {
-    persistentStorageAgent.loadActivities();
-    Mockito.verify(mockPersistentDataStore).loadActivities();
+  public void testLoadActivitiesTrue() throws PersistentDataStoreException {
+    persistentStorageAgent.loadActivities(true);
+    Mockito.verify(mockPersistentDataStore).loadActivities(true);
+  }
+
+  @Test
+  public void testLoadActivitiesFalse() throws PersistentDataStoreException {
+    persistentStorageAgent.loadActivities(false);
+    Mockito.verify(mockPersistentDataStore).loadActivities(false);
+  }
+
+  @Test
+  public void testLoadServerStartupTimes() throws PersistentDataStoreException {
+    persistentStorageAgent.loadServerStartupTimes();
+    Mockito.verify(mockPersistentDataStore).loadServerStartupTimes();
   }
 
   @Test
@@ -85,9 +98,16 @@ public class PersistentStorageAgentTest {
   @Test
   public void testWriteThroughActivity() {
     Activity activity =
-      new Activity(UUID.randomUUID(), 0, Instant.now(), "test_message", UUID.randomUUID(), "test_username", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name");
+      new Activity(UUID.randomUUID(), 0, Instant.now(), "test_message", UUID.randomUUID(), "test_username", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name", new double[4], 0);
     persistentStorageAgent.writeThrough(activity);
     Mockito.verify(mockPersistentDataStore).writeThrough(activity);
+  }
+
+  @Test
+  public void testWriteThroughServerStartupTimes() {
+    ServerStartupTimes serverStartupTimes = new ServerStartupTimes(UUID.randomUUID(), Instant.now(), Instant.now());
+    persistentStorageAgent.writeThrough(serverStartupTimes);
+    Mockito.verify(mockPersistentDataStore).writeThrough(serverStartupTimes);
   }
 
 }

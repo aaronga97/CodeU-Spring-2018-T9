@@ -60,6 +60,23 @@ public class Activity implements Serializable {
   private final String conversationName;
 
   /**
+   * Gives the day by day popularity of an activity object
+   * The third index in the array represents the current 'day',
+   * while every other index represents the previous 3 'days'
+   */
+
+  private double[] dailyPopularity;
+
+  /**
+   * Gives the z-score of an activty, which represents
+   * how many standard deviations its popularity for the day (3rd index of dailyPopularity),
+   * is above or below it's mean popularity for the last 4 'days' (all indexes of dailyPopularity)
+   * Used to determine an activity's trend
+   */
+
+  private double zScore;
+
+  /**
    * Constructs a new Activity.
    *
    * @param activityId the ID of this activity
@@ -70,7 +87,7 @@ public class Activity implements Serializable {
    * @param username the username of the user associated with this activity
    * @param
    */
-  public Activity(UUID activityId, int allTimeCount, Instant creation, String message, UUID userId, String username, ActivityType type, UUID conversationId, String conversationName) {
+  public Activity(UUID activityId, int allTimeCount, Instant creation, String message, UUID userId, String username, ActivityType type, UUID conversationId, String conversationName, double[] dailyPopularity, double zScore) {
     this.activityId = activityId;
     this.allTimeCount = allTimeCount;
     this.creation = creation;
@@ -80,6 +97,8 @@ public class Activity implements Serializable {
     this.type = type;
     this.conversationId = conversationId;
     this.conversationName = conversationName;
+    this.dailyPopularity = dailyPopularity;
+    this.zScore = zScore;
 
   }
 
@@ -128,11 +147,72 @@ public class Activity implements Serializable {
     return conversationName;
   }
 
+  /** Returns 'today's' popularity count (third index in dailyPopularity)*/
+  public double getPopularityToday() {
+    return dailyPopularity[3];
+  }
+
+  public double[] getDailyPopularity() {
+    return dailyPopularity;
+  }
+
+  /** Returns the zScore of an Activity */
+  public double getZScore() {
+    return zScore;
+  }
+
+  /** Increases the allTimeCount field of an Activity by 1 */
   public void increaseAllTimeCount() {
     allTimeCount += 1;
   }
 
+  /** Increases the popularity count for the current day (3rd index of dailyPopularity) */
+  public void increaseDailyPopularity() {
+    this.dailyPopularity[3] += 1;
+  }
+
+  /** Sets the zScore for an activity object based on its dailyPopularity */
+  public void setZScore() {
+    if (this.calculateStandardDeviation() != 0) {
+      this.zScore = this.calculateZScore();
+    } else {
+      this.zScore = 0;
+    }
+  }
+
+  /** Setter for the message field of an Activity */
   public void setMessage(String newMessage) {
     message = newMessage;
+  }
+
+  /** Calculates the mean of the dailyPopularity array field */
+  public double calculateMean() {
+    double sum = 0.0;
+      for(double num : dailyPopularity) {
+        sum += num;
+      }
+
+      double mean = sum/dailyPopularity.length;
+
+      return mean;
+  }
+
+  /** calculates the standard deviation of the dailyPopularity array */
+  private double calculateStandardDeviation() {
+    double mean = this.calculateMean();
+    double standardDeviation = 0.0;
+
+    for(double num: dailyPopularity) {
+      standardDeviation += Math.pow(num - mean, 2);
+    }
+    System.out.println(Math.sqrt(standardDeviation/dailyPopularity.length));
+    System.out.println(mean);
+    return Math.sqrt(standardDeviation/dailyPopularity.length);
+  }
+
+  /** Calculates the ZScore of the dailyPopularity array field */
+  private double calculateZScore() {
+    double zScore = (this.getPopularityToday() - this.calculateMean())/this.calculateStandardDeviation();
+    return zScore;
   }
 }
