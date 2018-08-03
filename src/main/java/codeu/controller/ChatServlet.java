@@ -233,9 +233,11 @@ private ActivityStore activityStore;
     if (!conversation.getPrivate()) {
       Activity conversationActivity = activityStore.getActivityWithConversationName(conversationTitle);
       conversationActivity.increaseAllTimeCount();
+      conversationActivity.increaseDailyPopularity();
+      conversationActivity.setZScore();
       activityStore.updateActivity(conversationActivity);
     }
-    
+
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
   }

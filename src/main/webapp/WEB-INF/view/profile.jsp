@@ -68,55 +68,55 @@ UserStore userStore = UserStore.getInstance();
              <% }
               } %>
              </br>
-      <% } else if (currentUser != null) { %>
+      <% } else { %>
             <h1>Welcome to <%= profileUser %>'s Page!</h1>
             </br>
             <%
-            /** If the current user logged in is already pals with the profile user page they are viewing, then allow her/him to message and view their private conversation. Else, allow them to request this person as a pal. */
-            if (currUser.isPal(profileUser)) {
-              String conversationName = "../chat/";
-              String firstUser = currentUser;
-              String secondUser = profileUser;
+            if (currentUser != null) {
+                /** If the current user logged in is already pals with the profile user page they are viewing, then allow her/him to message and view their private conversation. Else, allow them to request this person as a pal. */
+                if (currUser.isPal(profileUser)) {
+                    String conversationName = "../chat/";
+                    String firstUser = currentUser;
+                    String secondUser = profileUser;
 
-              if (firstUser.compareTo(secondUser) > 0) {
-                String temp = firstUser;
-                firstUser = secondUser;
-                secondUser = temp;
-              }
-              conversationName = conversationName + firstUser + "-" +secondUser;
-              %>
-              <a href="/chat/<%= conversationName %>"> Send a direct message to <%= profileUser %> </a>
-              </br>
-              </br>
-            <%
-            } else {
-                if (currUser.sentPalRequest(profileUser)) {
-                    /** States that the current user has already sent this profile user a pal request */ %>
-                    <p> Pal Request sent! </p>
+                    if (firstUser.compareTo(secondUser) > 0) {
+                        String temp = firstUser;
+                        firstUser = secondUser;
+                        secondUser = temp;
+                    }
+                    conversationName = conversationName + firstUser + "-" +secondUser;
+                    %>
+                    <a href="/chat/<%= conversationName %>"> Send a direct message to <%= profileUser %> </a>
+                    </br>
                     </br>
                     <%
-                } else if (profUser.sentPalRequest(currentUser)) {
-                    /** Gives current user the option to accept or decline request on this user profile page */ %>
-                    <p> <%= profileUser %> has sent you a pal request: </p>
-                      <form action="/users/<%= profileUser %>" method="POST">
+                } else {
+                    if (currUser.sentPalRequest(profileUser)) {
+                        /** States that the current user has already sent this profile user a pal request */ %>
+                        <p> Pal Request sent! </p>
+                        </br>
+                        <%
+                    } else if (profUser.sentPalRequest(currentUser)) {
+                        /** Gives current user the option to accept or decline request on this user profile page */ %>
+                        <p> <%= profileUser %> has sent you a pal request: </p>
+                        <form action="/users/<%= profileUser %>" method="POST">
                         <button type="submit" name="accept" value="<%= profileUser %>"> Accept </button>
                         <button type="submit" name="decline" value="<%= profileUser %>"> Decline </button>
                         <br/>
-                      </form>
-                    <%
-                } else {
-                    /** Gives current user a button to request this user as a pal */ %>
-                       <form action="/users/<%= profileUser %>" method="POST">
-                         <button type="submit" name="requestPal" value="<%= currentUser %>"> Request Pal </button>
-                         <br/>
-                       </form>
-                       </br>
-                    <%
+                        </form>
+                        <%
+                    } else {
+                        /** Gives current user a button to request this user as a pal */ %>
+                        <form action="/users/<%= profileUser %>" method="POST">
+                        <button type="submit" name="requestPal" value="<%= currentUser %>"> Request Pal </button>
+                        <br/>
+                        </form>
+                        </br>
+                        <%
+                    }
                 }
             }
-            %>
-
-        <% } %>
+        } %>
         <% /** Gets the bio of this user to display on their profile page */ %>
             <% String profilePageBio = profUser.getBio(); %>
             <h2>About Me</h2>

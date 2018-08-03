@@ -18,9 +18,9 @@ public class ActivityStoreTest {
   private UUID activityId = UUID.randomUUID();
   private UUID activityId2 = UUID.randomUUID();
 
-  private final Activity ACTIVITY_ONE = new Activity(activityId, 1, Instant.ofEpochMilli(1000), "activity_one", UUID.randomUUID(), "test_user1", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name");
-  private final Activity ACTIVITY_TWO = new Activity(activityId2, 2, Instant.ofEpochMilli(2000), "activity_two", UUID.randomUUID(), "test_user1", ActivityType.REGISTRATION, null, null);
-  private final Activity ACTIVITY_THREE = new Activity(UUID.randomUUID(), 3, Instant.ofEpochMilli(3000), "activity_three", UUID.randomUUID(), "test_user2", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name2");
+  private final Activity ACTIVITY_ONE = new Activity(activityId, 1, Instant.ofEpochMilli(1000), "activity_one", UUID.randomUUID(), "test_user1", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name", new double[4], 0);
+  private final Activity ACTIVITY_TWO = new Activity(activityId2, 2, Instant.ofEpochMilli(2000), "activity_two", UUID.randomUUID(), "test_user1", ActivityType.REGISTRATION, null, null, new double[4], 0);
+  private final Activity ACTIVITY_THREE = new Activity(UUID.randomUUID(), 3, Instant.ofEpochMilli(3000), "activity_three", UUID.randomUUID(), "test_user2", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name2", new double[4], 0);
 
   @Before
   public void setup() {
@@ -67,7 +67,7 @@ public class ActivityStoreTest {
   @Test
   public void testAddActivity() {
     UUID inputActivityId = UUID.randomUUID();
-    Activity inputActivity = new Activity(inputActivityId, 1, Instant.ofEpochMilli(1000), "activity_two", UUID.randomUUID(), "test_user2", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name2");
+    Activity inputActivity = new Activity(inputActivityId, 1, Instant.ofEpochMilli(1000), "activity_two", UUID.randomUUID(), "test_user2", ActivityType.CONVERSATION, UUID.randomUUID(), "test_conversation_name2", new double[4], 0);
 
     activityStore.addActivity(inputActivity);
     Activity resultActivity = activityStore.getActivityWithId(inputActivityId);
@@ -86,5 +86,8 @@ public class ActivityStoreTest {
     Assert.assertEquals(expectedActivity.getActivityType(), actualActivity.getActivityType());
     Assert.assertEquals(expectedActivity.getConversationId(), actualActivity.getConversationId());
     Assert.assertEquals(expectedActivity.getConversationName(), actualActivity.getConversationName());
+    Assert.assertEquals(expectedActivity.getPopularityToday(), actualActivity.getPopularityToday(), 0.0001);
+    Assert.assertEquals(expectedActivity.getDailyPopularity(), actualActivity.getDailyPopularity());
+    Assert.assertEquals(expectedActivity.getZScore(), actualActivity.getZScore(), 0.0001);
   }
 }
