@@ -205,7 +205,8 @@ public class Activity implements Serializable {
     for(double num: dailyPopularity) {
       standardDeviation += Math.pow(num - mean, 2);
     }
-
+    System.out.println(Math.sqrt(standardDeviation/dailyPopularity.length));
+    System.out.println(mean);
     return Math.sqrt(standardDeviation/dailyPopularity.length);
   }
 
