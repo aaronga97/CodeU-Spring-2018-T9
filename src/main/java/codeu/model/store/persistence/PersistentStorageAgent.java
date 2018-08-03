@@ -100,8 +100,8 @@ public class PersistentStorageAgent {
 	 *	Datastore service
    */
 
-  public List<Activity> loadActivities() throws PersistentDataStoreException {
-    return persistentDataStore.loadActivities();
+  public List<Activity> loadActivities(boolean newDay) throws PersistentDataStoreException {
+    return persistentDataStore.loadActivities(newDay);
   }
 
   /**

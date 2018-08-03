@@ -255,7 +255,7 @@ public class PersistentDataStoreTest {
     persistentDataStore.writeThrough(inputActivityTwo);
 
     // load
-    List<Activity> resultActivities = persistentDataStore.loadActivities();
+    List<Activity> resultActivities = persistentDataStore.loadActivities(false);
 
     // confirm that what we saved matches what we loaded
     Activity resultActivityOne = resultActivities.get(0);
@@ -284,6 +284,18 @@ public class PersistentDataStoreTest {
     Assert.assertTrue(Arrays.equals(dailyPopularityTwo, resultActivityTwo.getDailyPopularity()));
     Assert.assertEquals(zScoreTwo, resultActivityTwo.getZScore(), 0.0001);
 
+    /** Test second method of loading activities, which should activate if a day has passed */
+    resultActivities = persistentDataStore.loadActivities(true);
+
+    resultActivityOne = resultActivities.get(0);
+    double[] checkArrayOne = {2, 3, 4, 0};
+    Assert.assertTrue(Arrays.equals(checkArrayOne, resultActivityOne.getDailyPopularity()));
+    Assert.assertEquals(-1.52128, resultActivityOne.getZScore(), 0.0001);
+
+    double[] checkArrayTwo = {0, 0, 0, 0};
+    resultActivityTwo = resultActivities.get(1);
+    Assert.assertTrue(Arrays.equals(checkArrayTwo, resultActivityTwo.getDailyPopularity()));
+    Assert.assertEquals(0, resultActivityTwo.getZScore(), 0.0001);
 
   }
 }

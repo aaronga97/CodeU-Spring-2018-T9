@@ -48,9 +48,15 @@ public class PersistentStorageAgentTest {
   }
 
   @Test
-  public void testLoadActivities() throws PersistentDataStoreException {
-    persistentStorageAgent.loadActivities();
-    Mockito.verify(mockPersistentDataStore).loadActivities();
+  public void testLoadActivitiesTrue() throws PersistentDataStoreException {
+    persistentStorageAgent.loadActivities(true);
+    Mockito.verify(mockPersistentDataStore).loadActivities(true);
+  }
+
+  @Test
+  public void testLoadActivitiesFalse() throws PersistentDataStoreException {
+    persistentStorageAgent.loadActivities(false);
+    Mockito.verify(mockPersistentDataStore).loadActivities(false);
   }
 
   @Test

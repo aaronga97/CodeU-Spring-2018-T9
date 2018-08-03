@@ -186,7 +186,7 @@ public class Activity implements Serializable {
   }
 
   /** Calculates the mean of the dailyPopularity array field */
-  private double calculateMean() {
+  public double calculateMean() {
     double sum = 0.0;
       for(double num : dailyPopularity) {
         sum += num;

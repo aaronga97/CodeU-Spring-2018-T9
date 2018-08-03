@@ -40,6 +40,7 @@ public class ActivityTest {
     Assert.assertEquals(dailyPopularity[3], activity.getPopularityToday(), 0.0001);
     Assert.assertEquals(dailyPopularity, activity.getDailyPopularity());
     Assert.assertEquals(zScore, activity.getZScore(), 0.0001);
+    Assert.assertEquals(6.0, activity.calculateMean(), 0.0001);
     activity.setZScore();
     Assert.assertEquals(0.63246, activity.getZScore(), 0.0001);
 

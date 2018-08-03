@@ -66,14 +66,14 @@ public class ServerStartupListener implements ServletContextListener {
        ServerStartupTimes originalServerStartupTimes = serverStartupTimesStore.getServerStartupTimes();
 
       if (originalServerStartupTimes.compareStartupTimes24()) {
-        activities = PersistentStorageAgent.getInstance().loadActivities();
+        activities = PersistentStorageAgent.getInstance().loadActivities(true);
         UUID originalId = originalServerStartupTimes.getServerStartupTimesId();
         ServerStartupTimes newServerStartupTimes = new ServerStartupTimes(originalId, currentServerStartupTime, currentServerStartupTime);
         serverStartupTimesStore.setServerStartupTimes(newServerStartupTimes);
         PersistentStorageAgent.getInstance().writeThrough(newServerStartupTimes);
 
       } else {
-        activities = PersistentStorageAgent.getInstance().loadActivities();
+        activities = PersistentStorageAgent.getInstance().loadActivities(false);
       }
 
 

@@ -205,7 +205,7 @@ public class PersistentDataStore {
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
    */
-  public List<Activity> loadActivities() throws PersistentDataStoreException {
+  public List<Activity> loadActivities(boolean newDay) throws PersistentDataStoreException {
 
     List<Activity> activities = new ArrayList<>();
 
@@ -229,14 +229,25 @@ public class PersistentDataStore {
         String conversationName = (String) entity.getProperty("conversation_name");
 
         double[] dailyPopularity = new double[4];
-        dailyPopularity[0] = Double.parseDouble((String) entity.getProperty("dailyPopularity[0]"));
-        dailyPopularity[1] = Double.parseDouble((String) entity.getProperty("dailyPopularity[1]"));
-        dailyPopularity[2] = Double.parseDouble((String) entity.getProperty("dailyPopularity[2]"));
-        dailyPopularity[3] = Double.parseDouble((String) entity.getProperty("dailyPopularity[3]"));
 
         double zScore = Double.parseDouble((String) entity.getProperty("zScore"));
 
+        if (newDay) {
+          dailyPopularity[0] = Double.parseDouble((String) entity.getProperty("dailyPopularity[1]"));
+          dailyPopularity[1] = Double.parseDouble((String) entity.getProperty("dailyPopularity[2]"));
+          dailyPopularity[2] = Double.parseDouble((String) entity.getProperty("dailyPopularity[3]"));
+          dailyPopularity[3] = 0;
+        } else {
+          dailyPopularity[0] = Double.parseDouble((String) entity.getProperty("dailyPopularity[0]"));
+          dailyPopularity[1] = Double.parseDouble((String) entity.getProperty("dailyPopularity[1]"));
+          dailyPopularity[2] = Double.parseDouble((String) entity.getProperty("dailyPopularity[2]"));
+          dailyPopularity[3] = Double.parseDouble((String) entity.getProperty("dailyPopularity[3]"));
+        }
+
         Activity activity = new Activity(activityUuid, allTimeCount, creationTime, message, userUuid, username, type, conversationId, conversationName, dailyPopularity, zScore);
+        if(newDay) {
+          activity.setZScore();
+        }
         activities.add(activity);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
