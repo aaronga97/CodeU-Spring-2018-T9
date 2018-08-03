@@ -228,7 +228,15 @@ public class PersistentDataStore {
         }
         String conversationName = (String) entity.getProperty("conversation_name");
 
-        Activity activity = new Activity(activityUuid, allTimeCount, creationTime, message, userUuid, username, type, conversationId, conversationName);
+        double[] dailyPopularity = new double[4];
+        dailyPopularity[0] = Double.parseDouble((String) entity.getProperty("dailyPopularity[0]"));
+        dailyPopularity[1] = Double.parseDouble((String) entity.getProperty("dailyPopularity[1]"));
+        dailyPopularity[2] = Double.parseDouble((String) entity.getProperty("dailyPopularity[2]"));
+        dailyPopularity[3] = Double.parseDouble((String) entity.getProperty("dailyPopularity[3]"));
+
+        double zScore = Double.parseDouble((String) entity.getProperty("zScore"));
+
+        Activity activity = new Activity(activityUuid, allTimeCount, creationTime, message, userUuid, username, type, conversationId, conversationName, dailyPopularity, zScore);
         activities.add(activity);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -296,6 +304,15 @@ public class PersistentDataStore {
       activityEntity.setProperty("conversation_uuid", activity.getConversationId().toString());
     }
     activityEntity.setProperty("conversation_name", activity.getConversationName());
+
+    /** Write each member of dailyPopularity array seperately */
+    activityEntity.setProperty("dailyPopularity[0]", Double.toString(activity.getDailyPopularity()[0]));
+    activityEntity.setProperty("dailyPopularity[1]", Double.toString(activity.getDailyPopularity()[1]));
+    activityEntity.setProperty("dailyPopularity[2]", Double.toString(activity.getDailyPopularity()[2]));
+    activityEntity.setProperty("dailyPopularity[3]", Double.toString(activity.getDailyPopularity()[3]));
+
+    activityEntity.setProperty("zScore", Double.toString(activity.getZScore()));
+
     datastore.put(activityEntity);
   }
 

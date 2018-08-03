@@ -20,8 +20,10 @@ public class ActivityTest {
     ActivityType type = ActivityType.CONVERSATION;
     UUID conversationId = UUID.randomUUID();
     String conversationName = "Test_Conversation_Name";
+    double[] dailyPopularity = {4, 2, 10, 8};
+    double zScore = -1;
 
-    Activity activity = new Activity(activityId, allTimeCount, creation, message, userId, username, type, conversationId, conversationName);
+    Activity activity = new Activity(activityId, allTimeCount, creation, message, userId, username, type, conversationId, conversationName, dailyPopularity, zScore);
     Assert.assertEquals(activityId, activity.getActivityId());
 
     Assert.assertEquals(allTimeCount, activity.getAllTimeCount());
@@ -35,6 +37,12 @@ public class ActivityTest {
     Assert.assertEquals(type, activity.getActivityType());
     Assert.assertEquals(conversationId, activity.getConversationId());
     Assert.assertEquals(conversationName, activity.getConversationName());
+    Assert.assertEquals(dailyPopularity[3], activity.getPopularityToday(), 0.0001);
+    Assert.assertEquals(dailyPopularity, activity.getDailyPopularity());
+    Assert.assertEquals(zScore, activity.getZScore(), 0.0001);
+
+    activity.increaseDailyPopularity();
+    Assert.assertEquals(9, activity.getPopularityToday(), 0.0001);
 
   }
 }

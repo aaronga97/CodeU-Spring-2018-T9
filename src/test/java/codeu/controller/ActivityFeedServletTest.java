@@ -56,7 +56,7 @@ public class ActivityFeedServletTest {
 
     List<Activity> fakeActivityList = new ArrayList<>();
     Activity fakeActivity =  new Activity(UUID.randomUUID(), 0, Instant.now(), "test_activity", UUID.randomUUID(), "test_username",
-      ActivityType.REGISTRATION, null, null);
+      ActivityType.REGISTRATION, null, null, new double[4], 0);
     fakeActivityList.add(fakeActivity);
 
     Mockito.when(mockActivityStore.getActivities()).thenReturn(fakeActivityList);
@@ -72,7 +72,7 @@ public class ActivityFeedServletTest {
   public void testDoPostSearch() throws IOException, ServletException {
     List<Activity> fakeActivityList = new ArrayList<>();
     Activity fakeActivity =  new Activity(UUID.randomUUID(), 0, Instant.now(), "test_activity", UUID.randomUUID(), "test_username",
-      ActivityType.REGISTRATION, null, null);
+      ActivityType.REGISTRATION, null, null, new double[4], 0);
     fakeActivityList.add(fakeActivity);
 
     Mockito.when(mockRequest.getParameter("searchQuery")).thenReturn("test_activity");
@@ -92,7 +92,7 @@ public class ActivityFeedServletTest {
   public void testDoPostUncleanedSearchQuery() throws IOException, ServletException {
     List<Activity> fakeActivityList = new ArrayList<>();
     Activity fakeActivity =  new Activity(UUID.randomUUID(), 0, Instant.now(), "test_activity", UUID.randomUUID(), "test_username",
-      ActivityType.REGISTRATION, null, null);
+      ActivityType.REGISTRATION, null, null, new double[4], 0);
     fakeActivityList.add(fakeActivity);
 
     Mockito.when(mockRequest.getParameter("searchQuery")).thenReturn("<h1> test_activity <h1>");
