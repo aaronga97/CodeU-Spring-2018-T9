@@ -87,6 +87,12 @@ public class ActivityFeedServlet extends HttpServlet {
         request.setAttribute("checked", "popular");
       } else if (toggle.equals("recent")) {
         request.setAttribute("checked", "recent");
+      } else if (toggle.equals("trend")) {
+        request.setAttribute("checked", "trend");
+      } else if (toggle.equals("daily")) {
+        request.setAttribute("checked", "daily");
+      } else if (toggle.equals("today")) {
+        request.setAttribute("checked", "today");
       }
 
       }
@@ -102,6 +108,21 @@ public class ActivityFeedServlet extends HttpServlet {
       sortByRecency(activities);
       request.setAttribute("checked", "recent");
 
+    } else if (sortingStyle.equals("trend") || toggle.equals("trend")) {
+
+      sortByTrend(activities);
+      request.setAttribute("checked", "trend");
+
+    } else if (sortingStyle.equals("daily") || toggle.equals("daily")) {
+
+      sortByDaily(activities);
+      request.setAttribute("checked", "daily");
+
+    } else if (sortingStyle.equals("today") || toggle.equals("today")) {
+
+      sortByToday(activities);
+      request.setAttribute("checked", "today");
+
     }
 
     request.setAttribute("activities", activities);
@@ -112,6 +133,21 @@ public class ActivityFeedServlet extends HttpServlet {
   /*Sorts activities by allTimeCount field*/
   void sortByPopularity(List<Activity> activities) {
     Collections.sort(activities, (one, other) -> other.getAllTimeCount() - one.getAllTimeCount());
+  }
+
+  /*Sorts activities by their popularity 'today'*/
+  void sortByToday(List<Activity> activities) {
+    Collections.sort(activities, (one, other) -> Double.compare(other.getPopularityToday(), one.getPopularityToday()));
+  }
+
+  /*Sorts activities by their daily average*/
+  void sortByDaily(List<Activity> activities) {
+    Collections.sort(activities, (one, other) -> Double.compare(other.calculateMean(), one.calculateMean()));
+  }
+
+  /*Sorts activities by their zScore field*/
+  void sortByTrend(List<Activity> activities) {
+    Collections.sort(activities, (one, other) -> Double.compare(other.getZScore(), one.getZScore()));
   }
 
   /*Sorts activities by creationTime field*/

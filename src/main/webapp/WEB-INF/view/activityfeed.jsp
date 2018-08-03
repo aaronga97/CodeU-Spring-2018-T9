@@ -46,6 +46,9 @@
 			<form id="sortingForm" action="/activityfeed" method= "POST">
 					<input type="radio" id="recencySort" name="sortingStyle" onclick="callServlet('POST')" value="recent" <%= checked != null && checked.equals("recent")? "checked":""%> > Recent
 					<input type="radio" id="popularitySort" name="sortingStyle" onclick="callServlet('POST')" value="popular" <%= checked != null && checked.equals("popular")? "checked":""%> > Popular
+					<input type="radio" id="trendSort" name="sortingStyle" onclick="callServlet('POST')" value="trend" <%= checked != null && checked.equals("trend")? "checked":""%> > Trending
+					<input type="radio" id="dailySort" name="sortingStyle" onclick="callServlet('POST')" value="daily" <%= checked != null && checked.equals("daily")? "checked":""%> > Popular this Week
+					<input type="radio" id="todaySort" name="sortingStyle" onclick="callServlet('POST')" value="today" <%= checked != null && checked.equals("today")? "checked":""%> > Popular Today
 			</form>
 
 		</div>
