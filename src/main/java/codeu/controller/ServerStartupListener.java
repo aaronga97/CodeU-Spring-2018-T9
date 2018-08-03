@@ -29,12 +29,12 @@ import java.util.UUID;
  */
 public class ServerStartupListener implements ServletContextListener {
 
-  private ServerStartupTimesStore serverStartupTimesStore = ServerStartupTimesStore.getInstance();
-
   /** Loads data from Datastore. */
   @Override
   public void contextInitialized(ServletContextEvent sce) {
     try {
+
+      ServerStartupTimesStore serverStartupTimesStore = ServerStartupTimesStore.getInstance();
 
       /** Get the time for when the server first started up */
       Instant currentServerStartupTime = Instant.now();
