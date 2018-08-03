@@ -63,7 +63,7 @@
 			authorUrl += author;
 
 			String activityHour = Utils.getTime(activity.getCreationTime());
-			activityHour = activityHour.substring(activityHour.length()-8);
+			activityHour = activityHour.charAt(0) + activityHour.substring(1, activityHour.length()).toLowerCase();
 
 			if (activity.getActivityType() == ActivityType.REGISTRATION) {
 
