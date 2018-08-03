@@ -16,6 +16,8 @@ import java.util.List;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import java.time.temporal.ChronoUnit;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.Instant;
@@ -46,24 +48,31 @@ public class ServerStartupListener implements ServletContextListener {
       ServerStartupTimes serverStartupTimes = PersistentStorageAgent.getInstance().loadServerStartupTimes();
       serverStartupTimesStore.setServerStartupTimes(serverStartupTimes);
 
-      UUID serverStartupTimesId = serverStartupTimesStore.getServerStartupTimes().getServerStartupTimesId();
+      UUID serverStartupTimesId = serverStartupTimes.getServerStartupTimesId();
 
       /** If the ServerStartupTimes in ServerStartupTimes Store hasn't been initialized,
         * this will initialize it. Should only ever happen once.
         */
+
       if (serverStartupTimesId == null) {
         ServerStartupTimes initServerStartupTimes = new ServerStartupTimes(UUID.randomUUID(), currentServerStartupTime, currentServerStartupTime);
         serverStartupTimesStore.setServerStartupTimes(initServerStartupTimes);
         PersistentStorageAgent.getInstance().writeThrough(initServerStartupTimes);
+        serverStartupTimes = initServerStartupTimes;
       }
-
 
       /** Check to see if at least a 'day' has passed, if it has load Activities in a special
        * way that shifts the weekly popularity variables and reevalutes every item's trending
        * count.
        */
-        List<Activity> activities;
+
+       serverStartupTimes.setCurrentServerStartupTime(currentServerStartupTime);
+       serverStartupTimesStore.updateServerStartupTimes(serverStartupTimes);
+
+       List<Activity> activities;
        ServerStartupTimes originalServerStartupTimes = serverStartupTimesStore.getServerStartupTimes();
+
+       System.out.println(originalServerStartupTimes.compareStartupTimes24());
 
       if (originalServerStartupTimes.compareStartupTimes24()) {
         activities = PersistentStorageAgent.getInstance().loadActivities(true);

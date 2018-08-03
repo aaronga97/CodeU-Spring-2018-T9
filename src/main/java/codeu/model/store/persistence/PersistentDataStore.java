@@ -232,7 +232,7 @@ public class PersistentDataStore {
 
         double zScore = Double.parseDouble((String) entity.getProperty("zScore"));
 
-        if (newDay) {
+        if (newDay && type == ActivityType.CONVERSATION) {
           dailyPopularity[0] = Double.parseDouble((String) entity.getProperty("dailyPopularity[1]"));
           dailyPopularity[1] = Double.parseDouble((String) entity.getProperty("dailyPopularity[2]"));
           dailyPopularity[2] = Double.parseDouble((String) entity.getProperty("dailyPopularity[3]"));
@@ -245,10 +245,12 @@ public class PersistentDataStore {
         }
 
         Activity activity = new Activity(activityUuid, allTimeCount, creationTime, message, userUuid, username, type, conversationId, conversationName, dailyPopularity, zScore);
-        if(newDay) {
+        if(newDay && type == ActivityType.CONVERSATION) {
           activity.setZScore();
+          this.writeThrough(activity);
         }
         activities.add(activity);
+
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
