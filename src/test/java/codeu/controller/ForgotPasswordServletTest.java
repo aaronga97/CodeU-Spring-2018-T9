@@ -36,16 +36,16 @@ public class ForgotPasswordServletTest {
         Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
     }
 
-//    @Test
-//  public void testDoPost_EmailNotFound() throws IOException, ServletException {
-//        Mockito.when(mockRequest.getParameter("emailPrompt")).thenReturn("lee@gmail.com");
-//
-//        UserStore mockUserStore = Mockito.mock(UserStore.class);
-//        Mockito.when(mockUserStore.isEmailRegistered("lee@gmail.com")).thenReturn(false);
-//        forgotPasswordServlet.setUserStore(mockUserStore);
-//
-//        forgotPasswordServlet.doPost(mockRequest, mockResponse);
-//        Mockito.verify(mockRequest).setAttribute("error", "That email is not linked to an account");
-//        Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
-//  }
+    @Test
+  public void testDoPost_EmailNotFound() throws IOException, ServletException {
+        Mockito.when(mockRequest.getParameter("email")).thenReturn("lee@gmail.com");
+
+        UserStore mockUserStore = Mockito.mock(UserStore.class);
+        Mockito.when(mockUserStore.isEmailRegistered("lee@gmail.com")).thenReturn(false);
+        forgotPasswordServlet.setUserStore(mockUserStore);
+
+        forgotPasswordServlet.doPost(mockRequest, mockResponse);
+        Mockito.verify(mockRequest).setAttribute("error", "That email is not linked to an account");
+        Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
 }
