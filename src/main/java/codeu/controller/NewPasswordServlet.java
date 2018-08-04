@@ -37,9 +37,10 @@ public class NewPasswordServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String username = (String) request.getSession().getAttribute("user");
-        User user = UserStore.getInstance().getUser(username);
-        if(user==null){
-            request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+        if (username == null) {
+            // user is not logged in, don't let them create a conversation
+            response.sendRedirect("/login");
+            return;
         }
         request.getRequestDispatcher("/WEB-INF/view/newPassword.jsp").forward(request, response);
     }
