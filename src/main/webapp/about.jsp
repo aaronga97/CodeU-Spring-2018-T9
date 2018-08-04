@@ -75,12 +75,13 @@
       </ul>
 
       <p>
-        <strong>Password Security</strong>
+        <strong>Account Security</strong>
       </p>
 
       <ul>
-        <li>Logout Capable- Users are able to logout of an account at anytime and login to a separate one, without having to refresh or close the web browser.</li>
-        <li>Upon registration users are required to meet certain password criteria before creating an account.</li>
+        <li>Email Password Reset - If a user forgets their password they can create a new one through our email password reset feature, they will be emailed a temporary password and brought to a page where they can create a new permanent password once they login with the temporary one. </li>
+        <li>Strong Passwords - Upon registration users are required to meet certain password criteria before creating an account.</li>
+        <li>Logout Capable - Users are able to logout of an account at anytime and login to a separate one, without having to refresh or close the web browser.</li>
       </ul>
 
       <p>
