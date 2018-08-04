@@ -71,13 +71,14 @@ public class ConversationServletTest {
     conversationServlet.setActivityStore(mockActivityStore);
   }
 
+
   @Test
   public void testDoGet() throws IOException, ServletException {
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("testusername");
     List<Conversation> fakeConversationList = new ArrayList<>();
     fakeConversationList.add(
         new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now(), false));
     Mockito.when(mockConversationStore.getAllConversations()).thenReturn(fakeConversationList);
-
     conversationServlet.doGet(mockRequest, mockResponse);
 
     Mockito.verify(mockRequest).setAttribute("conversations", fakeConversationList);

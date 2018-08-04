@@ -57,6 +57,7 @@ public class RegisterServletTest {
   public void testDoPost_BadUsername() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("bad@$username");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("testpassword1");
+    Mockito.when(mockRequest.getParameter("reTypedPassword")).thenReturn("testpassword1");
 
 
 
@@ -144,6 +145,7 @@ public class RegisterServletTest {
   public void testDoPost_NewUser() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("testpassword1");
+    Mockito.when(mockRequest.getParameter("reTypedPassword")).thenReturn("testpassword1");
     Mockito.when(mockRequest.getParameter("email")).thenReturn("team9ChatApp@gmail.com");
 
     UserStore mockUserStore = Mockito.mock(UserStore.class);
@@ -171,6 +173,7 @@ public class RegisterServletTest {
   public void testDoPost_ExistingUser() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("testpassword1");
+    Mockito.when(mockRequest.getParameter("reTypedPassword")).thenReturn("testpassword1");
 
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
@@ -185,9 +188,28 @@ public class RegisterServletTest {
   }
 
   @Test
+  public void testDoPost_PasswordsDontMatch() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
+    Mockito.when(mockRequest.getParameter("password")).thenReturn("testpassword1");
+    Mockito.when(mockRequest.getParameter("reTypedPassword")).thenReturn("testpassword2");
+
+    UserStore mockUserStore = Mockito.mock(UserStore.class);
+    Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(false);
+    registerServlet.setUserStore(mockUserStore);
+
+    registerServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockUserStore, Mockito.never()).addUser(Mockito.any(User.class));
+    Mockito.verify(mockActivityStore, Mockito.never()).addActivity(Mockito.any(Activity.class));
+    Mockito.verify(mockRequest).setAttribute("error", "Passwords must match.");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
+
+  @Test
   public void testDoPost_AlreadyUsedEmail() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("testpassword1");
+    Mockito.when(mockRequest.getParameter("reTypedPassword")).thenReturn("testpassword1");
     Mockito.when(mockRequest.getParameter("email")).thenReturn("team9ChatApp@gmail.com");
 
 
@@ -199,7 +221,7 @@ public class RegisterServletTest {
 
     Mockito.verify(mockUserStore, Mockito.never()).addUser(Mockito.any(User.class));
     Mockito.verify(mockActivityStore, Mockito.never()).addActivity(Mockito.any(Activity.class));
-    Mockito.verify(mockRequest).setAttribute("error", "That email is already linked to an account");
+    Mockito.verify(mockRequest).setAttribute("error", "That email is already linked to an account.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 }

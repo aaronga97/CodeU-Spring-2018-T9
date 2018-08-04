@@ -78,6 +78,17 @@ public class NewPasswordServletTest {
     }
 
     @Test
+    public void testDoPost_PasswordsDontMatch() throws IOException, ServletException {
+        Mockito.when(mockRequest.getParameter("newPassword")).thenReturn("password1");
+        Mockito.when(mockRequest.getParameter("reTypedNewPassword")).thenReturn("password2");
+        newPasswordServlet.doPost(mockRequest, mockResponse);
+
+        Mockito.verify(mockRequest)
+                .setAttribute("error", "Passwords must match.");
+        Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    }
+
+    @Test
     public void testDoPost_BadLongPassword() throws IOException, ServletException {
         Mockito.when(mockRequest.getParameter("usernameVerification")).thenReturn("test username");
         Mockito.when(mockRequest.getParameter("newPassword")).thenReturn("badPassword12345");
@@ -96,22 +107,6 @@ public class NewPasswordServletTest {
         Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
     }
 
-    /**test for when a user does not exist.*/
-//    @Test
-//    public void testDoPost_NotAnExistingUser() throws IOException, ServletException {
-//        Mockito.when(mockRequest.getParameter("usernameVerification")).thenReturn("test username");
-//        Mockito.when(mockRequest.getParameter("newPassword")).thenReturn("testpassword1");
-//        Mockito.when(mockRequest.getParameter("reTypedNewPassword")).thenReturn("testpassword1");
-//
-//        UserStore mockUserStore = Mockito.mock(UserStore.class);
-//        PasswordUtils mockPasswordUtils = Mockito.mock(PasswordUtils.class);
-//        Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(false);
-//        newPasswordServlet.setUserStore(mockUserStore);
-//
-//        newPasswordServlet.doPost(mockRequest, mockResponse);
-//        Mockito.verify(mockRequest).setAttribute("error", "That username was not found.");
-//        Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
-//    }
 
 //    @Test
 //    public void testDoPost_ExistingUser() throws IOException, ServletException {
@@ -123,16 +118,16 @@ public class NewPasswordServletTest {
 //                        Instant.now(),
 //                        false);
 //
-//
+//        Mockito.when(mockSession.getAttribute("user")).thenReturn("testusername");
 //        UserStore mockUserStore = Mockito.mock(UserStore.class);
 //        PasswordUtils mockPasswordUtils = Mockito.mock(PasswordUtils.class);
-//        Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
+//       // Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
 //        //Mockito.when(mockPasswordUtils.isPasswordCorrect("testpassword1")).thenReturn(true);
 //        Mockito.when(mockUserStore.getUser("test username")).thenReturn(user);
 //
 //        newPasswordServlet.setUserStore(mockUserStore);
 //
-//        Mockito.when(mockRequest.getParameter("usernameVerification")).thenReturn("test username");
+//       // Mockito.when(mockRequest.getParameter("usernameVerification")).thenReturn("test username");
 //        Mockito.when(mockRequest.getParameter("newPassword")).thenReturn("testpassword1");
 //        Mockito.when(mockRequest.getParameter("reTypedNewPassword")).thenReturn("testpassword1");
 //        //Mockito.when(mockPasswordUtils.isPasswordCorrect("testpassword1")).thenReturn(true);
@@ -141,7 +136,8 @@ public class NewPasswordServletTest {
 //
 //        newPasswordServlet.doPost(mockRequest, mockResponse);
 //
-//        Assert.assertEquals("test username", user.getName());
+//
+//       // Assert.assertEquals("test username", user.getName());
 //       Assert.assertNotEquals(
 //               "$2a$10$.e.4EEfngEXmxAO085XnYOmDntkqod0C384jOR9oagwxMnPNHaGLa", user.getPasswordHash());
 //
